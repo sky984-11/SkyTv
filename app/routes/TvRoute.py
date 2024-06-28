@@ -89,3 +89,24 @@ def list_tv():
         pagination = db.session.query(Tv).paginate(page=page, per_page=per_page)
         data = [item.to_dict() for item in pagination.items]
         return jsonify({"code": 200, "result": data,"page": page,"per_page": per_page,"total": pagination.total,"pages": pagination.pages})
+    
+def search_tv():
+    """
+        影视搜索
+        pattern:匹配模式，可选值:fuzzy(模糊匹配)、exact(精确匹配)
+    """
+    with app.app_context():
+        keyword = request.args.get('keyword')
+        pattern = request.args.get('pattern', 'fuzzy', type=str).lower()  # 默认是模糊匹配
+        if not keyword:  
+            return jsonify({"code": 400, "msg": "关键词不能为空"}), 400  
+  
+        if pattern == 'exact':  
+            # 精确匹配  
+            tv = Tv.query.filter(Tv.title == keyword).all()  
+        else:  
+            # 模糊匹配  
+            tv = Tv.query.filter(Tv.title.like('%' + keyword + '%')).all()  
+  
+        data = [item.to_dict() for item in tv]  
+        return jsonify({"code": 200, "result": data})  

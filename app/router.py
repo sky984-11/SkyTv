@@ -53,6 +53,8 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/del/title/<string:title>', method
 b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/edit', methods=['POST'])(edit_tv)
 # 影视列表
 b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/list', methods=['GET'])(list_tv)
+# 影视搜索
+b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/search', methods=['GET'])(search_tv)
 # #####################################  Tv End  #####################################
 
 # ##################################### Episodes Start #####################################
