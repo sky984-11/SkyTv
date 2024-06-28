@@ -1,0 +1,74 @@
+{
+  "name": "SkyTv",
+  "version": "0.5.0",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yulimchen/vue3-h5-template.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yulimchen/vue3-h5-template/issues"
+  },
+  "engines": {
+    "node": ">= 18",
+    "pnpm": ">= 9"
+  },
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint:eslint": "eslint . --fix",
+    "lint:prettier": "prettier --write  \"src/**/*.{js,json,jsx,css,less,scss,vue,html,md}\""
+  },
+  "dependencies": {
+    "axios": "^1.7.2",
+    "hls.js": "^1.5.11",
+    "normalize.css": "^8.0.1",
+    "nprogress": "^0.2.0",
+    "pinia": "^2.1.7",
+    "vant": "^4.9.0",
+    "vue": "^3.4.27",
+    "vue-router": "^4.3.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.3.0",
+    "@rushstack/eslint-patch": "^1.10.3",
+    "@vant/auto-import-resolver": "^1.2.1",
+    "@vitejs/plugin-vue": "^5.0.4",
+    "@vitejs/plugin-vue-jsx": "^3.1.0",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "autoprefixer": "^10.4.19",
+    "cnjm-postcss-px-to-viewport": "^1.0.1",
+    "eslint": "^9.3.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-define-config": "^2.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "eslint-plugin-vue": "^9.26.0",
+    "globals": "^15.3.0",
+    "less": "^4.2.0",
+    "mockjs": "^1.1.0",
+    "postcss": "^8.4.38",
+    "prettier": "^3.2.5",
+    "tailwindcss": "^3.4.3",
+    "unplugin-vue-components": "^0.27.0",
+    "vite": "^5.2.12",
+    "vite-plugin-cdn2": "^1.1.0",
+    "vite-plugin-compression": "^0.5.1",
+    "vite-plugin-html": "^3.2.2",
+    "vite-plugin-mock-dev-server": "^1.5.0",
+    "vite-plugin-svg-icons": "^2.0.1",
+    "vite-plugin-vue-setup-extend": "^0.4.0",
+    "vue-eslint-parser": "^9.4.2"
+  },
+  "pnpm": {
+    "peerDependencyRules": {
+      "ignoreMissing": [
+        "rollup"
+      ],
+      "allowedVersions": {
+        "eslint": "9"
+      }
+    }
+  }
+}
