@@ -1,3 +1,10 @@
+'''
+Description: 
+Author: sky
+Date: 2024-06-26 10:18:05
+LastEditTime: 2024-06-28 17:50:39
+LastEditors: sky
+'''
 from flask import request, jsonify
 from run import app
 from db import Episodes, db
@@ -37,3 +44,4 @@ def list_episodes():
         episodes = db.session.query(Episodes).filter_by(tv_title=tv_title).all()
         data = [item.to_dict() for item in episodes]
         return jsonify({"code": 200, "result": data})
+    
