@@ -1,3 +1,10 @@
+'''
+Description: 
+Author: sky
+Date: 2024-06-25 08:20:37
+LastEditTime: 2024-06-30 10:30:46
+LastEditors: sky
+'''
 # Scrapy settings for scrapy_tv project
 #
 # For simplicity, this file contains only settings considered important or
@@ -91,3 +98,6 @@ ITEM_PIPELINES = {
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
 TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
+
+
+KEKE_BASE_URL = "https://www.keke12.com:51111"

@@ -14,6 +14,8 @@ def add_tv():
     total_episodes = json_data.get("total_episodes")
     rating = json_data.get("rating")
     type = json_data.get("type")
+    hot = json_data.get("hot")
+    tags = json_data.get("tags")
 
     if not title:
         return jsonify({"code": 400, "msg": "名称不能为空"}), 400
@@ -22,7 +24,7 @@ def add_tv():
         existing_name = Tv.query.filter_by(title=title).first()
         if existing_name:
             return jsonify({"code": 401, "msg": "名称已存在,请勿重复添加"}), 401
-        new_data = Tv(title=title, image=image, source=source, description=description, total_episodes=total_episodes, rating=rating, type=type)
+        new_data = Tv(title=title, image=image, source=source, description=description, total_episodes=total_episodes, rating=rating, type=type,hot=hot,tags=tags)
         db.session.add(new_data)
         db.session.commit()
         return jsonify({"code": 200, "msg": "添加成功"})
@@ -57,6 +59,8 @@ def edit_tv():
             total_episodes = json_data.get("total_episodes")
             rating = json_data.get("rating")
             type = json_data.get("type")
+            hot = json_data.get("hot")
+            tags = json_data.get("tags")
             id = json_data.get('id')
 
             if title:
@@ -69,7 +73,9 @@ def edit_tv():
             tv.description = description
             tv.total_episodes = total_episodes
             tv.rating = rating
-            source.type = type
+            tv.type = type
+            tv.hot = hot
+            tv.tags = tags
             db.session.commit()
         except Exception as e:
             db.session.rollback()

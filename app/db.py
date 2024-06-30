@@ -97,6 +97,8 @@ class Tv(db.Model):
         total_episodes:总集数
         rating:评分
         type:影视类型,tv_show 0/movie 1/anime 2
+        tags:标签,多个用/隔开
+        hot:是否热门影视
     """
     __tablename__ = 'tv'
     __table_args__ = {'extend_existing': True}
@@ -109,6 +111,8 @@ class Tv(db.Model):
     total_episodes = db.Column(db.String(255),nullable=True)
     rating = db.Column(db.String(255),nullable=True)
     type = db.Column(db.Integer)
+    tags = db.Column(db.Text, nullable=False)
+    hot = db.Column(db.Boolean, default=False)
     episodes = relationship('Episodes', backref='episodes',cascade='all,delete-orphan')
 
     def to_dict(self):
@@ -121,6 +125,9 @@ class Tv(db.Model):
             "total_episodes":self.total_episodes,
             "rating":self.rating,
             "type":self.type,
+            "tags":self.tags,
+            "hot":self.hot,
+
         }
 
 class Episodes(db.Model):

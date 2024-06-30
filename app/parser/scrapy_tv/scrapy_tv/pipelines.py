@@ -1,3 +1,10 @@
+'''
+Description: 
+Author: sky
+Date: 2024-06-25 08:20:37
+LastEditTime: 2024-06-30 17:31:40
+LastEditors: sky
+'''
 # Define your item pipelines here
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
@@ -21,7 +28,6 @@ class ScrapyTvPipeline:
         headers = {'Content-Type': 'application/json'} 
         tv_api_url = SERVER_NAME + API_VERSION + '/tv/add'
         episodes_api_url = SERVER_NAME + API_VERSION + '/episodes/add'
-        response1 = requests.post(tv_api_url, data=json.dumps(item), headers=headers)  
-        response2 = requests.post(episodes_api_url, data=json.dumps(item), headers=headers) 
-        print(response1.text,response2.text)
+        requests.post(tv_api_url, data=json.dumps(item), headers=headers)  
+        requests.post(episodes_api_url, data=json.dumps(item), headers=headers) 
         return item
