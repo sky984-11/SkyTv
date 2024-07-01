@@ -1,8 +1,8 @@
 '''
-Description: 可可首页爬取
+Description: 可可影视爬取
 Author: sky
 Date: 2024-06-30 10:32:22
-LastEditTime: 2024-06-30 17:07:03
+LastEditTime: 2024-07-01 14:11:41
 LastEditors: sky
 '''
 import scrapy  

@@ -1,4 +1,8 @@
 
+## 注意
+
+1. 白名单不对首页热门影视生效,用于控制优质影片
+
 
 <div align="center">
 	<img src="src/assets/logo_melomini.png" alt="logo_melomini" style="width:20%;" />
