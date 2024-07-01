@@ -91,9 +91,12 @@ def list_tv():
     """
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 20, type=int)
+    active_type = request.args.get('active_type', 0, type=int)
 
     with app.app_context():
-        pagination = db.session.query(Tv).paginate(page=page, per_page=per_page)
+        query = db.session.query(Tv).filter_by(type=active_type)
+        
+        pagination = query.paginate(page=page, per_page=per_page)
         data = [item.to_dict() for item in pagination.items]
         return jsonify({"code": 200, "result": data,"page": page,"per_page": per_page,"total": pagination.total,"pages": pagination.pages})
     

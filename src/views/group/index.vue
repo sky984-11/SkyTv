@@ -10,7 +10,7 @@ const loading = ref(false);  //下拉加载
 const finished = ref(false); //是否加载完成
 const page = ref(1); // 当前页
 const perPage = ref(20); // 每页数量
-const tabList = ref(['电影','电视剧','动漫'])
+const tabList = ref(['电视剧','电影','动漫'])
 const router = useRouter();
 
 async function fetchData() {
@@ -19,16 +19,9 @@ async function fetchData() {
     const params = {
       page: page.value,
       per_page: perPage.value,
+      active_type: activeType.value
     };
-    if(activeType.value === 0 ){
-      var res = await listTv(params);
-    }else if(activeType.value === 1 ){
-      // tv_show数据获取
-       res = []
-    }else if(activeType.value === 2 ){
-      // anime数据获取
-       res = []
-    }
+    const res = await listTv(params);
     
     // console.log(res)
     if (res.length < perPage.value) {
