@@ -2,10 +2,10 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-01 17:50:49
+ * @LastEditTime: 2024-07-01 17:53:01
  * @LastEditors: sky
 -->
-<script setup name="Demo">
+<script setup name="Home">
 import {  ref,onMounted } from "vue";
 import { listHotTv } from "@/api/tv";
 

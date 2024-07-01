@@ -1,17 +1,24 @@
+/*
+ * @Description: 
+ * @Author: sky
+ * @Date: 2024-06-24 09:34:10
+ * @LastEditTime: 2024-07-01 17:52:55
+ * @LastEditors: sky
+ */
 import Layout from "@/layout/index.vue";
-import Demo from "@/views/demo/index.vue";
+import Home from "@/views/home/index.vue";
 
 const routes = [
   {
     path: "/",
     name: "root",
     component: Layout,
-    redirect: { name: "Demo" },
+    redirect: { name: "Home" },
     children: [
       {
-        path: "demo",
-        name: "Demo",
-        component: Demo,
+        path: "home",
+        name: "Home",
+        component: Home,
         meta: {
           title: "主页"
         }
