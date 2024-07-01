@@ -1,6 +1,6 @@
 from flask import request, jsonify
 from run import app
-from db import Tv, db
+from db import Tv,Episodes, db
 
 def add_tv():
     """
@@ -116,3 +116,15 @@ def search_tv():
   
         data = [item.to_dict() for item in tv]  
         return jsonify({"code": 200, "result": data})  
+    
+def sync_tv():
+    """
+        同步影视
+    """
+    with app.app_context():
+        try:
+            db.session.execute("TRUNCATE TABLE tv")
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"code": 500, "msg": str(e)}), 500
