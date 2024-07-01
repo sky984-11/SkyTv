@@ -2,12 +2,14 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-01 17:53:01
+ * @LastEditTime: 2024-07-01 17:54:28
  * @LastEditors: sky
 -->
 <script setup name="Home">
 import {  ref,onMounted } from "vue";
 import { listHotTv } from "@/api/tv";
+import { useRouter } from 'vue-router'; 
+import { useTvStoreHook } from '@/store/modules/tvStore';
 
 const tvList = ref([])   // 视频列表数据
 const loading = ref(false);  //下拉加载
@@ -15,7 +17,7 @@ const finished = ref(false); //是否加载完成
 const page = ref(1); // 当前页
 const perPage = ref(20); // 每页数量
 
-
+const router = useRouter();
 
 async function fetchData() {
   try {
