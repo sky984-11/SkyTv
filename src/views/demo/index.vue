@@ -1,38 +1,99 @@
+<!--
+ * @Description: 
+ * @Author: sky
+ * @Date: 2024-06-24 09:34:10
+ * @LastEditTime: 2024-07-01 17:50:49
+ * @LastEditors: sky
+-->
 <script setup name="Demo">
-import { reactive,watch ,ref} from "vue";
-import { listTv } from "@/api/tv";
+import {  ref,onMounted } from "vue";
+import { listHotTv } from "@/api/tv";
 
-// import Player from "../player/index.vue";
-
-// const m3u8Link = ref('https://172.80.104.90:11300/vods/hls/dhz/14/13322/2404219/634050/1920/index.m3u8?appId=kkdy&sign=a61258a22cfafc7d9eefadd6d273c49d&timestamp=1719292263')
-
-
-
-
-const tvList = ref([])
+const tvList = ref([])   // 视频列表数据
+const loading = ref(false);  //下拉加载
+const finished = ref(false); //是否加载完成
+const page = ref(1); // 当前页
+const perPage = ref(20); // 每页数量
 
 
-// const isSearch = ref(false) // 是否处于搜索模式,搜索模式下显示搜索出来的内容
 
-// watch(searchKey, (newValue) => {
-// 	if (newValue == "") {
-//     isSearch.value = false
-// 	}
-// })
-
-function initData(){
-  // const params = {}
-  // listTv(params).then((res) => {
-  //     tvList.value = res
-  //     console.log(res)
-  //   })
+async function fetchData() {
+  try {
+    loading.value = true;
+    const params = {
+      page: page.value,
+      per_page: perPage.value,
+    };
+    const res = await listHotTv(params);
+    
+    // console.log(res)
+    if (res.length < perPage.value) {
+      finished.value = true;
+    }
+    tvList.value = [...tvList.value, ...res];
+    page.value += 1;
+  } catch (error) {
+    console.log(error)
+  } finally {
+    loading.value = false;
+  }
 }
 
-initData()
+function initData() {
+  page.value = 1;
+  tvList.value = [];
+  finished.value = false;
+  fetchData();
+}
+
+function onLoadData() {
+  if (!finished.value) {
+    fetchData();
+  }
+}
+
+function toDetails(tv){
+  // 将详情数据写入store
+  const tvStore = useTvStoreHook();
+  tvStore.setTvDetails(tv);
+  
+  router.push({ name: 'Details'});
+
+}
+
+onMounted(() => {
+  initData();
+});
 </script>
 
 <template>
   
-
+  <van-list
+        v-model:loading="loading"
+        :finished="finished"
+        finished-text="没有更多了"
+        @load="onLoadData"
+        error-text="请求失败，点击重新加载"
+      >
+        <div class="flex flex-wrap gap-4">
+          <div
+            class="relative w-[calc(50%-8px)]"
+            v-for="item in tvList"
+            :key="item.id"
+            @click="toDetails(item)"
+          >
+            <van-image
+              :src="item.image"
+              class="w-full h-auto"
+              alt="视频缩略图"
+            />
+            <div
+              class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full text-center bg-black bg-opacity-50 text-white py-1 box-border overflow-hidden text-ellipsis whitespace-nowrap"
+            >
+              {{ item.title }}
+            </div>
+          </div>
+        </div>
+      </van-list>
 
 </template>

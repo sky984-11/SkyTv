@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-26 15:32:37
- * @LastEditTime: 2024-06-28 17:37:14
+ * @LastEditTime: 2024-07-01 17:46:20
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
@@ -10,6 +10,14 @@ import { http } from "@/utils/http";
 export function listTv(params) {
   return http.request({
     url: "/tv/list",
+    method: "get",
+    params
+  });
+}
+
+export function listHotTv(params) {
+  return http.request({
+    url: "/tv/list/hot",
     method: "get",
     params
   });

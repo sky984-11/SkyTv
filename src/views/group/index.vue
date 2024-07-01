@@ -1,5 +1,5 @@
 <script setup name="Group">
-import { reactive, ref,onMounted } from "vue";
+import { ref,onMounted } from "vue";
 import { listTv } from "@/api/tv";
 import { useRouter } from 'vue-router'; 
 import { useTvStoreHook } from '@/store/modules/tvStore';
