@@ -55,6 +55,10 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/edit', methods=['POST'])(edit_tv)
 b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/list', methods=['GET'])(list_tv)
 # 影视搜索
 b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/search', methods=['GET'])(search_tv)
+# 同步影视
+b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/sync', methods=['POST'])(sync_tv)
+#删除所有影视
+b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/del/all', methods=['DELETE'])(del_all_tv)
 # #####################################  Tv End  #####################################
 
 # ##################################### Episodes Start #####################################

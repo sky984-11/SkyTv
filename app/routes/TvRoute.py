@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from run import app
 from db import Tv,Episodes, db
+from sqlalchemy import text
 
 def add_tv():
     """
@@ -117,14 +118,51 @@ def search_tv():
         data = [item.to_dict() for item in tv]  
         return jsonify({"code": 200, "result": data})  
     
+def del_all_tv():
+    """
+            删除所有影视
+    """
+    with app.app_context():
+        try:
+            db.session.execute(text(f"DELETE FROM tv"))
+            db.session.execute(text(f"DELETE FROM episodes"))
+            db.session.commit()
+            return jsonify({"code": 200, "msg":'del all success'})
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"code": 500, "msg": str(e)}), 500   
 def sync_tv():
     """
         同步影视
     """
     with app.app_context():
         try:
-            db.session.execute("TRUNCATE TABLE tv")
+
+            json_data = request.get_json()
+            title = json_data.get("title")
+            image = json_data.get("image")
+            source = json_data.get("source")
+            description = json_data.get("description")
+            total_episodes = json_data.get("total_episodes")
+            rating = json_data.get("rating")
+            type = json_data.get("type")
+            hot = json_data.get("hot")
+            tags = json_data.get("tags")
+
+            tv_title = json_data.get("tv_title")
+            episode = json_data.get("episode")
+            link = json_data.get("link")
+
+            existing_name = Tv.query.filter_by(title=title).first()
+            if not existing_name:
+                tv_data = Tv(title=title, image=image, source=source, description=description, total_episodes=total_episodes, rating=rating, type=type,hot=hot,tags=tags)
+                db.session.add(tv_data)
+
+            episodes_data = Episodes(tv_title=tv_title, episode=episode, source=source, link=link)
+            db.session.add(episodes_data)
             db.session.commit()
+            return jsonify({"code": 200, "msg":'sync success'})
         except Exception as e:
             db.session.rollback()
+            app.logger.error(str(e))
             return jsonify({"code": 500, "msg": str(e)}), 500

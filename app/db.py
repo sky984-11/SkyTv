@@ -95,6 +95,10 @@ class Episodes(db.Model):
         link:播放链接(可能会经常变动)
         tv_title:影视名称
     """
+
+    __tablename__ = 'episodes'
+    __table_args__ = {'extend_existing': True}
+
     id = db.Column(db.Integer, primary_key=True)
     episode = db.Column(db.String(255), nullable=False)
     source = db.Column(db.String(255),nullable=True)
