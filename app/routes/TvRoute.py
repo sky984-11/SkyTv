@@ -104,15 +104,10 @@ def list_hot_tv():
     """
         热播影视列表
     """
-    page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 20, type=int)
-
     with app.app_context():
-        query = db.session.query(Tv).filter_by(hot=True)
-        
-        pagination = query.paginate(page=page, per_page=per_page)
-        data = [item.to_dict() for item in pagination.items]
-        return jsonify({"code": 200, "result": data,"page": page,"per_page": per_page,"total": pagination.total,"pages": pagination.pages})
+        query = db.session.query(Tv).filter_by(hot=True).all()
+        data = [item.to_dict() for item in query]
+        return jsonify({"code": 200, "result": data})
 
 
 def search_tv():
