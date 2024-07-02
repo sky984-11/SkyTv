@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-06-28 17:43:32
+ * @LastEditTime: 2024-07-02 14:24:55
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -33,7 +33,7 @@ async function initData() {
   };
 
   const res = await listEpisodes(params);
-  console.log(res)
+  res.sort((a, b) => a.index - b.index); 
   m3u8Link.value = res[0].link
   episodes.value = res
   activeEpisode.value = res[0].id;
