@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-06-25 08:20:37
-LastEditTime: 2024-07-02 14:13:43
+LastEditTime: 2024-07-02 15:43:41
 LastEditors: sky
 '''
 # Define your item pipelines here
@@ -28,7 +28,7 @@ class ScrapyTvPipeline:
         self.delete_executed = False
     def process_item(self, item, spider):
         # print(self.delete_executed )
-        # return item
+        # return {item['index'],item['title']}
 
         # 数据删除操作仅在首次执行
         if not self.delete_executed:

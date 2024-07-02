@@ -2,7 +2,7 @@
 Description: 可可影视爬取
 Author: sky
 Date: 2024-06-30 10:32:22
-LastEditTime: 2024-07-02 14:13:06
+LastEditTime: 2024-07-02 15:42:28
 LastEditors: sky
 '''
 import scrapy  
@@ -109,7 +109,7 @@ class KekeSpider(scrapy.Spider):
                     'description': description,
                     'tags':tags_joined,
                     'type': type
-                })
+                },dont_filter=True)
             
     def parse_player(self, response):
         """
@@ -126,8 +126,9 @@ class KekeSpider(scrapy.Spider):
 
 
         episode_xpath = '/html/body/div[1]/div[3]/div[2]/div[2]/div[2]/div[2]/div[1]/a'
+                        
         episode_list_div = response.xpath(episode_xpath)
-        # print(episode_list_div)
+ 
         for data in episode_list_div: 
             href = self.base_url + data.xpath('@href').get()
             episode = data.xpath('span/text()').get()
