@@ -161,6 +161,7 @@ def sync_tv():
             type = json_data.get("type")
             hot = json_data.get("hot")
             tags = json_data.get("tags")
+            index = json_data.get("index")
 
             tv_title = json_data.get("tv_title")
             episode = json_data.get("episode")
@@ -171,7 +172,7 @@ def sync_tv():
                 tv_data = Tv(title=title, image=image, source=source, description=description, total_episodes=total_episodes, rating=rating, type=type,hot=hot,tags=tags)
                 db.session.add(tv_data)
 
-            episodes_data = Episodes(tv_title=tv_title, episode=episode, source=source, link=link)
+            episodes_data = Episodes(tv_title=tv_title, episode=episode, source=source, link=link,index=index)
             db.session.add(episodes_data)
             db.session.commit()
             return jsonify({"code": 200, "msg":'sync success'})

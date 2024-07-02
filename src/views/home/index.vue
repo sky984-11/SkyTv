@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-02 12:50:15
+ * @LastEditTime: 2024-07-02 13:25:12
  * @LastEditors: sky
 -->
 <script setup name="Home">
@@ -83,7 +83,7 @@ const groupedTvKeys = computed(() => Object.keys(tvObj.value));
 <template>
   <div >
     <div v-for="label in groupedTvKeys" :key="label">
-      <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px', fontSize: '30px' }">
+      <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px', fontSize: '35px' }">
         {{ label }}
       </van-divider>
       <van-list >

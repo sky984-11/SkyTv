@@ -2,7 +2,7 @@
 Description: 可可影视爬取
 Author: sky
 Date: 2024-06-30 10:32:22
-LastEditTime: 2024-07-01 14:11:41
+LastEditTime: 2024-07-02 14:13:06
 LastEditors: sky
 '''
 import scrapy  
@@ -95,21 +95,18 @@ class KekeSpider(scrapy.Spider):
         rating = response.meta['rating']
         type = response.meta['type']
         total_episodes = response.meta['total_episodes']
-        episode_list_xpath = '/html/body/div[1]/div[3]/div[2]/div[4]/div[2]/div[1]/a'
-        episode_list_div = response.xpath(episode_list_xpath)
+        episode_link_xpath = '/html/body/div[1]/div[3]/div[2]/div[4]/div[2]/div[1]/a/@href'
+        episode_1_href= response.xpath(episode_link_xpath).get()  # 第一集的链接，所有集数在下一个link爬取
 
-        for episode in episode_list_div: 
-            href = episode.xpath('@href').get()
-            episode = episode.xpath('.//text()').get()
-            player_link = self.base_url + href
+
+        player_link = self.base_url + episode_1_href
         
-            yield Request(url=player_link, callback=self.parse_player, meta={
+        yield Request(url=player_link, callback=self.parse_player, meta={
                     'image': image,
                     'title': title,
                     'rating': rating,
                     'total_episodes': total_episodes,
                     'description': description,
-                    'episode':episode,
                     'tags':tags_joined,
                     'type': type
                 })
@@ -125,8 +122,43 @@ class KekeSpider(scrapy.Spider):
         type = response.meta['type']
         total_episodes = response.meta['total_episodes']
         description = response.meta['description']
-        episode = response.meta['episode']
         tags = response.meta['tags']
+
+
+        episode_xpath = '/html/body/div[1]/div[3]/div[2]/div[2]/div[2]/div[2]/div[1]/a'
+        episode_list_div = response.xpath(episode_xpath)
+        # print(episode_list_div)
+        for data in episode_list_div: 
+            href = self.base_url + data.xpath('@href').get()
+            episode = data.xpath('span/text()').get()
+            index = data.xpath('.//@data-index').get()
+
+            yield Request(url=href, callback=self.parse_episodes_link, meta={
+                'image': image,
+                'title': title,
+                'rating': rating,
+                'total_episodes': total_episodes,
+                'description': description,
+                'type': type,
+                'episode':episode,
+                'index':index,
+                'tv_title':title,
+                'tags':tags,
+            })
+        
+    def parse_episodes_link(self, response):
+        """
+            获取所有播放链接
+        """
+        image = response.meta['image']
+        title = response.meta['title']
+        rating = response.meta['rating']
+        type = response.meta['type']
+        total_episodes = response.meta['total_episodes']
+        description = response.meta['description']
+        tags = response.meta['tags']
+        episode = response.meta['episode']
+        index = response.meta['index']
 
         res = response.text
         url_pattern = r'src:\s*"([^"]+)"' 
@@ -143,9 +175,10 @@ class KekeSpider(scrapy.Spider):
                 'description': description,
                 'type': type,
                 'source': 'Keke',
-                'link':link,
                 'episode':episode,
+                'index':index,
                 'tv_title':title,
                 'tags':tags,
                 'hot': True,
+                'link':link
             }

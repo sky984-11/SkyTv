@@ -91,6 +91,7 @@ class Episodes(db.Model):
     """
         集数表
         episode:集数(可能会经常变动)
+        index:集数索引(可能会经常变动)
         source:播放来源(可以让用户进行播放源切换)(可能会经常变动)
         link:播放链接(可能会经常变动)
         tv_title:影视名称
@@ -101,6 +102,7 @@ class Episodes(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     episode = db.Column(db.String(255), nullable=False)
+    index = db.Column(db.Integer, nullable=False)
     source = db.Column(db.String(255),nullable=True)
     link = db.Column(db.Text, nullable=True)
     
@@ -111,6 +113,7 @@ class Episodes(db.Model):
         return {
             "id": self.id,
             "episode": self.episode,
+            "index": self.index,
             "source": self.source,
             "link": self.link,
             "tv_title":self.tv_title,
