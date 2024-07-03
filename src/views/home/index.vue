@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-02 13:25:12
+ * @LastEditTime: 2024-07-03 13:11:52
  * @LastEditors: sky
 -->
 <script setup name="Home">
@@ -13,7 +13,7 @@ import { useTvStoreHook } from '@/store/modules/tvStore';
 
 
 const tvObj = ref({
-    "热播电视剧":  [],
+    "热播剧集":  [],
     "热播电影":  [],
     "热播动漫":  [],
   })
@@ -46,7 +46,7 @@ async function fetchData() {
       throw new Error("API返回的类型数组长度不足");
     }
     // 更新数据对象
-    tvObj.value["热播电视剧"] = groupedByType[0]
+    tvObj.value["热播剧集"] = groupedByType[0]
     tvObj.value["热播电影"] = groupedByType[1]
     tvObj.value["热播动漫"] = groupedByType[2]
   } catch (error) {
