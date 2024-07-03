@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 14:32:44
- * @LastEditTime: 2024-07-03 14:13:22
+ * @LastEditTime: 2024-07-03 14:22:43
  * @LastEditors: sky
 -->
 <script setup name="Group">
@@ -20,11 +20,11 @@ const router = useRouter();
 const searchQuery = ref('');
 
 // 监听路由变化，以便更新搜索关键词
-watch(() => route.query.keyword, (newKeyword) => {
+watch(() => route.query.keyword, async (newKeyword) => {
   if (newKeyword) {
-    console.log('路由变化，更新搜索关键词：', newKeyword)
+    console.log('路由变化，更新搜索关键词：', newKeyword);
     searchQuery.value = newKeyword;
-    initData();
+    await initData(); // 确保每次关键词变化时都重新加载数据
   }
 });
 
@@ -60,8 +60,13 @@ function toDetails(tv) {
 
 }
 
-onMounted(() => {
-    initData();
+// 添加初始加载逻辑
+onMounted(async () => {
+  // 检查是否有初始关键词，如果有则加载数据
+  if (route.query.keyword) {
+    searchQuery.value = route.query.keyword;
+  }
+  await initData();
 });
 </script>
 
