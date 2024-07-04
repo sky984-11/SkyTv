@@ -24,7 +24,7 @@ class ScrapyTvPipeline:
         self.settings = get_project_settings()
         self.api_url = self.settings['API_SERVER_NAME'] + '/api/' + self.settings['API_VERSION']
         self.api = Api(self.api_url)
-        self.chche = cache = MyCache(self.settings['CACHE_PATH'])
+        self.chche = MyCache(self.settings['CACHE_PATH'])
     def process_item(self, item, spider):
         print(self.api.api_url)
         return ItemAdapter(item)
