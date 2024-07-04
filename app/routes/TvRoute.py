@@ -110,6 +110,20 @@ def list_hot_tv():
         return jsonify({"code": 200, "result": data})
 
 
+def close_all_hot_tv():
+    """
+        关闭所有热播影视标志
+    """
+    with app.app_context():
+        try:
+            # 更新所有hot为True的记录，将其设为False
+            Tv.query.filter(Tv.hot == True).update({Tv.hot: False})
+            db.session.commit()
+            return jsonify({"code": 200, "msg": "所有热播影视标志已成功关闭"}), 200
+        except Exception as e:
+            db.session.rollback()
+            return jsonify({"code": 500, "msg": str(e)}), 500
+
 def search_tv():
     """
         影视搜索

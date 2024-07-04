@@ -61,6 +61,8 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/sync', methods=['POST'])(sync_tv)
 b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/del/all', methods=['DELETE'])(del_all_tv)
 # 热门影视
 b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/list/hot', methods=['GET'])(list_hot_tv)
+# 关闭所有热门影视
+b1.route(f'/api/{DefaultConfig.API_VERSION}/tv/close/hot', methods=['GET'])(close_all_hot_tv)
 # #####################################  Tv End  #####################################
 
 # ##################################### Episodes Start #####################################
