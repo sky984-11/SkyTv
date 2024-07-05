@@ -48,7 +48,7 @@ class Tv(db.Model):
     """
         影视表
         title:影视名称，唯一值
-        image:影视图片(可能失效)
+        image:影视图片，多个用|隔开(可能失效)
         source:影视来源列表，多个用\隔开(可能会经常变动)
         description:影视描述(可选)
         total_episodes:总集数(可能会经常变动)
@@ -93,7 +93,7 @@ class Episodes(db.Model):
         episode:集数(可能会经常变动)
         index:集数索引(可能会经常变动)
         source:播放来源(可以让用户进行播放源切换)(可能会经常变动)
-        link:播放链接(可能会经常变动)
+        link:播放链接,多个用|隔开(可能会经常变动)
         tv_title:影视名称
     """
 

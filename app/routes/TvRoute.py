@@ -183,7 +183,6 @@ def sync_tv():
         try:
             json_data = request.get_json()
             
-            # 使用 get_or_create 函数处理 TV
             tv, created_tv = get_or_create(Tv, 
                                           title=json_data.get("title"),
                                           defaults=dict(
@@ -199,8 +198,10 @@ def sync_tv():
             )
             if not created_tv:
                 update_source_if_new(tv, json_data.get("source"))
+                tv.hot = json_data.get("hot")
+                tv.image = json_data.get("image")
+                tv.total_episodes = json_data.get("total_episodes")
             
-            # 使用 get_or_create 函数处理 Episodes
             episodes, created_episodes = get_or_create(Episodes,
                                                       tv_title=json_data.get("tv_title"),
                                                       episode=json_data.get("episode"),

@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-06-25 08:20:37
-LastEditTime: 2024-07-05 09:03:52
+LastEditTime: 2024-07-05 16:24:09
 LastEditors: sky
 '''
 # Define your item pipelines here
@@ -12,7 +12,6 @@ LastEditors: sky
 
 
 # useful for handling different item types with a single interface
-from itemadapter import ItemAdapter
 import hashlib
 import json
 from scrapy_tv.api import Api
@@ -25,15 +24,20 @@ class ScrapyTvPipeline:
         self.settings = get_project_settings()
         self.api_url = self.settings['API_SERVER_NAME'] + '/api/' + self.settings['API_VERSION']
         self.api = Api(self.api_url)
-        self.chche = MyCache(self.settings['CACHE_PATH'])
+        self.cache = MyCache(self.settings['CACHE_PATH'])
+        self.hot_tv_cleared = False  # 新增标志变量
+
     def process_item(self, item, spider):
-        print(self.api.api_url)
-        data = ItemAdapter(item)
-        key = data['title'] + data['episode']
-        serialized_data = json.dumps(item, sort_keys=True)
+        key = item['title'] + item['episode']+ item['source']
+        serialized_data = item['image'] + item['total_episodes'] + str(item['hot']) + item['link'] 
         item_hash = hashlib.md5(serialized_data.encode('utf-8')).hexdigest()
-        if self.chche.get(key) != item_hash: # 缓存不存在需要添加或者更新数据
-            self.chche.set(key, item_hash) # 设置缓存
-            self.api.close_all_hot_tv()  # 清除热播
-            # self.api.sync_tv(data) # 同步
-        return ItemAdapter(item)
+        
+        if self.cache.get(key) != item_hash:  # 缓存不存在需要添加或更新数据
+            self.cache.set(key, item_hash)  # 设置缓存
+            
+            # 确保清除热播操作只执行一次
+            if not self.hot_tv_cleared:
+                self.api.close_all_hot_tv()  # 清除热播
+                self.hot_tv_cleared = True  # 设置标志为已执行
+        
+            self.api.sync_tv(item)  # 同步
