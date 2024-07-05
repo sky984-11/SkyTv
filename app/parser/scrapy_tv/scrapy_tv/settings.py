@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-06-25 08:20:37
-LastEditTime: 2024-07-04 09:05:34
+LastEditTime: 2024-07-05 09:04:37
 LastEditors: sky
 '''
 # Scrapy settings for scrapy_tv project
@@ -103,4 +103,4 @@ FEED_EXPORT_ENCODING = "utf-8"
 KEKE_BASE_URL = "https://www.keke12.com:51111"  # keke影视源
 API_SERVER_NAME = "http://127.0.0.1:5115"  # api服务器
 API_VERSION = 'v1'   # api版本
-CACHE_PATH = './cache.db'  # 缓存路径
+CACHE_PATH = '.'  # 缓存路径

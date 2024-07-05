@@ -2,7 +2,7 @@
 Description: api接口
 Author: sky
 Date: 2024-07-04 08:36:06
-LastEditTime: 2024-07-04 09:04:46
+LastEditTime: 2024-07-05 09:07:01
 LastEditors: sky
 '''
 import requests
@@ -34,6 +34,12 @@ class Api:
     
     def close_all_hot_tv(self):
         """
-            关闭所有热门电视剧
+            关闭所有热门影视
         """
         return self.get_data_from_server(self.api_url)
+    
+    def sync_tv(self,data):
+        """
+            同步影视
+        """
+        return self.send_data_to_server(data,self.api_url)

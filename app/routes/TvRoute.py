@@ -158,38 +158,65 @@ def del_all_tv():
         except Exception as e:
             db.session.rollback()
             return jsonify({"code": 500, "msg": str(e)}), 500   
+
+
+def get_or_create(model, defaults=None, **kwargs):
+    instance = model.query.filter_by(**kwargs).first()
+    if instance:
+        return instance, False
+    else:
+        params = {**kwargs, **(defaults or {})}
+        instance = model(**params)
+        db.session.add(instance)
+        return instance, True
+
+def update_source_if_new(instance, new_source):
+    existing_sources = set(instance.source.split('/'))
+    if new_source not in existing_sources:
+        instance.source = '/'.join(existing_sources | {new_source})
+
 def sync_tv():
     """
         同步影视
     """
     with app.app_context():
         try:
-
             json_data = request.get_json()
-            title = json_data.get("title")
-            image = json_data.get("image")
-            source = json_data.get("source")
-            description = json_data.get("description")
-            total_episodes = json_data.get("total_episodes")
-            rating = json_data.get("rating")
-            type = json_data.get("type")
-            hot = json_data.get("hot")
-            tags = json_data.get("tags")
-            index = json_data.get("index")
+            
+            # 使用 get_or_create 函数处理 TV
+            tv, created_tv = get_or_create(Tv, 
+                                          title=json_data.get("title"),
+                                          defaults=dict(
+                                              image=json_data.get("image"),
+                                              source=json_data.get("source"),
+                                              description=json_data.get("description"),
+                                              total_episodes=json_data.get("total_episodes"),
+                                              rating=json_data.get("rating"),
+                                              type=json_data.get("type"),
+                                              hot=json_data.get("hot"),
+                                              tags=json_data.get("tags")
+                                          )
+            )
+            if not created_tv:
+                update_source_if_new(tv, json_data.get("source"))
+            
+            # 使用 get_or_create 函数处理 Episodes
+            episodes, created_episodes = get_or_create(Episodes,
+                                                      tv_title=json_data.get("tv_title"),
+                                                      episode=json_data.get("episode"),
+                                                      defaults=dict(
+                                                          source=json_data.get("source"),
+                                                          link=json_data.get("link"),
+                                                          index=json_data.get("index")
+                                                      )
+            )
+            if not created_episodes:
+                episodes.link = json_data.get("link")
+                update_source_if_new(episodes, json_data.get("source"))
 
-            tv_title = json_data.get("tv_title")
-            episode = json_data.get("episode")
-            link = json_data.get("link")
-
-            existing_name = Tv.query.filter_by(title=title).first()
-            if not existing_name:
-                tv_data = Tv(title=title, image=image, source=source, description=description, total_episodes=total_episodes, rating=rating, type=type,hot=hot,tags=tags)
-                db.session.add(tv_data)
-
-            episodes_data = Episodes(tv_title=tv_title, episode=episode, source=source, link=link,index=index)
-            db.session.add(episodes_data)
             db.session.commit()
-            return jsonify({"code": 200, "msg":'sync success'})
+
+            return jsonify({"code": 200, "msg": 'sync success'})
         except Exception as e:
             db.session.rollback()
             app.logger.error(str(e))
