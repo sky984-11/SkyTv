@@ -54,14 +54,14 @@ class KekeSpider(scrapy.Spider):
                     user_image_url = response.xpath('/html/body/div[1]/div[3]/div[1]/div[5]/a/img/@src').get()
                     parsed_url = urlparse(user_image_url)
                     base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
-                    next_url = self.base_url + video.css('.search-result-item::attr(href)').get()
+                    next_url = ''.join([self.base_url,video.css('.search-result-item::attr(href)').get()])
  
                     yield Request(
                     url=next_url,
                     callback=self.parse_episodes,
                     meta={
                         "vod_title": vod_title,
-                        "vod_pic_url": base_url + video.css('img::attr(data-original)').get(),
+                        "vod_pic_url": ''.join([base_url,video.css('img::attr(data-original)').get()]),
                         "vod_type":video.css('.search-result-item-header div::text').get(),
                         "vod_tag":'/'.join(video.css('.tags span::text').getall()),
                         "vod_content":video.css('.desc::text').get()
@@ -86,7 +86,7 @@ class KekeSpider(scrapy.Spider):
             response.meta['vod_episodes'] = vod_episodes
             response.meta['vod_episodes_index'] = vod_episodes_index
 
-            next_url = self.base_url + data.xpath('@href').get()
+            next_url = ''.join([self.base_url,data.xpath('@href').get()])
 
 
             yield Request(

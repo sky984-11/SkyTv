@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-07 19:37:46
+LastEditTime: 2024-07-08 06:51:13
 LastEditors: sky
 '''
 # Define your item pipelines here
@@ -22,7 +22,7 @@ class ParserVideoPipeline:
         self.api = Api()
         self.cahce = MultiDBCacheManager()
     def process_item(self, item, spider):
-        key = item["vod_title"] + item["vod_source"] + item["vod_episodes"]
+        key = ''.join([item["vod_title"],item["vod_source"],item["vod_episodes"]]) 
         
         video_cache = self.cahce.get("video_cache",key) #视频表缓存
         play_url_cache = self.cahce.get("play_url_cache",key)  #播放表缓存
