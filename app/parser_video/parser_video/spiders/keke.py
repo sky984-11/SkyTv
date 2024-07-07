@@ -3,19 +3,21 @@ from scrapy.http import Request
 from urllib.parse import urlparse
 import re
 from parser_video.utils.api import Api
+from parser_video.utils.tools import read_white_list
 from parser_video.items import ParserVideoItem
 
 class KekeSpider(scrapy.Spider):
     name = "keke"
     custom_settings = {
-        'ROBOTSTXT_OBEY': False,  # 可选，根据项目需求决定是否遵守robots.txt
-        'DOWNLOAD_DELAY': 1,      # 可选，下载延迟，防止被封IP
+        'ROBOTSTXT_OBEY': False,
+        'DOWNLOAD_DELAY': 1,
     }
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.api = Api()
         self.base_url = None
+        self.white_list = read_white_list()
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
@@ -25,23 +27,36 @@ class KekeSpider(scrapy.Spider):
 
     def start_requests(self):
         if self.base_url:
-            yield Request(url=self.base_url, callback=self.parse, dont_filter=True)
+            for title in self.white_list:
+                search_url = f"{self.base_url}/search?os=pc&k={title}"
+                yield Request(
+                    url=search_url,
+                    callback=self.parse,
+                    dont_filter=True,
+                    meta={"vod_title": title}
+                )
 
     def parse(self, response):
-        """
-        解析响应，提取数据并生成新的请求。
-        """
         try:
-            item = ParserVideoItem()
-            item['vod_title'] = response.css('h1.title::text').get()
-            item['vod_pic_url'] = response.css('img.poster::attr(src)').get()
-            yield item
+            vod_title = response.meta['vod_title']
+            video_list_div = response.css('a.search-result-item')
+            for video in video_list_div:
+                title_text = video.css('.title::text').get()
+                if title_text == vod_title:
+                    item = ParserVideoItem()
+                    # 直接在 parse 方法中获取图片的 base_url
+                    user_image_url = response.xpath('/html/body/div[1]/div[3]/div[1]/div[5]/a/img/@src').get()
+                    parsed_url = urlparse(user_image_url)
+                    base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
+                    item['vod_pic_url'] = base_url + video.css('img::attr(data-original)').get()
+                    item['vod_title'] = vod_title
+                    item['vod_type'] = video.css('.search-result-item-header div::text').get()
+                    item['vod_tag'] = '/'.join(video.css('.tags span::text').getall())
+                    item['vod_content'] = video.css('.desc::text').get()
+                    yield item
         except Exception as e:
-            self.logger.error(f"Error parsing response: {e}")
+            self.logger.error(f"Error while parsing response for URL: {response.url}. Error: {e}")
+            # 可以在这里添加重试机制，例如使用 response.request.meta['retry_times'] 来控制重试次数
 
     def closed(self, reason):
-        """
-        爬虫关闭时的回调，可用于释放资源。
-        """
-        # 在这里关闭API客户端，释放资源等
-        pass
+        self.logger.info("Spider closed, reason: %s", reason)
