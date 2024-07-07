@@ -11,6 +11,7 @@ def create_vod_detail():
     - vod_tag (str): 视频标签。
     - vod_source (str): 视频来源。
     - vod_episodes (str): 视频集数。
+    - vod_total_episodes (str): 视频总集数。
     - vod_episodes_index (int): 视频集数索引。
     - video_id (int): 关联的Video ID。
     
@@ -30,6 +31,7 @@ def create_vod_detail():
         vod_tag=data['vod_tag'],
         vod_source=data.get('vod_source'),
         vod_episodes=data.get('vod_episodes'),
+        vod_total_episodes=data.get('vod_total_episodes'),
         vod_episodes_index=data.get('vod_episodes_index'),
         video_id=data['video_id']
     )
