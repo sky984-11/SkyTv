@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-07 17:24:06
+LastEditTime: 2024-07-07 19:37:46
 LastEditors: sky
 '''
 # Define your item pipelines here
@@ -22,34 +22,28 @@ class ParserVideoPipeline:
         self.api = Api()
         self.cahce = MultiDBCacheManager()
     def process_item(self, item, spider):
-        vod_key = item["vod_title"] + item["vod_source"] + item["vod_episodes"]
-        vod_pic_url_cache = self.cahce.get("video_cache", vod_key)  
-        vod_pic_url_hash = hashlib.md5(item['vod_pic_url']).hexdigest()
-        if vod_pic_url_cache is None:
-            # self.api.send_data_to_server(item, "") 添加
-            self.cahce.set("video_cache", vod_key, vod_pic_url_hash) # 缓存图片链接hash值
-        else:
-            if vod_pic_url_cache != vod_pic_url_hash:
-                # self.api.update_data_on_server(item, "") 更新
-                self.cahce.set("video_cache", vod_key, vod_pic_url_hash)
+        key = item["vod_title"] + item["vod_source"] + item["vod_episodes"]
+        
+        video_cache = self.cahce.get("video_cache",key) #视频表缓存
+        play_url_cache = self.cahce.get("play_url_cache",key)  #播放表缓存
+        # vod_detail_cache = self.cahce.get("vod_detail_cache",key) #详情表暂时不加缓存，因为只会新增，不会修改
 
-        play_url_aes_cache = self.cahce.get("play_url_cache", vod_key)
-        play_url_aes_hash = hashlib.md5(item['play_url_aes']).hexdigest()
-        if play_url_aes_cache is None:
-            # self.api.send_data_to_server(item, "") 添加
-            self.cahce.set("play_url_cache", vod_key, play_url_aes_hash) # 缓存播放链接hash值
+        vod_pic_url_hash = hashlib.md5(item['vod_pic_url'].encode('utf-8')).hexdigest() #将会发生变化的值存在缓存中
+        if video_cache is None:
+            # self.api.send_data_to_server(item, "") 添加到两个表中(video,vod_detail) 添加接口需要先根据key查询判断是否存在，存在则不添加
+            self.cahce.set("video_cache", key, vod_pic_url_hash) # 缓存图片链接hash值
         else:
-            if play_url_aes_cache != play_url_aes_hash:
-                # self.api.update_data_on_server(item, "") 更新
-                self.cahce.set("play_url_cache", vod_key, play_url_aes_hash)
+            if vod_pic_url_hash != video_cache: #值发生变化则更新表
+                # self.api.send_data_to_server(item, "") 更新
+                self.cahce.set("video_cache", key, vod_pic_url_hash)
 
-        collect_url_cache = self.cahce.get("collect_url_cache", vod_key)
-        collect_url_hash = hashlib.md5(item['collect_url']).hexdigest()
-        if collect_url_cache is None:
+        play_url_hash = hashlib.md5(item['play_url'].encode('utf-8')).hexdigest()
+        if play_url_cache is None:
             # self.api.send_data_to_server(item, "") 添加
-            self.cahce.set("collect_url_cache", vod_key, collect_url_cache) # 缓存采集链接
+            self.cahce.set("play_url_cache", key, play_url_hash) # 缓存播放链接hash值
         else:
-            if hashlib.md5(collect_url_cache).hexdigest() != collect_url_hash:
-                # self.api.update_data_on_server(item, "") 更新
-                self.cahce.set("collect_url_cache", vod_key, collect_url_cache)      
+            if play_url_hash != play_url_cache: #值发生变化则更新表
+                # self.api.send_data_to_server(item,"") 更新
+                self.cahce.set("play_url_cache", key, play_url_hash)
+        
         return item

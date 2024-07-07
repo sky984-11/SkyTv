@@ -7,7 +7,7 @@ from parser_video.utils.tools import read_white_list
 from parser_video.items import ParserVideoItem
 from parser_video.utils.cache import MultiDBCacheManager
 
-# 思考：如何减少请求次数
+# 思考：如何减少请求次数(接口请求和网站请求)
 
 class KekeSpider(scrapy.Spider):
     name = "keke"

@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 09:03:33
-LastEditTime: 2024-07-07 09:41:44
+LastEditTime: 2024-07-07 17:45:04
 LastEditors: sky
 '''
 import requests
@@ -73,8 +73,8 @@ class Api:
     #     """
     #     return self.delete_data_from_server('/tv/close/hot')
 
-    # def sync_tv(self, data):
+    # def sync_video(self, data):
     #     """
-    #     同步影视.
+    #     同步视频
     #     """
-    #     return self.send_data_to_server(data, '/tv/sync')
+    #     return self.send_data_to_server(data, '/video')
