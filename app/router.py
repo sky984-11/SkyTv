@@ -2,7 +2,7 @@
 Description: 路由
 Author: sky
 Date: 2024-07-06 14:12:59
-LastEditTime: 2024-07-08 06:59:29
+LastEditTime: 2024-07-08 07:24:12
 LastEditors: sky
 '''
 
@@ -12,7 +12,7 @@ from flask import Blueprint
 from config import DefaultConfig
 
 from routes.SourceRoute import create_source,get_all_sources,get_source,update_source,delete_source
-from routes.VideoRoute import create_video,get_all_videos,get_video,update_video,delete_video,add_video_and_vod_detail
+from routes.VideoRoute import create_video,get_all_videos,get_video,update_video,delete_video,add_video_and_vod_detail,get_video_by_title_and_type
 from routes.VodDetailRoute import create_vod_detail,get_all_vod_details,get_vod_detail,update_vod_detail,delete_vod_detail
 from routes.PlayUrlRoute import create_play_url,get_all_play_urls,get_play_url,update_play_url,delete_play_url
 
@@ -42,6 +42,8 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/video', methods=['POST'])(create_vid
 b1.route(f'/api/{DefaultConfig.API_VERSION}/video', methods=['GET'])(get_all_videos)
 # 根据id获取视频
 b1.route(f'/api/{DefaultConfig.API_VERSION}/video/<int:video_id>', methods=['GET'])(get_video)
+# 根据标题和类型获取视频
+b1.route(f'/api/{DefaultConfig.API_VERSION}/video/<string:vod_title>/<string:vod_type>', methods=['GET'])(get_video_by_title_and_type)
 # 根据id修改视频
 b1.route(f'/api/{DefaultConfig.API_VERSION}/video/<int:video_id>', methods=['PUT', 'PATCH'])(update_video)
 # 删除视频

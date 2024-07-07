@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 09:03:33
-LastEditTime: 2024-07-07 17:45:04
+LastEditTime: 2024-07-08 07:09:12
 LastEditors: sky
 '''
 import requests
@@ -66,6 +66,12 @@ class Api:
         根据名称获取源.
         """
         return self.get_data_from_server('/source/' + source_name)
+    
+    def video_and_vod_detail(self, data):
+        """
+        添加视频和视频详情.
+        """
+        return self.send_data_to_server(data, '/video/video_and_vod_detail')
 
     # def close_all_hot_tv(self):
     #     """

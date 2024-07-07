@@ -2,12 +2,13 @@
 Description: 
 Author: sky
 Date: 2024-07-06 08:11:16
-LastEditTime: 2024-07-07 08:17:52
+LastEditTime: 2024-07-08 07:19:00
 LastEditors: sky
 '''
 
 from run import app
 from sqlalchemy.orm import relationship,declarative_base
+from sqlalchemy import UniqueConstraint
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.inspection import inspect
 
@@ -44,7 +45,10 @@ class Source(BaseModel):
 
 class Video(BaseModel):
     __tablename__ = 'video'
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = (
+        UniqueConstraint('vod_title', 'vod_type', name='uq_vod_title_vod_type'),
+        {'extend_existing': True}
+    )
     id = db.Column(db.Integer, primary_key=True)
     vod_title = db.Column(db.String(255), nullable=False, comment='视频标题')
     vod_type = db.Column(db.String(50), nullable=False, comment='视频类型')

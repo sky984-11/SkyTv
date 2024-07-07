@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-08 06:51:13
+LastEditTime: 2024-07-08 07:19:05
 LastEditors: sky
 '''
 # Define your item pipelines here
@@ -30,7 +30,7 @@ class ParserVideoPipeline:
 
         vod_pic_url_hash = hashlib.md5(item['vod_pic_url'].encode('utf-8')).hexdigest() #将会发生变化的值存在缓存中
         if video_cache is None:
-            # self.api.send_data_to_server(item, "") 添加到两个表中(video,vod_detail) 添加接口需要先根据key查询判断是否存在，存在则不添加
+            self.api.video_and_vod_detail(item) # 添加到两个表中(video,vod_detail) 添加接口需要先根据key查询判断是否存在，存在则不添加
             self.cahce.set("video_cache", key, vod_pic_url_hash) # 缓存图片链接hash值
         else:
             if vod_pic_url_hash != video_cache: #值发生变化则更新表

@@ -72,6 +72,24 @@ def get_video(video_id):
     return jsonify(video.to_dict()), 200
 
 @with_app_context
+def get_video_by_title_and_type(vod_title, vod_type):
+    """根据标题和类型获取单个Video。
+    
+    参数:
+    - vod_title (str): 视频的标题。
+    - vod_type (str): 视频的类型。
+    
+    返回:
+    - dict: Video的详情。
+    - int: HTTP状态码，200表示成功。
+    
+    异常:
+    - 404: Video不存在。
+    """
+    video = Video.query.filter_by(vod_title=vod_title, vod_type=vod_type).first_or_404()
+    return jsonify(video.to_dict()), 200
+
+@with_app_context
 def update_video(video_id):
     """更新一个Video。
     
