@@ -1,21 +1,10 @@
-"""
-@ Date: 2024-04-26 15:31:44
-@ LastEditors: sky
-@ LastEditTime: 2024-05-08 10:11:25
-@ FilePath: /SkyTunnel/app/run.py
-@ Desc: 
-"""
 
 
 from flask import Flask
 import logging
 from logging.handlers import RotatingFileHandler
-from flasgger import Swagger
-
-
 
 app = Flask(__name__)
-swagger = Swagger(app)
 
 app.config.from_object("config.ProductionConfig")
 
