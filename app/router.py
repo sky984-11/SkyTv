@@ -2,7 +2,7 @@
 Description: 路由
 Author: sky
 Date: 2024-07-06 14:12:59
-LastEditTime: 2024-07-07 09:23:39
+LastEditTime: 2024-07-08 06:59:29
 LastEditors: sky
 '''
 
@@ -12,7 +12,7 @@ from flask import Blueprint
 from config import DefaultConfig
 
 from routes.SourceRoute import create_source,get_all_sources,get_source,update_source,delete_source
-from routes.VideoRoute import create_video,get_all_videos,get_video,update_video,delete_video
+from routes.VideoRoute import create_video,get_all_videos,get_video,update_video,delete_video,add_video_and_vod_detail
 from routes.VodDetailRoute import create_vod_detail,get_all_vod_details,get_vod_detail,update_vod_detail,delete_vod_detail
 from routes.PlayUrlRoute import create_play_url,get_all_play_urls,get_play_url,update_play_url,delete_play_url
 
@@ -46,6 +46,8 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/video/<int:video_id>', methods=['GET
 b1.route(f'/api/{DefaultConfig.API_VERSION}/video/<int:video_id>', methods=['PUT', 'PATCH'])(update_video)
 # 删除视频
 b1.route(f'/api/{DefaultConfig.API_VERSION}/video/<int:video_id>', methods=['DELETE'])(delete_video)
+# 添加视频和视频详情
+b1.route(f'/api/{DefaultConfig.API_VERSION}/video/video_and_vod_detail', methods=['POST'])(add_video_and_vod_detail)
 ##################################### Video End  #####################################
 
 ##################################### VodDetail Start #####################################
