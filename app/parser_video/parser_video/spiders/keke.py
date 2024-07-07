@@ -1,47 +1,47 @@
-'''
-Description: keke影视爬取
-Author: sky
-Date: 2024-07-07 08:42:01
-LastEditTime: 2024-07-07 09:10:01
-LastEditors: sky
-'''
-import scrapy  
+import scrapy
 from scrapy.http import Request
-from urllib.parse import urlparse    
+from urllib.parse import urlparse
 import re
-from scrapy.utils.project import get_project_settings
+from parser_video.utils.api import Api
+from parser_video.items import ParserVideoItem
 
-  
-class KekeSpider(scrapy.Spider):  
+class KekeSpider(scrapy.Spider):
+    name = "keke"
+    custom_settings = {
+        'ROBOTSTXT_OBEY': False,  # 可选，根据项目需求决定是否遵守robots.txt
+        'DOWNLOAD_DELAY': 1,      # 可选，下载延迟，防止被封IP
+    }
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.api = Api()
+        self.base_url = None
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
-        spider = super(KekeSpider, cls).from_crawler(crawler, *args, **kwargs)
-        spider.base_url = get_project_settings().get('KEKE_BASE_URL')
+        spider = super().from_crawler(crawler, *args, **kwargs)
+        spider.base_url = spider.api.get_source(spider.name).get('url')
         return spider
-    
-    name = "keke_home"  
-    _blacklist_cache = None
 
     def start_requests(self):
-        '''起始url地址'''
-        start_url = self.base_url
-        yield scrapy.Request(url=start_url, callback=self.parse)
+        if self.base_url:
+            yield Request(url=self.base_url, callback=self.parse, dont_filter=True)
 
-    def image_base_url(self, response):
-        '''从首页获取图片的base_url'''
-        user_image_url = response.xpath('/html/body/div[1]/div[3]/div[1]/div[5]/a/img/@src').get()
-        parsed_url = urlparse(user_image_url)  
-        base_url = f"{parsed_url.scheme}://{parsed_url.netloc}" 
-        return base_url
-    
     def parse(self, response):
         """
         解析响应，提取数据并生成新的请求。
         """
+        try:
+            item = ParserVideoItem()
+            item['vod_title'] = response.css('h1.title::text').get()
+            item['vod_pic_url'] = response.css('img.poster::attr(src)').get()
+            yield item
+        except Exception as e:
+            self.logger.error(f"Error parsing response: {e}")
 
-        item = ParserVideoItem()
-        item['vod_title'] = response.css('h1.title::text').get()
-        item['vod_pic_url'] = response.css('img.poster::attr(src)').get()
-        # 填充其他字段...
-        yield item
+    def closed(self, reason):
+        """
+        爬虫关闭时的回调，可用于释放资源。
+        """
+        # 在这里关闭API客户端，释放资源等
+        pass

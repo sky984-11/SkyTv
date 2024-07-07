@@ -35,10 +35,11 @@ def create_source():
 
 @with_app_context
 def get_all_sources():
-    """获取所有Source的分页列表。
+    """获取所有Source的分页列表，可选择是否包括disable为True的记录。
     
     参数:
     - page (int): 请求的页码。
+    - include_disabled (bool): 是否包括disable为True的记录，默认为False。
     
     返回:
     - list: Source列表。
@@ -48,7 +49,11 @@ def get_all_sources():
     - 404: 请求的页码超出范围。
     """
     page = request.args.get('page', 1, type=int)
-    sources, pages = paginate(Source.query, page)
+    include_disabled = request.args.get('include_disabled', 'false').lower() == 'true'
+    query = Source.query
+    if not include_disabled:
+        query = query.filter_by(disable=False)
+    sources, pages = paginate(query, page)
     return jsonify([source.to_dict() for source in sources]), 200
 
 @with_app_context

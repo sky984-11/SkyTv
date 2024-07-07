@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-07 09:15:14
+LastEditTime: 2024-07-07 09:40:56
 LastEditors: sky
 '''
 # Scrapy settings for parser_video project
@@ -100,4 +100,4 @@ TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
 FEED_EXPORT_ENCODING = "utf-8"
 
 
-API_BASE_SERVER='127.0.0.1:5115/api/v1'
+API_BASE_SERVER='http://127.0.0.1:5115/api/v1'
