@@ -2,7 +2,7 @@
 Description: 路由
 Author: sky
 Date: 2024-07-06 14:12:59
-LastEditTime: 2024-07-07 08:19:58
+LastEditTime: 2024-07-07 09:23:39
 LastEditors: sky
 '''
 
@@ -27,9 +27,9 @@ CORS(b1)
 b1.route(f'/api/{DefaultConfig.API_VERSION}/source', methods=['POST'])(create_source)
 # 获取所有来源
 b1.route(f'/api/{DefaultConfig.API_VERSION}/source', methods=['GET'])(get_all_sources)
-# 根据id获取来源
-b1.route(f'/api/{DefaultConfig.API_VERSION}/source/<int:source_id>', methods=['GET'])(get_source)
-# 根据id修改来源
+# 根据名称获取来源
+b1.route(f'/api/{DefaultConfig.API_VERSION}/source/<string:source_name>', methods=['GET'])(get_source)
+# 根据修改来源
 b1.route(f'/api/{DefaultConfig.API_VERSION}/source/<int:source_id>', methods=['PUT', 'PATCH'])(update_source)
 # 删除来源
 b1.route(f'/api/{DefaultConfig.API_VERSION}/source/<int:source_id>', methods=['DELETE'])(delete_source)

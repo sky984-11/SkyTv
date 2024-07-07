@@ -52,11 +52,11 @@ def get_all_sources():
     return jsonify([source.to_dict() for source in sources]), 200
 
 @with_app_context
-def get_source(source_id):
-    """根据ID获取单个Source。
+def get_source(source_name):
+    """根据name获取单个Source。
     
     参数:
-    - source_id (int): Source的ID。
+    - source_name (str): Source的名称。
     
     返回:
     - dict: Source的详情。
@@ -65,7 +65,7 @@ def get_source(source_id):
     异常:
     - 404: Source不存在。
     """
-    source = Source.query.get_or_404(source_id)
+    source = Source.query.filter_by(name=source_name).first_or_404(description=f"Source '{source_name}' not found")
     return jsonify(source.to_dict()), 200
 
 @with_app_context

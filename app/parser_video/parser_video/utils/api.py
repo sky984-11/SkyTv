@@ -2,16 +2,16 @@
 Description: 
 Author: sky
 Date: 2024-07-07 09:03:33
-LastEditTime: 2024-07-07 09:13:53
+LastEditTime: 2024-07-07 09:27:41
 LastEditors: sky
 '''
 import requests
 from requests.exceptions import RequestException
-
+from scrapy.utils.project import get_project_settings
 
 class Api:
-    def __init__(self, api_url):
-        self.api_url = api_url.rstrip('/') + '/'
+    def __init__(self):
+        self.api_url = get_project_settings().get('API_BASE_SERVER')
         self.headers = {
             'Content-Type': 'application/json',
         }
@@ -60,6 +60,12 @@ class Api:
         从服务器删除数据 (DELETE).
         """
         return self._request('DELETE', url)
+    
+    def get_source(self, source_name):
+        """
+        根据名称获取源.
+        """
+        return self.get_data_from_server('/api/v1/source/' + source_name)
 
     # def close_all_hot_tv(self):
     #     """
