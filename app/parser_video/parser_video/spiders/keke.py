@@ -5,6 +5,9 @@ import re
 from parser_video.utils.api import Api
 from parser_video.utils.tools import read_white_list
 from parser_video.items import ParserVideoItem
+from parser_video.utils.cache import MultiDBCacheManager
+
+# 思考：如何减少请求次数
 
 class KekeSpider(scrapy.Spider):
     name = "keke"
@@ -18,6 +21,7 @@ class KekeSpider(scrapy.Spider):
         self.api = Api()
         self.base_url = None
         self.white_list = read_white_list()
+        self.cahce = MultiDBCacheManager()
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
@@ -78,12 +82,12 @@ class KekeSpider(scrapy.Spider):
         episode_list_div= response.xpath('/html/body/div[1]/div[3]/div[2]/div[4]/div[2]/div[1]/a')
         vod_episodes_index = 1
         for data in episode_list_div: 
-            next_url = self.base_url + data.xpath('@href').get()
-
             vod_episodes = data.xpath('text()').get()
-            
             response.meta['vod_episodes'] = vod_episodes
             response.meta['vod_episodes_index'] = vod_episodes_index
+
+            next_url = self.base_url + data.xpath('@href').get()
+
 
             yield Request(
                     url=next_url,
@@ -97,7 +101,8 @@ class KekeSpider(scrapy.Spider):
         爬取播放界面
         """
         play_url = self.extract_play_url(response.text)
-        item = ParserVideoItem(**response.meta)
+        valid_meta = {k: v for k, v in response.meta.items() if k in ParserVideoItem.fields}
+        item = ParserVideoItem(**valid_meta)
         item['play_url'] = play_url
         item['play_status'] = True
         item['play_from'] = self.name
