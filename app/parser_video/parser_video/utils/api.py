@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 09:03:33
-LastEditTime: 2024-07-08 07:09:12
+LastEditTime: 2024-07-08 09:13:25
 LastEditors: sky
 '''
 import requests
@@ -67,11 +67,47 @@ class Api:
         """
         return self.get_data_from_server('/source/' + source_name)
     
+    def get_main_sources(self):
+        """
+        获取主要源.
+        """
+        return self.get_data_from_server('/source/main')
+    
     def video_and_vod_detail(self, data):
         """
         添加视频和视频详情.
         """
         return self.send_data_to_server(data, '/video/video_and_vod_detail')
+    
+    def get_video_by_title_and_type(self, vod_title, vod_type):
+        """
+        根据标题和类型获取视频.
+        """
+        return self.get_data_from_server('/video/' + vod_title + '/' + vod_type)
+    
+    def update_video(self, video_id,data):
+        """
+        更新视频.
+        """
+        return self.update_data_on_server(data, '/video/' + video_id)
+    
+    def create_play_url(self, data):
+        """
+        添加播放URL.
+        """
+        return self.send_data_to_server(data, '/play_url')
+    
+    def get_play_url_by_details(self, play_title, play_from, vod_episodes):
+        """
+        根据详情获取播放URL.
+        """
+        return self.get_data_from_server('/play_url/' + play_title + '/' + play_from + '/' + vod_episodes)
+    
+    def update_play_url(self, play_url_id, data):
+        """
+        更新播放URL.
+        """
+        return self.update_data_on_server(data, '/play_url/' + play_url_id)
 
     # def close_all_hot_tv(self):
     #     """
