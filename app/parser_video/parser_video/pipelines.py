@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-08 09:13:47
+LastEditTime: 2024-07-08 14:14:51
 LastEditors: sky
 '''
 # Define your item pipelines here
@@ -43,6 +43,8 @@ class ParserVideoPipeline:
 
         play_url_hash = hashlib.md5(item['play_url'].encode('utf-8')).hexdigest()
         if play_url_cache is None:
+            vod_detail = self.api.get_vod_detail_id(item['play_title'], item['play_from'], item['vod_episodes'])  #这里需要先查vod_detail_id
+            item['vod_detail_id'] = vod_detail['vod_detail_id']
             self.api.create_play_url(item)
             self.cahce.set("play_url_cache", key, play_url_hash) # 缓存播放链接hash值
         else:

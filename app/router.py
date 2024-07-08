@@ -2,7 +2,7 @@
 Description: 路由
 Author: sky
 Date: 2024-07-06 14:12:59
-LastEditTime: 2024-07-08 09:10:44
+LastEditTime: 2024-07-08 14:23:20
 LastEditors: sky
 '''
 
@@ -13,7 +13,7 @@ from config import DefaultConfig
 
 from routes.SourceRoute import create_source,get_all_sources,get_source,update_source,delete_source,get_main_sources
 from routes.VideoRoute import create_video,get_all_videos,get_video,update_video,delete_video,add_video_and_vod_detail,get_video_by_title_and_type
-from routes.VodDetailRoute import create_vod_detail,get_all_vod_details,get_vod_detail,update_vod_detail,delete_vod_detail
+from routes.VodDetailRoute import create_vod_detail,get_all_vod_details,get_vod_detail,update_vod_detail,delete_vod_detail,get_vod_detail_id
 from routes.PlayUrlRoute import create_play_url,get_all_play_urls,get_play_url,update_play_url,delete_play_url,get_play_url_by_details
 
 # 创建蓝图
@@ -65,6 +65,8 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/vod-detail/<int:vod_detail_id>', met
 b1.route(f'/api/{DefaultConfig.API_VERSION}/vod-detail/<int:vod_detail_id>', methods=['PUT', 'PATCH'])(update_vod_detail)
 # 删除视频详情
 b1.route(f'/api/{DefaultConfig.API_VERSION}/vod-detail/<int:vod_detail_id>', methods=['DELETE'])(delete_vod_detail)
+# 根据标题、来源、视频集数获取vod_detail_id
+b1.route(f'/api/{DefaultConfig.API_VERSION}/vod-detail/<string:vod_title>/<string:vod_source>/<string:vod_episodes>', methods=['GET'])(get_vod_detail_id)
 ##################################### VodDetail End  #####################################
 
 ##################################### PlayUrl Start #####################################

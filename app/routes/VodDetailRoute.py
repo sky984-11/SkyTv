@@ -1,5 +1,5 @@
 from flask import request, jsonify, abort
-from db import VodDetail, db
+from db import VodDetail, db,Video
 from utils.tools import with_app_context, paginate
 
 @with_app_context
@@ -128,3 +128,26 @@ def delete_vod_detail(vod_detail_id):
         db.session.rollback()
         abort(500, f"数据库操作失败: {e}")
     return jsonify({"message": "VodDetail deleted"}), 204
+
+@with_app_context
+def get_vod_detail_id(vod_title, vod_source, vod_episodes):
+
+    if not all([vod_title, vod_source, vod_episodes]):
+        return jsonify({"error": "Missing parameters"}), 400
+
+    # 使用join查询Video和VodDetail表
+    vod_detail = (
+        db.session.query(VodDetail)
+        .join(Video, VodDetail.video_id == Video.id)
+        .filter(Video.vod_title == vod_title,
+                VodDetail.vod_source == vod_source,
+                VodDetail.vod_episodes == vod_episodes)
+        .first()
+    )
+
+    if vod_detail:
+        # 如果找到记录，返回ID
+        return jsonify({"vod_detail_id": vod_detail.id}), 200
+    else:
+        # 如果没有找到记录，返回404 Not Found
+        return jsonify({"error": "VodDetail not found"}), 404

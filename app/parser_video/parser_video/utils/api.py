@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 09:03:33
-LastEditTime: 2024-07-08 09:13:25
+LastEditTime: 2024-07-08 14:22:57
 LastEditors: sky
 '''
 import requests
@@ -103,6 +103,12 @@ class Api:
         """
         return self.get_data_from_server('/play_url/' + play_title + '/' + play_from + '/' + vod_episodes)
     
+    def get_vod_detail_id(self, vod_title, vod_source, vod_episodes):
+        """
+        根据 vod_title, vod_source, vod_episodes获取id.
+        """
+        return self.get_data_from_server('/vod-detail/' + vod_title + '/' + vod_source + '/' + vod_episodes)
+
     def update_play_url(self, play_url_id, data):
         """
         更新播放URL.
