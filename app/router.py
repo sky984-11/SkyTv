@@ -2,7 +2,7 @@
 Description: 路由
 Author: sky
 Date: 2024-07-06 14:12:59
-LastEditTime: 2024-07-08 07:24:12
+LastEditTime: 2024-07-08 08:43:16
 LastEditors: sky
 '''
 
@@ -11,7 +11,7 @@ from flask_cors import CORS
 from flask import Blueprint
 from config import DefaultConfig
 
-from routes.SourceRoute import create_source,get_all_sources,get_source,update_source,delete_source
+from routes.SourceRoute import create_source,get_all_sources,get_source,update_source,delete_source,get_main_sources
 from routes.VideoRoute import create_video,get_all_videos,get_video,update_video,delete_video,add_video_and_vod_detail,get_video_by_title_and_type
 from routes.VodDetailRoute import create_vod_detail,get_all_vod_details,get_vod_detail,update_vod_detail,delete_vod_detail
 from routes.PlayUrlRoute import create_play_url,get_all_play_urls,get_play_url,update_play_url,delete_play_url
@@ -33,6 +33,8 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/source/<string:source_name>', method
 b1.route(f'/api/{DefaultConfig.API_VERSION}/source/<int:source_id>', methods=['PUT', 'PATCH'])(update_source)
 # 删除来源
 b1.route(f'/api/{DefaultConfig.API_VERSION}/source/<int:source_id>', methods=['DELETE'])(delete_source)
+# 查询主要来源
+b1.route(f'/api/{DefaultConfig.API_VERSION}/source/main', methods=['GET'])(get_main_sources)
 #####################################  Source End  #####################################
 
 ##################################### Video Start #####################################

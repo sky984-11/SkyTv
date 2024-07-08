@@ -123,3 +123,19 @@ def delete_source(source_id):
         db.session.rollback()
         abort(500, f"数据库操作失败: {e}")
     return jsonify({"message": "Source deleted"}), 204
+
+def get_main_sources():
+    """查询所有主要且未禁用的Source。
+    
+    返回:
+    - list of dict: 主要源的信息列表。
+    
+    异常:
+    - 500: 数据库查询或操作失败。
+    """
+    try:
+        main_sources = Source.query.filter_by(main=True, disable=False).first()
+        sources_list = [source.to_dict() for source in main_sources]
+        return jsonify(sources_list), 200
+    except Exception as e:
+        abort(500, f"数据库操作失败: {e}")

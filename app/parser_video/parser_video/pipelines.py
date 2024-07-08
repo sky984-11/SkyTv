@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-08 07:19:05
+LastEditTime: 2024-07-08 07:29:13
 LastEditors: sky
 '''
 # Define your item pipelines here
@@ -34,7 +34,7 @@ class ParserVideoPipeline:
             self.cahce.set("video_cache", key, vod_pic_url_hash) # 缓存图片链接hash值
         else:
             if vod_pic_url_hash != video_cache: #值发生变化则更新表
-                # self.api.send_data_to_server(item, "") 更新
+                # self.api.send_data_to_server(item, "") 图片只需要更新主要源即可
                 self.cahce.set("video_cache", key, vod_pic_url_hash)
 
         play_url_hash = hashlib.md5(item['play_url'].encode('utf-8')).hexdigest()
