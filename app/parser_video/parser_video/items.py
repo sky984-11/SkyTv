@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-07 14:10:19
+LastEditTime: 2024-07-08 13:54:25
 LastEditors: sky
 '''
 # Define here the models for your scraped items
@@ -17,7 +17,6 @@ class ParserVideoItem(scrapy.Item):
     # define the fields for your item here like:
     vod_title = scrapy.Field()
     vod_type = scrapy.Field()
-    vod_score = scrapy.Field()
     vod_pic_url = scrapy.Field()
     vod_content = scrapy.Field()
     vod_tag = scrapy.Field()

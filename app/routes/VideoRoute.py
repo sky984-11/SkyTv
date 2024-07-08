@@ -141,7 +141,7 @@ def delete_video(video_id):
     return jsonify({"message": "Video deleted"}), 204
 
 @with_app_context
-def add_video_and_vod_detail(data):
+def add_video_and_vod_detail():
     """添加一个Video及其对应的VodDetail。
     
     参数:
@@ -155,7 +155,8 @@ def add_video_and_vod_detail(data):
     - 400: 数据不完整或格式错误。
     - 500: 数据库操作失败。
     """
-    required_fields = ['vod_title', 'vod_type', 'vod_score', 'vod_pic_url', 
+    data = request.json
+    required_fields = ['vod_title', 'vod_type', 'vod_pic_url', 
                        'vod_content', 'vod_tag', 'vod_source', 'vod_episodes']
     if not all(field in data for field in required_fields):
         abort(400, "Missing required fields")
@@ -163,7 +164,6 @@ def add_video_and_vod_detail(data):
     video_data = {
         'vod_title': data['vod_title'],
         'vod_type': data['vod_type'],
-        'vod_score': data['vod_score'],
         'vod_pic_url': data['vod_pic_url'],
         'vod_pic_path': data.get('vod_pic_path')  # 可能是可选字段
     }
