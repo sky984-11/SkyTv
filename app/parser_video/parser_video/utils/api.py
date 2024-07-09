@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 09:03:33
-LastEditTime: 2024-07-08 14:22:57
+LastEditTime: 2024-07-09 13:39:50
 LastEditors: sky
 '''
 import requests
@@ -77,6 +77,7 @@ class Api:
         """
         添加视频和视频详情.
         """
+        print(data,type(data))
         return self.send_data_to_server(data, '/video/video_and_vod_detail')
     
     def get_video_by_title_and_type(self, vod_title, vod_type):
@@ -115,14 +116,8 @@ class Api:
         """
         return self.update_data_on_server(data, '/play_url/' + play_url_id)
 
-    # def close_all_hot_tv(self):
-    #     """
-    #     关闭所有热门影视.
-    #     """
-    #     return self.delete_data_from_server('/tv/close/hot')
-
-    # def sync_video(self, data):
-    #     """
-    #     同步视频
-    #     """
-    #     return self.send_data_to_server(data, '/video')
+    def sync_video(self,data):
+        """
+        同步视频.
+        """
+        return self.send_data_to_server(data,'/video/sync')

@@ -1,5 +1,5 @@
 from flask import request, jsonify, abort
-from db import Video, VodDetail, db
+from db import Video, VodDetail, PlayUrl, db
 from utils.tools import with_app_context, paginate
 
 @with_app_context
@@ -156,6 +156,7 @@ def add_video_and_vod_detail():
     - 500: 数据库操作失败。
     """
     data = request.json
+
     required_fields = ['vod_title', 'vod_type', 'vod_pic_url', 
                        'vod_content', 'vod_tag', 'vod_source', 'vod_episodes']
     if not all(field in data for field in required_fields):
@@ -190,3 +191,82 @@ def add_video_and_vod_detail():
         abort(500, f"数据库操作失败: {e}")
 
     return jsonify({"message": "Video and VodDetail added successfully"}), 201
+
+@with_app_context
+def sync_video():
+    """同步视频信息及其详细内容和播放链接至数据库。
+    
+    参数:
+    - data (dict): 从请求中获取的包含视频信息、详情及播放链接的字典。
+
+    返回:
+    - dict: 成功消息提示。
+    - int: HTTP状态码，201表示成功创建。
+
+    异常:
+    - 400: 缺少必要的数据字段。
+    - 500: 数据库操作失败。
+    """
+    # 图片后续改为修改主要来源图片即可
+    data = request.json
+
+
+    required_fields = ['vod_title', 'vod_type', 'vod_pic_url', 
+                       'vod_content', 'vod_tag', 'vod_source', 'vod_episodes', 'play_url']
+    if not all(field in data for field in required_fields):
+        abort(400, "缺少必要的数据字段")
+
+    try:
+        # 获取或创建Video
+        video = Video.query.filter_by(vod_title=data['vod_title'], vod_type=data['vod_type']).first()
+        if not video:
+            video = Video(
+                vod_title=data['vod_title'],
+                vod_type=data['vod_type'],
+                vod_pic_url=data['vod_pic_url']
+            )
+            db.session.add(video)
+        else:
+            video.vod_pic_url = data['vod_pic_url']
+
+        db.session.flush()
+
+        # 获取或创建VodDetail
+        vod_detail = VodDetail.query.filter_by(vod_source=data['vod_source'], vod_episodes=data['vod_episodes']).first()
+        if not vod_detail:
+            vod_detail = VodDetail(
+                vod_content=data['vod_content'],
+                vod_tag=data['vod_tag'],
+                vod_source=data['vod_source'],
+                vod_episodes=data['vod_episodes'],
+                vod_episodes_index=data.get('vod_episodes_index'),
+                 video_id=video.id
+            )
+            db.session.add(vod_detail)
+        else:
+            vod_detail.vod_content = data['vod_content']
+            vod_detail.vod_tag = data['vod_tag']
+            vod_detail.vod_episodes_index = data.get('vod_episodes_index')
+
+        # 获取或创建PlayUrl
+        play_url = PlayUrl.query.filter_by(play_url=data['play_url']).first()
+        if not play_url:
+            play_url = PlayUrl(
+                play_title=data['play_title'],
+                play_from=data['play_from'],
+                play_status=data['play_status'],
+                play_url=data['play_url'],
+                vod_detail=vod_detail
+            )
+            db.session.add(play_url)
+        else:
+            play_url.play_title = data['play_title']
+            play_url.play_from = data['play_from']
+            play_url.play_status = data['play_status']
+        
+        db.session.commit()
+    except Exception as e:
+        print(e)
+        db.session.rollback()
+        abort(500, f"数据库操作失败: {e}")
+
