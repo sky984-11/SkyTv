@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-06 08:11:16
-LastEditTime: 2024-07-10 08:49:04
+LastEditTime: 2024-07-10 13:58:48
 LastEditors: sky
 '''
 
@@ -60,13 +60,12 @@ class Video(BaseModel):
 class VodDetail(BaseModel):
     __tablename__ = 'vod_detail'
     __table_args__ = (
-        UniqueConstraint('video_id', 'vod_source', 'vod_episodes', name='uq_vod_detail_unique'),
+        UniqueConstraint('video_id', 'vod_episodes', name='uq_vod_detail_unique'),
         {'extend_existing': True}
     )
     id = db.Column(db.Integer, primary_key=True)
     vod_content = db.Column(db.Text, nullable=False, comment='视频详情内容')
     vod_tag = db.Column(db.Text, nullable=False, comment='视频标签')
-    vod_source = db.Column(db.String(255), comment='视频来源')
     vod_episodes = db.Column(db.String(255), comment='视频集数')
     vod_episodes_index = db.Column(db.Integer, comment='视频集数索引')
     play_url = relationship('PlayUrl', backref='vod_details_backref', cascade='all,delete-orphan', lazy='joined')
@@ -76,12 +75,11 @@ class VodDetail(BaseModel):
 class PlayUrl(BaseModel):
     __tablename__ = 'play_url'
     __table_args__ = (
-        UniqueConstraint('vod_detail_id','play_title', 'play_url', name='uq_play_url_unique'),
+        UniqueConstraint('vod_detail_id','play_source', name='uq_play_url_unique'),
         {'extend_existing': True}
     )
     id = db.Column(db.Integer, primary_key=True)
-    play_title = db.Column(db.String(255), nullable=False, comment='播放标题')
-    play_from = db.Column(db.String(255), nullable=False, comment='播放来源')
+    play_source = db.Column(db.String(255), nullable=False, comment='播放来源')
     play_status = db.Column(db.Boolean, default=True, comment='播放状态')
     play_url = db.Column(db.Text, nullable=False, unique=True, comment='播放URL')
     

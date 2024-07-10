@@ -199,11 +199,6 @@ def sync_video():
     
 
     try:
-        # 获取主要源(后续只更新主要源图片即可)
-        source = Source.query.filter_by(main=True).first()
-        if not source:
-            abort(400, "缺少主要源")
-        # 获取或创建Video
         video = Video.query.filter_by(vod_title=data['vod_title'], vod_type=data['vod_type']).first()
         if not video:
             video = Video(
@@ -212,14 +207,20 @@ def sync_video():
                 vod_pic_url=data['vod_pic_url']
             )
             db.session.add(video)
+        else:
+            source = Source.query.filter_by(main=True).first() # 只更新主要源图片
+            if not source:
+                abort(400, "缺少主要源")
+            if source.vod_pic_url == data['vod_pic_url']:
+                video.vod_pic_path = data['vod_pic_path']
+
 
         # 获取或创建VodDetail
-        vod_detail = VodDetail.query.filter_by(video_id=video.id, vod_source=data['vod_source'], vod_episodes=data['vod_episodes']).first()
+        vod_detail = VodDetail.query.filter_by(video_id=video.id, vod_episodes=data['vod_episodes']).first()
         if not vod_detail:
             vod_detail = VodDetail(
                 vod_content=data['vod_content'],
                 vod_tag=data['vod_tag'],
-                vod_source=data['vod_source'],
                 vod_episodes=data['vod_episodes'],
                 vod_episodes_index=data.get('vod_episodes_index'),
                 video_id=video.id

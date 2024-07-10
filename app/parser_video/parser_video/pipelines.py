@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-10 13:38:21
+LastEditTime: 2024-07-10 13:41:25
 LastEditors: sky
 '''
 # Define your item pipelines here
@@ -21,7 +21,5 @@ class ParserVideoPipeline:
         # self.cahce = MultiDBCacheManager()
     def process_item(self, item, spider):
         item_dict = dict(item)
-        self.api.sync_video(item)
-
-        
+        self.api.sync_video(item_dict)
         return item
