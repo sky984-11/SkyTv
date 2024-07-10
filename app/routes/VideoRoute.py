@@ -192,11 +192,9 @@ def sync_video():
     data = request.json
 
     required_fields = ['vod_title', 'vod_type', 'vod_pic_url', 
-                       'vod_content', 'vod_tag', 'vod_source', 'vod_episodes', 'play_title', 'play_url']
+                       'vod_content', 'vod_tag', 'play_from', 'vod_episodes', 'play_url']
     if not all(field in data for field in required_fields):
         abort(400, "缺少必要的数据字段")
-
-    
 
     try:
         video = Video.query.filter_by(vod_title=data['vod_title'], vod_type=data['vod_type']).first()
@@ -228,7 +226,7 @@ def sync_video():
             db.session.add(vod_detail)
 
         # 获取或创建PlayUrl
-        play_url = PlayUrl.query.filter_by(vod_detail_id=vod_detail.id, play_title=data['play_title'], play_url=data['play_url']).first()
+        play_url = PlayUrl.query.filter_by(vod_detail_id=vod_detail.id, play_url=data['play_url']).first()
         if not play_url:
             play_url = PlayUrl(
                 play_title=data['play_title'],

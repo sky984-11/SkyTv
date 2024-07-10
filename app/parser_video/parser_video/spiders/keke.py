@@ -126,6 +126,4 @@ class KekeSpider(scrapy.Spider):
         item['play_url'] = play_url
         item['play_status'] = True
         item['play_from'] = self.name
-        item['vod_source'] = self.name
-        item['play_title'] = response.meta['vod_title']
         yield item

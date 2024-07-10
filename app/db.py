@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-06 08:11:16
-LastEditTime: 2024-07-10 13:58:48
+LastEditTime: 2024-07-10 14:23:18
 LastEditors: sky
 '''
 
@@ -50,7 +50,7 @@ class Video(BaseModel):
         {'extend_existing': True}
     )
     id = db.Column(db.Integer, primary_key=True)
-    vod_title = db.Column(db.String(255), nullable=False, comment='视频标题')
+    vod_title = db.Column(db.String(255), nullable=False, comment='视频标题',index=True)
     vod_type = db.Column(db.String(50), nullable=False, comment='视频类型')
     vod_score = db.Column(db.Float, comment='视频评分')
     vod_pic_url = db.Column(db.Text, nullable=False, comment='视频图片URL')
@@ -75,11 +75,11 @@ class VodDetail(BaseModel):
 class PlayUrl(BaseModel):
     __tablename__ = 'play_url'
     __table_args__ = (
-        UniqueConstraint('vod_detail_id','play_source', name='uq_play_url_unique'),
+        UniqueConstraint('vod_detail_id','play_from', name='uq_play_url_unique'),
         {'extend_existing': True}
     )
     id = db.Column(db.Integer, primary_key=True)
-    play_source = db.Column(db.String(255), nullable=False, comment='播放来源')
+    play_from = db.Column(db.String(255), nullable=False, comment='播放来源')
     play_status = db.Column(db.Boolean, default=True, comment='播放状态')
     play_url = db.Column(db.Text, nullable=False, unique=True, comment='播放URL')
     
