@@ -1,5 +1,5 @@
 from flask import request, jsonify, abort
-from db import Video, VodDetail, PlayUrl, db
+from db import Video, VodDetail, PlayUrl, db,Source
 from utils.tools import with_app_context, paginate
 
 @with_app_context
@@ -214,7 +214,13 @@ def sync_video():
     if not all(field in data for field in required_fields):
         abort(400, "缺少必要的数据字段")
 
+    
+
     try:
+        # 获取主要源(后续只更新主要源图片即可)
+        source = Source.query.filter_by(main=True).first()
+        if not source:
+            abort(400, "缺少主要源")
         # 获取或创建Video
         video = Video.query.filter_by(vod_title=data['vod_title'], vod_type=data['vod_type']).first()
         if not video:
