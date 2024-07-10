@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-06 08:11:16
-LastEditTime: 2024-07-10 14:23:18
+LastEditTime: 2024-07-10 14:39:29
 LastEditors: sky
 '''
 
@@ -53,6 +53,7 @@ class Video(BaseModel):
     vod_title = db.Column(db.String(255), nullable=False, comment='视频标题',index=True)
     vod_type = db.Column(db.String(50), nullable=False, comment='视频类型')
     vod_score = db.Column(db.Float, comment='视频评分')
+    vod_total_episodes = db.Column(db.String(50), nullable=False, comment='视频总集数')
     vod_pic_url = db.Column(db.Text, nullable=False, comment='视频图片URL')
     vod_pic_path = db.Column(db.String(255), comment='视频图片路径')
     vod_detail = relationship('VodDetail', backref='video_backref', cascade='all,delete-orphan', lazy='joined')

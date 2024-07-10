@@ -12,6 +12,7 @@ def create_video():
     - vod_score (float, optional): 视频评分。
     - vod_pic_url (str): 视频图片URL。
     - vod_pic_path (str, optional): 视频图片路径。
+    - vod_total_episodes (str): 视频总集数。
     
     返回:
     - dict: 新创建Video的详情。
@@ -141,12 +142,12 @@ def sync_video():
     data = request.json
 
     required_fields = ['vod_title', 'vod_type', 'vod_pic_url', 
-                       'vod_content', 'vod_tag', 'play_from', 'vod_episodes', 'play_url']
+                       'vod_content', 'vod_tag', 'play_from', 'vod_episodes', 'play_url','vod_total_episodes']
     if not all(field in data for field in required_fields):
         abort(400, "缺少必要的数据字段")
 
     try:
-        video = Video.query.filter_by(vod_title=data['vod_title'], vod_type=data['vod_type']).first()
+        video = Video.query.filter_by(vod_title=data['vod_title'], vod_type=data['vod_type'],vod_total_episodes=data['vod_total_episodes']).first()
         if not video:
             video = Video(
                 vod_title=data['vod_title'],
@@ -154,12 +155,14 @@ def sync_video():
                 vod_pic_url=data['vod_pic_url']
             )
             db.session.add(video)
+            db.session.flush() 
         else:
-            source = Source.query.filter_by(main=True).first() # 只更新主要源图片
+            source = Source.query.filter_by(main=True).first()
             if not source:
                 abort(400, "缺少主要源")
-            if source.vod_pic_url == data['vod_pic_url']:
+            if source.name == data['play_from']:   # 只更新主要源
                 video.vod_pic_path = data['vod_pic_path']
+                video.vod_total_episodes = data['vod_total_episodes']
 
 
         # 获取或创建VodDetail
@@ -178,7 +181,6 @@ def sync_video():
         play_url = PlayUrl.query.filter_by(vod_detail_id=vod_detail.id, play_url=data['play_url']).first()
         if not play_url:
             play_url = PlayUrl(
-                play_title=data['play_title'],
                 play_from=data['play_from'],
                 play_status=data['play_status'],
                 play_url=data['play_url'],
