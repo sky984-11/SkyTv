@@ -10,7 +10,6 @@ def create_play_url():
     """创建一个新的PlayUrl。
     
     参数:
-    - play_title (str): 播放标题。
     - play_from (str): 播放来源。
     - play_status (bool): 播放状态。
     - play_url (str): 播放URL。
@@ -24,11 +23,10 @@ def create_play_url():
     - 400: 输入数据缺失或无效。
     """
     data = request.json
-    required_fields = ['play_title', 'play_from', 'play_url', 'vod_detail_id']
+    required_fields = ['play_from', 'play_url', 'vod_detail_id']
     if not all(field in data for field in required_fields):
         abort(400, "缺少必要的参数")
     new_play_url = PlayUrl(
-        play_title=data['play_title'],
         play_from=data['play_from'],
         play_status=data.get('play_status', True),
         play_url=data['play_url'],

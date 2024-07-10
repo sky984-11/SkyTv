@@ -122,57 +122,6 @@ def delete_video(video_id):
         abort(500, f"数据库操作失败: {e}")
     return jsonify({"message": "Video deleted"}), 204
 
-@with_app_context
-def add_video_and_vod_detail():
-    """添加一个Video及其对应的VodDetail。
-    
-    参数:
-    - data (dict): 包含视频和视频详情信息的字典。
-
-    返回:
-    - dict: 消息提示。
-    - int: HTTP状态码，201表示成功创建。
-
-    异常:
-    - 400: 数据不完整或格式错误。
-    - 500: 数据库操作失败。
-    """
-    data = request.json
-
-    required_fields = ['vod_title', 'vod_type', 'vod_pic_url', 
-                       'vod_content', 'vod_tag', 'vod_source', 'vod_episodes']
-    if not all(field in data for field in required_fields):
-        abort(400, "Missing required fields")
-
-    video_data = {
-        'vod_title': data['vod_title'],
-        'vod_type': data['vod_type'],
-        'vod_pic_url': data['vod_pic_url'],
-        'vod_pic_path': data.get('vod_pic_path')  # 可能是可选字段
-    }
-
-    vod_detail_data = {
-        'vod_content': data['vod_content'],
-        'vod_tag': data['vod_tag'],
-        'vod_source': data['vod_source'],
-        'vod_episodes': data['vod_episodes'],
-        'vod_episodes_index': data.get('vod_episodes_index')  # 可能是可选字段
-    }
-
-    try:
-        video = Video(**video_data)
-        db.session.add(video)
-        db.session.flush()  # Flush to get the video's ID before adding VodDetail
-
-        vod_detail_data['video_id'] = video.id
-        vod_detail = VodDetail(**vod_detail_data)
-        db.session.add(vod_detail)
-        db.session.commit()
-    except Exception as e:
-        db.session.rollback()
-        abort(500, f"数据库操作失败: {e}")
-
-    return jsonify({"message": "Video and VodDetail added successfully"}), 201
 
 @with_app_context
 def sync_video():
