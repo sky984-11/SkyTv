@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 09:03:33
-LastEditTime: 2024-07-09 13:39:50
+LastEditTime: 2024-07-10 08:36:26
 LastEditors: sky
 '''
 import requests
@@ -66,55 +66,6 @@ class Api:
         根据名称获取源.
         """
         return self.get_data_from_server('/source/' + source_name)
-    
-    def get_main_sources(self):
-        """
-        获取主要源.
-        """
-        return self.get_data_from_server('/source/main')
-    
-    def video_and_vod_detail(self, data):
-        """
-        添加视频和视频详情.
-        """
-        print(data,type(data))
-        return self.send_data_to_server(data, '/video/video_and_vod_detail')
-    
-    def get_video_by_title_and_type(self, vod_title, vod_type):
-        """
-        根据标题和类型获取视频.
-        """
-        return self.get_data_from_server('/video/' + vod_title + '/' + vod_type)
-    
-    def update_video(self, video_id,data):
-        """
-        更新视频.
-        """
-        return self.update_data_on_server(data, '/video/' + video_id)
-    
-    def create_play_url(self, data):
-        """
-        添加播放URL.
-        """
-        return self.send_data_to_server(data, '/play_url')
-    
-    def get_play_url_by_details(self, play_title, play_from, vod_episodes):
-        """
-        根据详情获取播放URL.
-        """
-        return self.get_data_from_server('/play_url/' + play_title + '/' + play_from + '/' + vod_episodes)
-    
-    def get_vod_detail_id(self, vod_title, vod_source, vod_episodes):
-        """
-        根据 vod_title, vod_source, vod_episodes获取id.
-        """
-        return self.get_data_from_server('/vod-detail/' + vod_title + '/' + vod_source + '/' + vod_episodes)
-
-    def update_play_url(self, play_url_id, data):
-        """
-        更新播放URL.
-        """
-        return self.update_data_on_server(data, '/play_url/' + play_url_id)
 
     def sync_video(self,data):
         """

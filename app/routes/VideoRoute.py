@@ -207,12 +207,10 @@ def sync_video():
     - 400: 缺少必要的数据字段。
     - 500: 数据库操作失败。
     """
-    # 图片后续改为修改主要来源图片即可
     data = request.json
 
-
     required_fields = ['vod_title', 'vod_type', 'vod_pic_url', 
-                       'vod_content', 'vod_tag', 'vod_source', 'vod_episodes', 'play_url']
+                       'vod_content', 'vod_tag', 'vod_source', 'vod_episodes', 'play_title', 'play_url']
     if not all(field in data for field in required_fields):
         abort(400, "缺少必要的数据字段")
 
@@ -226,13 +224,9 @@ def sync_video():
                 vod_pic_url=data['vod_pic_url']
             )
             db.session.add(video)
-        else:
-            video.vod_pic_url = data['vod_pic_url']
-
-        db.session.flush()
 
         # 获取或创建VodDetail
-        vod_detail = VodDetail.query.filter_by(vod_source=data['vod_source'], vod_episodes=data['vod_episodes']).first()
+        vod_detail = VodDetail.query.filter_by(video_id=video.id, vod_source=data['vod_source'], vod_episodes=data['vod_episodes']).first()
         if not vod_detail:
             vod_detail = VodDetail(
                 vod_content=data['vod_content'],
@@ -240,33 +234,28 @@ def sync_video():
                 vod_source=data['vod_source'],
                 vod_episodes=data['vod_episodes'],
                 vod_episodes_index=data.get('vod_episodes_index'),
-                 video_id=video.id
+                video_id=video.id
             )
             db.session.add(vod_detail)
-        else:
-            vod_detail.vod_content = data['vod_content']
-            vod_detail.vod_tag = data['vod_tag']
-            vod_detail.vod_episodes_index = data.get('vod_episodes_index')
 
         # 获取或创建PlayUrl
-        play_url = PlayUrl.query.filter_by(play_url=data['play_url']).first()
+        play_url = PlayUrl.query.filter_by(vod_detail_id=vod_detail.id, play_title=data['play_title'], play_url=data['play_url']).first()
         if not play_url:
             play_url = PlayUrl(
                 play_title=data['play_title'],
                 play_from=data['play_from'],
                 play_status=data['play_status'],
                 play_url=data['play_url'],
-                vod_detail=vod_detail
+                vod_detail_id=vod_detail.id
             )
             db.session.add(play_url)
         else:
-            play_url.play_title = data['play_title']
             play_url.play_from = data['play_from']
             play_url.play_status = data['play_status']
+            play_url.play_url = data['play_url']
         
         db.session.commit()
     except Exception as e:
-        print(e)
         db.session.rollback()
         abort(500, f"数据库操作失败: {e}")
-
+    return jsonify({'message': '视频信息同步成功'}), 201

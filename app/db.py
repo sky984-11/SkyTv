@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-06 08:11:16
-LastEditTime: 2024-07-08 07:19:00
+LastEditTime: 2024-07-10 08:49:04
 LastEditors: sky
 '''
 
@@ -59,7 +59,10 @@ class Video(BaseModel):
     
 class VodDetail(BaseModel):
     __tablename__ = 'vod_detail'
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = (
+        UniqueConstraint('video_id', 'vod_source', 'vod_episodes', name='uq_vod_detail_unique'),
+        {'extend_existing': True}
+    )
     id = db.Column(db.Integer, primary_key=True)
     vod_content = db.Column(db.Text, nullable=False, comment='视频详情内容')
     vod_tag = db.Column(db.Text, nullable=False, comment='视频标签')
@@ -72,7 +75,10 @@ class VodDetail(BaseModel):
 
 class PlayUrl(BaseModel):
     __tablename__ = 'play_url'
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = (
+        UniqueConstraint('vod_detail_id','play_title', 'play_url', name='uq_play_url_unique'),
+        {'extend_existing': True}
+    )
     id = db.Column(db.Integer, primary_key=True)
     play_title = db.Column(db.String(255), nullable=False, comment='播放标题')
     play_from = db.Column(db.String(255), nullable=False, comment='播放来源')
