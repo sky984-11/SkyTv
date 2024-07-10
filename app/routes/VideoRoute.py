@@ -152,22 +152,25 @@ def sync_video():
             video = Video(
                 vod_title=data['vod_title'],
                 vod_type=data['vod_type'],
-                vod_pic_url=data['vod_pic_url']
+                vod_pic_url=data['vod_pic_url'],
+                vod_total_episodes = data['vod_total_episodes']
             )
             db.session.add(video)
             db.session.flush() 
         else:
             source = Source.query.filter_by(main=True).first()
+            print('查询主要源')
             if not source:
                 abort(400, "缺少主要源")
             if source.name == data['play_from']:   # 只更新主要源
-                video.vod_pic_path = data['vod_pic_path']
+                video.vod_pic_url = data['vod_pic_url']
                 video.vod_total_episodes = data['vod_total_episodes']
 
 
         # 获取或创建VodDetail
         vod_detail = VodDetail.query.filter_by(video_id=video.id, vod_episodes=data['vod_episodes']).first()
         if not vod_detail:
+            print('没获取到开始添加')
             vod_detail = VodDetail(
                 vod_content=data['vod_content'],
                 vod_tag=data['vod_tag'],
@@ -178,7 +181,7 @@ def sync_video():
             db.session.add(vod_detail)
 
         # 获取或创建PlayUrl
-        play_url = PlayUrl.query.filter_by(vod_detail_id=vod_detail.id, play_url=data['play_url']).first()
+        play_url = PlayUrl.query.filter_by(vod_detail_id=vod_detail.id, play_from=data['play_from']).first()
         if not play_url:
             play_url = PlayUrl(
                 play_from=data['play_from'],
@@ -188,7 +191,6 @@ def sync_video():
             )
             db.session.add(play_url)
         else:
-            play_url.play_from = data['play_from']
             play_url.play_status = data['play_status']
             play_url.play_url = data['play_url']
         
