@@ -131,29 +131,3 @@ def delete_play_url(play_url_id):
         db.session.rollback()
         abort(500, f"数据库操作失败: {e}")
     return jsonify({"message": "PlayUrl deleted"}), 204
-
-def get_play_url_by_details(play_title, play_from, vod_episodes):
-    """根据播放标题、播放来源和视频集数查询PlayUrl记录。
-    
-    参数:
-    - play_title (str): 播放标题。
-    - play_from (str): 播放来源。
-    - vod_episodes (str): 视频集数。
-    
-    返回:
-    - PlayUrl: 查询到的PlayUrl实例，如果未找到则返回None。
-    """
-    try:
-        # 加载VodDetail时同时加载其关联的PlayUrl，以避免额外的数据库查询
-        vod_detail = VodDetail.query.options(joinedload(VodDetail.play_url)).\
-            filter_by(vod_source=play_from, vod_episodes=vod_episodes).first()
-        
-        if vod_detail:
-            # 从VodDetail的关联列表中找到匹配play_title的PlayUrl
-            play_url_record = next((pu for pu in vod_detail.play_url if pu.play_title == play_title), None)
-            return play_url_record
-        else:
-            return None
-    except Exception as e:
-        print(f"Database operation failed: {e}")
-        return None
