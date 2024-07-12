@@ -2,7 +2,7 @@
 Description: 路由
 Author: sky
 Date: 2024-07-06 14:12:59
-LastEditTime: 2024-07-12 18:44:15
+LastEditTime: 2024-07-12 18:55:00
 LastEditors: sky
 '''
 
@@ -52,7 +52,7 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/video/<int:video_id>', methods=['DEL
 # 同步
 b1.route(f'/api/{DefaultConfig.API_VERSION}/video/sync', methods=['POST'])(sync_video)
 # 视频搜索
-b1.route(f'/api/{DefaultConfig.API_VERSION}/video/search', methods=['POST'])(search_video)
+b1.route(f'/api/{DefaultConfig.API_VERSION}/video/search', methods=['GET'])(search_video)
 # 热播视频
 b1.route(f'/api/{DefaultConfig.API_VERSION}/video/hot', methods=['GET'])(list_hot_video)
 ##################################### Video End  #####################################

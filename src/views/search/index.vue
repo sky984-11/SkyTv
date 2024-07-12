@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 14:32:44
- * @LastEditTime: 2024-07-12 18:48:51
+ * @LastEditTime: 2024-07-12 19:00:20
  * @LastEditors: sky
 -->
 <script setup name="Group">
@@ -75,10 +75,10 @@ onMounted(async () => {
     <van-list >
         <div class="flex flex-wrap gap-4">
           <div class="relative w-[calc(50%-8px)]" v-for="item in tvList" :key="item.id" @click="toDetails(item)">
-            <van-image :src="item.image" class="w-full h-auto" alt="视频缩略图" />
+            <van-image :src="item.vod_pic_url" class="w-full h-auto" alt="视频缩略图" />
             <div
               class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full text-center bg-black bg-opacity-50 text-white py-1 box-border overflow-hidden text-ellipsis whitespace-nowrap">
-              {{ item.title }}
+              {{ item.vod_title }}
             </div>
           </div>
         </div>

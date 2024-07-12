@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-02 14:24:55
+ * @LastEditTime: 2024-07-12 18:58:17
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -20,7 +20,7 @@ const tvDetails = tvStore.tvDetails;
 
 const activeTab = ref('视频')
 const tabs = ref(['视频', '讨论'])
-const videoTitle = ref(tvDetails.title)
+const videoTitle = ref(tvDetails.vod_title)
 const videoDesc = ref(tvDetails.description)
 const videoRating = ref(tvDetails.rating)
 const episodes = ref([])

@@ -237,6 +237,7 @@ def search_video():
     pattern = request.args.get('pattern', 'fuzzy', type=str).lower()  # 默认是模糊匹配
     if not keyword:  
         return jsonify({"code": 400, "msg": "关键词不能为空"}), 400  
+    print(keyword,pattern)
   
     if pattern == 'exact':  
         # 精确匹配  
