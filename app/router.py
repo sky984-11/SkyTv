@@ -2,7 +2,7 @@
 Description: 路由
 Author: sky
 Date: 2024-07-06 14:12:59
-LastEditTime: 2024-07-10 13:37:19
+LastEditTime: 2024-07-12 18:44:15
 LastEditors: sky
 '''
 
@@ -12,7 +12,7 @@ from flask import Blueprint
 from config import DefaultConfig
 
 from routes.SourceRoute import create_source,get_all_sources,get_source,update_source,delete_source,get_main_sources
-from routes.VideoRoute import create_video,get_all_videos,get_video,update_video,delete_video,sync_video
+from routes.VideoRoute import create_video,get_all_videos,get_video,update_video,delete_video,sync_video,search_video,list_hot_video
 from routes.VodDetailRoute import create_vod_detail,get_all_vod_details,get_vod_detail,update_vod_detail,delete_vod_detail
 from routes.PlayUrlRoute import create_play_url,get_all_play_urls,get_play_url,update_play_url,delete_play_url
 
@@ -51,6 +51,10 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/video/<int:video_id>', methods=['PUT
 b1.route(f'/api/{DefaultConfig.API_VERSION}/video/<int:video_id>', methods=['DELETE'])(delete_video)
 # 同步
 b1.route(f'/api/{DefaultConfig.API_VERSION}/video/sync', methods=['POST'])(sync_video)
+# 视频搜索
+b1.route(f'/api/{DefaultConfig.API_VERSION}/video/search', methods=['POST'])(search_video)
+# 热播视频
+b1.route(f'/api/{DefaultConfig.API_VERSION}/video/hot', methods=['GET'])(list_hot_video)
 ##################################### Video End  #####################################
 
 ##################################### VodDetail Start #####################################

@@ -2,12 +2,12 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 14:32:44
- * @LastEditTime: 2024-07-03 14:22:43
+ * @LastEditTime: 2024-07-12 18:48:51
  * @LastEditors: sky
 -->
 <script setup name="Group">
 import { reactive, ref, onMounted ,watch} from "vue";
-import { searchTv } from "@/api/tv";
+import { searchVideo } from "@/api/video";
 
 import { useRoute,useRouter } from 'vue-router';
 import { useTvStoreHook } from '@/store/modules/tvStore';
@@ -37,7 +37,8 @@ async function fetchData() {
         console.log(params)
 
 
-        const res = await searchTv(params);
+        const res = await searchVideo(params);
+        console.log(res)
 
         tvList.value = res;
     } catch (error) {

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-26 15:32:37
- * @LastEditTime: 2024-07-11 08:58:03
+ * @LastEditTime: 2024-07-12 18:40:51
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
@@ -17,7 +17,7 @@ export function listVideo(params) {
 
 export function listHotVideo(params) {
   return http.request({
-    url: "/Video/list/hot",
+    url: "/video/list/hot",
     method: "get",
     params
   });
@@ -26,7 +26,7 @@ export function listHotVideo(params) {
 //  影视搜索
 export function searchVideo(params) {
   return http.request({
-    url: "/Video/search",
+    url: "/video/search",
     method: "get",
     params
   });

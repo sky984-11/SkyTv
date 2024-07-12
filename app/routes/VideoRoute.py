@@ -203,3 +203,47 @@ def sync_video():
         db.session.rollback()
         abort(500, f"数据库操作失败: {e}")
     return jsonify({'message': '视频信息同步成功'}), 201
+
+@with_app_context
+def list_hot_video():
+    """
+    根据video_list中的标题从数据库中查找并返回视频数据。
+    """
+    # 假设video_list是一个包含视频标题的列表
+    video_titles = ['咒术回战']  # 示例，替换为实际的video_list
+    
+    # 创建一个空列表来存储找到的视频
+    found_videos = []
+    
+    # 遍历每个标题，从数据库中查找对应的视频
+    for title in video_titles:
+        query = db.session.query(Video).filter_by(vod_title=title).first()
+        if query is not None:
+            found_videos.append(query)
+    
+    # 将查询结果转换为字典列表
+    data = [video.to_dict() for video in found_videos]
+    
+    # 返回JSON响应
+    return jsonify({"code": 200, "result": data})
+    
+@with_app_context
+def search_video():
+    """
+        视频搜索
+        pattern:匹配模式，可选值:fuzzy(模糊匹配)、exact(精确匹配)
+    """
+    keyword = request.args.get('keyword')
+    pattern = request.args.get('pattern', 'fuzzy', type=str).lower()  # 默认是模糊匹配
+    if not keyword:  
+        return jsonify({"code": 400, "msg": "关键词不能为空"}), 400  
+  
+    if pattern == 'exact':  
+        # 精确匹配  
+        video = Video.query.filter(Video.vod_title == keyword).all()  
+    else:  
+        # 模糊匹配  
+        video = Video.query.filter(Video.vod_title.like('%' + keyword + '%')).all()  
+  
+    data = [item.to_dict() for item in video]  
+    return jsonify({"code": 200, "result": data})  
