@@ -1,11 +1,11 @@
 <script setup name="Group">
 import { ref,onMounted } from "vue";
-import { listTv } from "@/api/tv";
+import { listVideo } from "@/api/video";
 import { useRouter } from 'vue-router'; 
 import { useTvStoreHook } from '@/store/modules/tvStore';
 
-const activeType = ref(0)  // 默认tab为电影页
-const tvList = ref([])   // 视频列表数据
+const activeType = ref('电视剧')  // 默认tab为电视剧
+const videoList = ref([])   // 视频列表数据
 const loading = ref(false);  //下拉加载
 const finished = ref(false); //是否加载完成
 const page = ref(1); // 当前页
@@ -21,13 +21,13 @@ async function fetchData() {
       per_page: perPage.value,
       active_type: activeType.value
     };
-    const res = await listTv(params);
+    const res = await listVideo(params);
     
-    // console.log(res)
+    console.log(res) 
     if (res.length < perPage.value) {
       finished.value = true;
     }
-    tvList.value = [...tvList.value, ...res];
+    videoList.value = [...videoList.value, ...res];
     page.value += 1;
   } catch (error) {
     console.log(error)
@@ -38,7 +38,7 @@ async function fetchData() {
 
 function initData() {
   page.value = 1;
-  tvList.value = [];
+  videoList.value = [];
   finished.value = false;
   fetchData();
 }
@@ -69,7 +69,7 @@ onMounted(() => {
 
 <template>
   <van-tabs v-model:active="activeType" @click-tab="onClickTab">
-    <van-tab v-for="item in tabList" :key="item" :title="item">
+    <van-tab v-for="item in tabList" :key="item" :title="item" :name="item">
       <van-list
         v-model:loading="loading"
         :finished="finished"
@@ -80,19 +80,19 @@ onMounted(() => {
         <div class="flex flex-wrap gap-4">
           <div
             class="relative w-[calc(50%-8px)]"
-            v-for="item in tvList"
+            v-for="item in videoList"
             :key="item.id"
             @click="toDetails(item)"
           >
             <van-image
-              :src="item.image"
+              :src="item.vod_pic_url"
               class="w-full h-auto"
               alt="视频缩略图"
             />
             <div
               class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full text-center bg-black bg-opacity-50 text-white py-1 box-border overflow-hidden text-ellipsis whitespace-nowrap"
             >
-              {{ item.title }}
+              {{ item.vod_title }}
             </div>
           </div>
         </div>

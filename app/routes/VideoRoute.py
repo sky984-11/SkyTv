@@ -52,8 +52,12 @@ def get_all_videos():
     - 404: 请求的页码超出范围。
     """
     page = request.args.get('page', 1, type=int)
-    videos, pages = paginate(Video.query, page)
-    return jsonify([video.to_dict() for video in videos]), 200
+    per_page = request.args.get('per_page', 20, type=int)
+    active_type = request.args.get('active_type', '电视剧')
+    query = db.session.query(Video).filter_by(vod_type=active_type)
+    pagination = query.paginate(page=page, per_page=per_page)
+    data = [item.to_dict() for item in pagination.items]
+    return  jsonify({"code": 200, "result": data,"page": page,"per_page": per_page,"total": pagination.total,"pages": pagination.pages}), 200
 
 @with_app_context
 def get_video(video_id):

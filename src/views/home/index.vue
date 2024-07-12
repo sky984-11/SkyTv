@@ -2,12 +2,12 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-03 13:11:52
+ * @LastEditTime: 2024-07-11 08:40:05
  * @LastEditors: sky
 -->
 <script setup name="Home">
 import { ref, onMounted ,computed} from "vue";
-import { listHotTv } from "@/api/tv";
+import { listHotVideo } from "@/api/video";
 import { useRouter } from 'vue-router';
 import { useTvStoreHook } from '@/store/modules/tvStore';
 
@@ -23,8 +23,8 @@ const loading = ref(false);  //下拉加载
 const router = useRouter();
 
 // 分组函数，提高可维护性
-function groupTvByType(tvList) {
-  return tvList.reduce((acc, item) => {
+function groupTvByType(videoList) {
+  return videoList.reduce((acc, item) => {
     if (!acc[item.type]) {
       acc[item.type] = [];
     }
@@ -36,7 +36,7 @@ function groupTvByType(tvList) {
 // 优化后的fetchData，包含异常处理和数据校验
 async function fetchData() {
   try {
-    const res = await listHotTv();
+    const res = await listHotVideo();
     if (!Array.isArray(res)) {
       throw new Error("API返回的数据不是一个数组");
     }
