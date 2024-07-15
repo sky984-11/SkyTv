@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-26 15:32:37
- * @LastEditTime: 2024-07-15 08:44:52
+ * @LastEditTime: 2024-07-15 09:03:28
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
@@ -32,15 +32,11 @@ export function searchVideo(params) {
   });
 }
 
-// 查看某个影视的所有集数
-// export function listEpisodes(data) {
-//   return http.request({
-//     url: "/episodes/list",
-//     method: "post",
-//     headers: {
-//       'Content-Type': 'application/json'
-//     },
-//     data
-//   });
-// }
+// 查看某个视频的所有集数
+export function listEpisodes(video_id) {
+  return http.request({
+    url: "/video/details/" + video_id,
+    method: "get",
+  });
+}
 

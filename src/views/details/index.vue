@@ -2,14 +2,14 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-12 18:58:17
+ * @LastEditTime: 2024-07-15 09:04:00
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
 <script setup name="Details">
 import { ref, onMounted } from "vue";
 import { useTvStoreHook } from '@/store/modules/tvStore';
-import { listEpisodes } from "@/api/tv";
+import { listEpisodes } from "@/api/video";
 import Player from "@/views/player/index.vue";
 
 const tvStore = useTvStoreHook();
@@ -28,11 +28,8 @@ const m3u8Link = ref("")  // 播放link
 const activeEpisode = ref(null);  // 选择的集数
 
 async function initData() {
-  const params = {
-    tv_title: tvDetails.title,
-  };
-
-  const res = await listEpisodes(params);
+  const res = await listEpisodes(tvDetails.id);
+  console.log(res)
   res.sort((a, b) => a.index - b.index); 
   m3u8Link.value = res[0].link
   episodes.value = res

@@ -1,6 +1,7 @@
 from flask import request, jsonify, abort
 from db import Video, VodDetail, PlayUrl, db,Source
 from utils.tools import with_app_context, paginate
+from sqlalchemy.orm import joinedload
 
 @with_app_context
 def create_video():
@@ -245,3 +246,19 @@ def search_video():
   
     data = [item.to_dict() for item in video]  
     return jsonify({"code": 200, "result": data})  
+
+@with_app_context
+def get_video_with_details(video_id: int):
+    """
+    根据video id查询视频及其所有详情信息。
+    
+    :param video_id: 视频的id
+    :param session: 数据库会话对象
+    :return: 包含视频详情的Video实例
+    """
+    query = db.session.query(Video).options(
+        joinedload(Video.vod_detail).subqueryload(VodDetail.play_url)
+    ).get(video_id)
+    data = [query.to_dict()] 
+    
+    return jsonify({"code": 200, "result": data})
