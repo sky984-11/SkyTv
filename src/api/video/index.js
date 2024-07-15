@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-26 15:32:37
- * @LastEditTime: 2024-07-12 18:40:51
+ * @LastEditTime: 2024-07-15 08:44:52
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
@@ -17,7 +17,7 @@ export function listVideo(params) {
 
 export function listHotVideo(params) {
   return http.request({
-    url: "/video/list/hot",
+    url: "/video/hot",
     method: "get",
     params
   });
