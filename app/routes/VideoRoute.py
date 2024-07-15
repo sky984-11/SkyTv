@@ -163,7 +163,6 @@ def sync_video():
             db.session.flush() 
         else:
             source = Source.query.filter_by(main=True).first()
-            print('查询主要源')
             if not source:
                 abort(400, "缺少主要源")
             if source.name == data['play_from']:   # 只更新主要源
@@ -174,7 +173,6 @@ def sync_video():
         # 获取或创建VodDetail
         vod_detail = VodDetail.query.filter_by(video_id=video.id, vod_episodes=data['vod_episodes']).first()
         if not vod_detail:
-            print('没获取到开始添加')
             vod_detail = VodDetail(
                 vod_content=data['vod_content'],
                 vod_tag=data['vod_tag'],
@@ -237,7 +235,6 @@ def search_video():
     pattern = request.args.get('pattern', 'fuzzy', type=str).lower()  # 默认是模糊匹配
     if not keyword:  
         return jsonify({"code": 400, "msg": "关键词不能为空"}), 400  
-    print(keyword,pattern)
   
     if pattern == 'exact':  
         # 精确匹配  
