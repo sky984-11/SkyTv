@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-15 09:04:00
+ * @LastEditTime: 2024-07-16 13:54:34
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -30,15 +30,15 @@ const activeEpisode = ref(null);  // 选择的集数
 async function initData() {
   const res = await listEpisodes(tvDetails.id);
   console.log(res)
-  res.sort((a, b) => a.index - b.index); 
-  m3u8Link.value = res[0].link
+  res.sort((a, b) => a.vod_episodes_index - b.vod_episodes_index); 
+  m3u8Link.value = res[0].play_urls.play_url
   episodes.value = res
   activeEpisode.value = res[0].id;
 
 }
 
 const setActiveEpisode = (episode) => {
-  m3u8Link.value = episode.link;
+  m3u8Link.value = episode.play_urls.play_url;
   activeEpisode.value = episode.id;
 };
 
@@ -73,7 +73,7 @@ onMounted(() => {
             <button color="#7232dd" plain v-for="item in episodes" :key="item.id"
               :class="['px-4 py-2 mx-1 rounded-md', item.id === activeEpisode ? 'bg-blue-500 ' : '']"
               @click="setActiveEpisode(item)">
-              {{ item.episode }}
+              {{ item.vod_episodes }}
             </button>
           </div>
         </div>
