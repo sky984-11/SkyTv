@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-16 13:54:34
+ * @LastEditTime: 2024-07-16 14:05:38
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -21,7 +21,7 @@ const tvDetails = tvStore.tvDetails;
 const activeTab = ref('视频')
 const tabs = ref(['视频', '讨论'])
 const videoTitle = ref(tvDetails.vod_title)
-const videoDesc = ref(tvDetails.description)
+const videoDesc = ref("")
 const videoRating = ref(tvDetails.rating)
 const episodes = ref([])
 const m3u8Link = ref("")  // 播放link
@@ -32,6 +32,7 @@ async function initData() {
   console.log(res)
   res.sort((a, b) => a.vod_episodes_index - b.vod_episodes_index); 
   m3u8Link.value = res[0].play_urls.play_url
+  videoDesc.value =  res[0].vod_content
   episodes.value = res
   activeEpisode.value = res[0].id;
 

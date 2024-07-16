@@ -4,13 +4,13 @@ import { listVideo } from "@/api/video";
 import { useRouter } from 'vue-router'; 
 import { useTvStoreHook } from '@/store/modules/tvStore';
 
-const activeType = ref('电视剧')  // 默认tab为电视剧
+const activeType = ref('剧集')  // 默认tab为剧集
 const videoList = ref([])   // 视频列表数据
 const loading = ref(false);  //下拉加载
 const finished = ref(false); //是否加载完成
 const page = ref(1); // 当前页
 const perPage = ref(20); // 每页数量
-const tabList = ref(['电视剧','电影','动漫'])
+const tabList = ref(['剧集','电影','动漫'])
 const router = useRouter();
 
 async function fetchData() {
@@ -23,7 +23,6 @@ async function fetchData() {
     };
     const res = await listVideo(params);
     
-    console.log(res) 
     if (res.length < perPage.value) {
       finished.value = true;
     }
