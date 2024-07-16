@@ -255,13 +255,18 @@ def get_video_with_details(video_id: int):
     :param video_id: 视频的id
     :return: 包含视频详情的字典列表
     """
-    # 使用all()获取所有匹配的记录
-    # options(joinedload(VodDetail.play_url))
-    query = db.session.query(VodDetail).filter(VodDetail.id == video_id).all()
+    video_details_list = db.session.query(VodDetail) \
+        .options(joinedload(VodDetail.play_url)) \
+        .filter(VodDetail.id == video_id) \
+        .all()
+
+    if not video_details_list:
+        return jsonify({"code": 404, "message": "No videos found with the given ID"}), 404
+
     data = []
-    for video in query:
-        video_dict = video.to_dict()
-        play_urls = [play_url.to_dict() for play_url in video.play_url]
-        video_dict['play_urls'] = play_urls
+    for video_details in video_details_list:
+        video_dict = video_details.to_dict()
+        video_dict['play_urls'] = [play_url.to_dict() for play_url in video_details.play_url]
         data.append(video_dict)
-    return jsonify({"code": 200, "result": data})
+    print(data)
+    return jsonify({"code": 200, "result": data}), 200
