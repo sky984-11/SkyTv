@@ -253,12 +253,15 @@ def get_video_with_details(video_id: int):
     根据video id查询视频及其所有详情信息。
     
     :param video_id: 视频的id
-    :param session: 数据库会话对象
-    :return: 包含视频详情的Video实例
+    :return: 包含视频详情的字典列表
     """
-    query = db.session.query(Video).options(
-        joinedload(Video.vod_detail).subqueryload(VodDetail.play_url)
-    ).get(video_id)
-    data = [query.to_dict()] 
-    
+    # 使用all()获取所有匹配的记录
+    # options(joinedload(VodDetail.play_url))
+    query = db.session.query(VodDetail).filter(VodDetail.id == video_id).all()
+    data = []
+    for video in query:
+        video_dict = video.to_dict()
+        play_urls = [play_url.to_dict() for play_url in video.play_url]
+        video_dict['play_urls'] = play_urls
+        data.append(video_dict)
     return jsonify({"code": 200, "result": data})
