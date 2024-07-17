@@ -1,5 +1,5 @@
 from flask import request, jsonify, abort
-from db import Video, VodDetail, PlayUrl, db,Source
+from db import Video, VodDetail, PlayUrl, db,Source,app
 from utils.tools import with_app_context, paginate
 from sqlalchemy.orm import joinedload
 
@@ -149,6 +149,7 @@ def sync_video():
     required_fields = ['vod_title', 'vod_type', 'vod_pic_url', 
                        'vod_content', 'vod_tag', 'play_from', 'vod_episodes', 'play_url','vod_total_episodes']
     if not all(field in data for field in required_fields):
+        app.logger.error(f"缺少必要的数据字段: {required_fields}")
         abort(400, "缺少必要的数据字段")
 
     try:
@@ -165,6 +166,7 @@ def sync_video():
         else:
             source = Source.query.filter_by(main=True).first()
             if not source:
+                app.logger.error(f"缺少主要源")
                 abort(400, "缺少主要源")
             if source.name == data['play_from']:   # 只更新主要源
                 video.vod_pic_url = data['vod_pic_url']
@@ -199,6 +201,7 @@ def sync_video():
         
         db.session.commit()
     except Exception as e:
+        app.logger.error(f"{data['vod_title']}:{e}")
         db.session.rollback()
         abort(500, f"数据库操作失败: {e}")
     return jsonify({'message': '视频信息同步成功'}), 201
@@ -209,7 +212,7 @@ def list_hot_video():
     根据video_list中的标题从数据库中查找并返回视频数据。
     """
     # 假设video_list是一个包含视频标题的列表
-    video_titles = ['咒术回战']  # 示例，替换为实际的video_list
+    video_titles = ['咒术回战','误杀','玫瑰的故事','鬼灭之刃','火影忍者','海贼王·动漫合集','怪兽8号','消失的她','我才不要和你做朋友呢']
     
     # 创建一个空列表来存储找到的视频
     found_videos = []

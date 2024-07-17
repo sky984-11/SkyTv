@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-07 09:40:56
+LastEditTime: 2024-07-17 13:47:39
 LastEditors: sky
 '''
 # Scrapy settings for parser_video project
@@ -27,7 +27,7 @@ NEWSPIDER_MODULE = "parser_video.spiders"
 ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
-#CONCURRENT_REQUESTS = 32
+CONCURRENT_REQUESTS = 32
 
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay

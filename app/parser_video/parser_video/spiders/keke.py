@@ -88,7 +88,7 @@ class KekeSpider(scrapy.Spider):
                     }
                 )
         except Exception as e:
-            self.logger.error(f"Error while parsing response for URL: {response.url}. Error: {e}")
+            print(f"Error while parsing response for URL: {response.url}. Error: {e}")
             # 可以在这里添加重试机制，例如使用 response.request.meta['retry_times'] 来控制重试次数
 
     def parse_episodes(self,response):
