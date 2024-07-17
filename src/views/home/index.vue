@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-15 08:49:04
+ * @LastEditTime: 2024-07-17 14:29:09
  * @LastEditors: sky
 -->
 <script setup name="Home">
@@ -41,13 +41,12 @@ async function fetchData() {
       throw new Error("API返回的数据不是一个数组");
     }
     const groupedByType = groupTvByType(res);
-    console.log(groupedByType)
     // 检查是否有预期的3种类别
     if (groupedByType.length < 3) {
       throw new Error("API返回的类型数组长度不足");
     }
     // 更新数据对象
-    tvObj.value["热播剧集"] = groupedByType['电视剧']
+    tvObj.value["热播剧集"] = groupedByType['剧集']
     tvObj.value["热播电影"] = groupedByType['电影']
     tvObj.value["热播动漫"] = groupedByType['动漫']
   } catch (error) {
