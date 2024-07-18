@@ -1,10 +1,4 @@
-"""
-@ Date: 2024-04-26 15:31:44
-@ LastEditors: sky
-@ LastEditTime: 2024-05-08 10:11:11
-@ FilePath: /SkyTunnel/app/config.py
-@ Desc: 
-"""
+
 import os 
 
 
@@ -20,7 +14,7 @@ class BaseConfig(object):
 class ProductionConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = "sqlite:///" + DATABASE_PATH
     # 这里填写自己的服务端地址
-    SERVER_NAME='127.0.0.1:5115'
+    SERVER_NAME='113.31.114.236:5115'
     DEBUG=True
 
  
