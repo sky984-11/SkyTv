@@ -1,3 +1,10 @@
+'''
+Description: 
+Author: sky
+Date: 2024-07-06 14:07:33
+LastEditTime: 2024-07-18 13:41:47
+LastEditors: sky
+'''
 
 
 from flask import Flask
@@ -26,8 +33,8 @@ def configure_logging(app):
 configure_logging(app)
 
 
-if __name__ == '__main__':
-    from router import b1
-    # 加载路由
-    app.register_blueprint(b1)
-    app.run(host="0.0.0.0")
+# if __name__ == '__main__':
+from router import b1
+# 加载路由
+app.register_blueprint(b1)
+app.run(host="0.0.0.0")
