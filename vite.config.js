@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: sky
+ * @Date: 2024-06-24 09:34:10
+ * @LastEditTime: 2024-07-20 06:24:01
+ * @LastEditors: sky
+ */
 import { fileURLToPath, URL } from "node:url";
 import vueSetupExtend from "vite-plugin-vue-setup-extend";
 import { defineConfig, loadEnv } from "vite";
@@ -20,7 +27,7 @@ export default defineConfig(({ mode }) => {
   // 环境变量
   const env = loadEnv(mode, root, "");
   return {
-    base: env.VITE_BASE_URL || "/",
+    base: env.VITE_BASE_URL || "./",
     plugins: [
       vue(),
       vueJsx(),
