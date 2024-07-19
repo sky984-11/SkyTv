@@ -81,14 +81,14 @@ const groupedTvKeys = computed(() => Object.keys(tvObj.value));
 </script>
 
 <template>
-  <div >
+  <div>
     <div v-for="label in groupedTvKeys" :key="label">
       <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px', fontSize: '35px' }">
         {{ label }}
       </van-divider>
-      <van-list >
-        <div class="flex flex-wrap gap-4">
-          <div class="relative w-[calc(50%-8px)]" v-for="item in tvObj[label]" :key="item.id" @click="toDetails(item)">
+      <van-list>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          <div class="relative" v-for="item in tvObj[label]" :key="item.id" @click="toDetails(item)">
             <van-image :src="item.vod_pic_url" class="w-full h-auto" alt="视频缩略图" />
             <div
               class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-full text-center bg-black bg-opacity-50 text-white py-1 box-border overflow-hidden text-ellipsis whitespace-nowrap">
@@ -96,8 +96,7 @@ const groupedTvKeys = computed(() => Object.keys(tvObj.value));
             </div>
           </div>
         </div>
-
       </van-list>
     </div>
   </div>
-  </template>
+</template>
