@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-20 06:24:01
+ * @LastEditTime: 2024-07-20 06:49:44
  * @LastEditors: sky
  */
 import { fileURLToPath, URL } from "node:url";
@@ -66,11 +66,6 @@ export default defineConfig(({ mode }) => {
       host: true,
       // 仅在 proxy 中配置的代理前缀， mock-dev-server 才会拦截并 mock
       // doc: https://github.com/pengzhanbo/vite-plugin-mock-dev-server
-      proxy: {
-        "^/dev-api": {
-          target: ""
-        }
-      }
     },
     build: {
       rollupOptions: {
