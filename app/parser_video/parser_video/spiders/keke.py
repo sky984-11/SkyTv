@@ -5,23 +5,18 @@ import re
 from parser_video.utils.api import Api
 from parser_video.utils.tools import read_white_list
 from parser_video.items import ParserVideoItem
-from parser_video.utils.cache import MultiDBCacheManager
+# from parser_video.utils.cache import MultiDBCacheManager
 
 # 思考：如何减少请求次数(接口请求和网站请求)
 
 class KekeSpider(scrapy.Spider):
     name = "keke"
-    custom_settings = {
-        'ROBOTSTXT_OBEY': False,
-        'DOWNLOAD_DELAY': 1,
-    }
-
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.api = Api()
         self.base_url = None
         self.white_list = read_white_list()
-        self.cahce = MultiDBCacheManager()
+        # self.cahce = MultiDBCacheManager()
 
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
@@ -30,13 +25,14 @@ class KekeSpider(scrapy.Spider):
         return spider
 
     def start_requests(self):
+        #title + source + type确定唯一video,后续缓存以此为key存储url
         if self.base_url:
-            for title in self.white_list:
-                search_url = f"{self.base_url}/search?os=pc&k={title}"
+            for item in self.white_list:
+                search_url = f"{self.base_url}/search?os=pc&k={item[0]}"
                 yield Request(
                     url=search_url,
                     callback=self.parse,
-                    meta={"vod_title": title}
+                    meta={"vod_title": item[0],"vod_type": item[1]}
                 )
 
     def extract_play_url(self, html):
@@ -45,32 +41,14 @@ class KekeSpider(scrapy.Spider):
         return match.group(1) if match else ""
 
     def parse(self, response):
-        # yield {
-        #         'play_from': 'keke',
-        #         'play_status': True,
-        #         'play_title': '玫瑰的故事',
-        #         'play_url': 'https://172.80.104.114:11301/data6/files/hls/dhz/21/20556/24062019/909746/1920/index.m3u8?appId=kkdy&sign=a8ffad5de88bc7038c378e20494f3739&timestamp=1720416546',
-        #         'vod_content': '\n'
-        #             '                            出生于书香世家的黄亦玫（刘亦菲 '
-        #             '饰）一路在呵护中长大，从小便展露出艺术天赋。初入职场的黄亦玫很快受到重用，与合作伙伴庄国栋相识相爱，但最终错过彼此，这段职场磨炼也令她对自己的人生有了更清晰的规划，决定重返校园求学深造。毕业后，她和学长方协文步入婚姻殿堂。可婚后两人发展方向相去甚远，最 '
-        #             '终选择离婚。黄亦玫开始创业，在艺术品策展领域打拼出一片天地，在此期间还遇到了自己的灵魂伴侣溥家明，可溥家明只剩几个月的生命，两人这段爱情最终以生死离别画上句号。 '
-        #             '但黄亦玫没有就此消沉，她还是一如既往地为活出更精彩的自己而努力着。\n'
-        #             '                        ',
-        #         'vod_episodes': '第28集',
-        #         'vod_episodes_index': 28,
-        #         'vod_pic_url': 'https://61.147.93.252:15002/vod1/vod/cover/20240603/12/48/06/717ceb0c8dfbdcf93a287e81a396db20.jpg',
-        #         'vod_source': 'keke',
-        #         'vod_tag': '2024/中国大陆/内地剧,剧情,国产剧,大陆剧',
-        #         'vod_title': '玫瑰的故事',
-        #         'vod_total_episodes': '已完结 番外',
-        #         'vod_type': '剧集'
-        #     }
         try:
             vod_title = response.meta['vod_title']
+            vod_type = response.meta['vod_type']
             video_list = response.css('a.search-result-item')
             for video in video_list:
                 title_text = video.css('.title::text').get()
-                if title_text == vod_title:
+                type_text = video.css('.search-result-item-header div::text').get()
+                if title_text == vod_title and type_text == vod_type:
                     user_image_url = response.xpath('/html/body/div[1]/div[3]/div[1]/div[5]/a/img/@src').get()
                     parsed_url = urlparse(user_image_url)
                     base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
@@ -82,7 +60,7 @@ class KekeSpider(scrapy.Spider):
                     meta={
                         "vod_title": vod_title,
                         "vod_pic_url": ''.join([base_url,video.css('img::attr(data-original)').get()]),
-                        "vod_type":video.css('.search-result-item-header div::text').get(),
+                        "vod_type":vod_type,
                         "vod_tag":'/'.join(video.css('.tags span::text').getall()),
                         "vod_content":video.css('.desc::text').get()
                     }
@@ -105,9 +83,8 @@ class KekeSpider(scrapy.Spider):
             vod_episodes = data.xpath('text()').get()
             response.meta['vod_episodes'] = vod_episodes
             response.meta['vod_episodes_index'] = vod_episodes_index
-
-            next_url = ''.join([self.base_url,data.xpath('@href').get()])
-
+            url_href = data.xpath('@href').get()
+            next_url = ''.join([self.base_url,url_href])
 
             yield Request(
                     url=next_url,
@@ -125,5 +102,5 @@ class KekeSpider(scrapy.Spider):
         item = ParserVideoItem(**valid_meta)
         item['play_url'] = play_url
         item['play_status'] = True
-        item['play_from'] = self.name
+        item['play_from'] = self.name     
         yield item
