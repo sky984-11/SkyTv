@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-16 14:05:38
+ * @LastEditTime: 2024-07-20 08:46:02
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -50,9 +50,9 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="flex flex-col">
+  <div class="flex flex-col h-full">
     <!-- 视频部分 -->
-    <Player :link="m3u8Link"></Player>
+    <Player :link="m3u8Link" class="flex-grow"></Player>
 
     <!-- 选项卡部分 -->
     <van-tabs v-model:active="activeTab" class="mt-2">

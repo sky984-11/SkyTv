@@ -171,6 +171,7 @@ def sync_video():
             if source.name == data['play_from']:   # 只更新主要源
                 video.vod_pic_url = data['vod_pic_url']
                 video.vod_total_episodes = data['vod_total_episodes']
+                db.session.flush()  
 
 
         # 获取或创建VodDetail
@@ -184,6 +185,7 @@ def sync_video():
                 video_id=video.id
             )
             db.session.add(vod_detail)
+            db.session.flush()  
 
         # 获取或创建PlayUrl
         play_url = PlayUrl.query.filter_by(vod_detail_id=vod_detail.id, play_from=data['play_from']).first()
@@ -195,9 +197,11 @@ def sync_video():
                 vod_detail_id=vod_detail.id
             )
             db.session.add(play_url)
+            db.session.flush()  
         else:
             play_url.play_status = data['play_status']
             play_url.play_url = data['play_url']
+            db.session.flush()  
         
         db.session.commit()
     except Exception as e:
@@ -212,7 +216,7 @@ def list_hot_video():
     根据video_list中的标题从数据库中查找并返回视频数据。
     """
     # 假设video_list是一个包含视频标题的列表
-    video_titles = ['咒术回战','误杀','鬼灭之刃','火影忍者','海贼王·动漫合集','怪兽8号','消失的她','我才不要和你做朋友呢']
+    video_titles = ['咒术回战','误杀','火影忍者','海贼王·动漫合集','怪兽8号','消失的她','我才不要和你做朋友呢']
     
     # 创建一个空列表来存储找到的视频
     found_videos = []
