@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-10 14:19:12
+LastEditTime: 2024-07-22 09:02:41
 LastEditors: sky
 '''
 # Define here the models for your scraped items
@@ -26,3 +26,4 @@ class ParserVideoItem(scrapy.Item):
     play_from = scrapy.Field()
     play_status = scrapy.Field()
     play_url = scrapy.Field()
+    play_page = scrapy.Field()

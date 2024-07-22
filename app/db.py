@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-06 08:11:16
-LastEditTime: 2024-07-15 14:11:17
+LastEditTime: 2024-07-20 21:01:39
 LastEditors: sky
 '''
 
@@ -83,6 +83,7 @@ class PlayUrl(BaseModel):
     play_from = db.Column(db.String(255), nullable=False, comment='播放来源')
     play_status = db.Column(db.Boolean, default=True, comment='播放状态')
     play_url = db.Column(db.Text, nullable=False, unique=True, comment='播放URL')
+    play_page = db.Column(db.Text, comment='播放页url，用于更新play_url')
     
     vod_detail_id = db.Column(db.Integer, db.ForeignKey('vod_detail.id', ondelete='CASCADE'), nullable=False)
 

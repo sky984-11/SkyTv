@@ -84,6 +84,7 @@ class KekeSpider(scrapy.Spider):
             response.meta['vod_episodes'] = vod_episodes
             response.meta['vod_episodes_index'] = vod_episodes_index
             url_href = data.xpath('@href').get()
+            response.meta['play_page'] = url_href  # 存储爬取播放地址界面
             next_url = ''.join([self.base_url,url_href])
 
             yield Request(

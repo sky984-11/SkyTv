@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-20 08:46:02
+ * @LastEditTime: 2024-07-21 14:35:04
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -29,7 +29,7 @@ const activeEpisode = ref(null);  // 选择的集数
 
 async function initData() {
   const res = await listEpisodes(tvDetails.id);
-  console.log(res)
+  // console.log(res)
   res.sort((a, b) => a.vod_episodes_index - b.vod_episodes_index); 
   m3u8Link.value = res[0].play_urls.play_url
   videoDesc.value =  res[0].vod_content
