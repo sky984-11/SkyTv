@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-01 17:52:55
+ * @LastEditTime: 2024-07-23 17:14:24
  * @LastEditors: sky
  */
 import Layout from "@/layout/index.vue";
@@ -46,6 +46,15 @@ const routes = [
         component: () => import("@/views/search/index.vue"),
         meta: {
           title: "搜索",
+          noCache: true
+        }
+      },
+      {
+        path: "history",
+        name: "History",
+        component: () => import("@/views/history/index.vue"),
+        meta: {
+          title: "播放历史",
           noCache: true
         }
       },

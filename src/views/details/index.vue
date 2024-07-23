@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-23 14:27:11
+ * @LastEditTime: 2024-07-23 17:39:30
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -11,6 +11,7 @@ import { ref, onMounted } from "vue";
 import { useTvStoreHook } from '@/store/modules/tvStore';
 import { listEpisodes } from "@/api/video";
 import Player from "@/views/player/index.vue";
+import cache from "@/utils/cache";
 
 const tvStore = useTvStoreHook();
 // 在组件创建时获取 tvDetails

@@ -1,3 +1,10 @@
+<!--
+ * @Description: 
+ * @Author: sky
+ * @Date: 2024-06-25 14:18:22
+ * @LastEditTime: 2024-07-23 17:34:40
+ * @LastEditors: sky
+-->
 <script setup name="Player">
 import { ref, watch, onMounted } from "vue";
 import Hls from 'hls.js';
@@ -6,10 +13,12 @@ const props = defineProps({
   link: String,
 });
 const video = ref(null);
+const progress = ref(0); // 存储播放进度，实时更新播放记录中的数据
 
 onMounted(() => {
   setupPlayer(props.link);
   addFullScreenListeners(); // 添加全屏事件监听器
+  addTimeUpdateListener();
 });
 
 watch(() => props.link, (newLink) => {
@@ -51,6 +60,26 @@ function isFullScreen() {
          document.mozFullScreenElement ||
          false;
 }
+
+// 监听 timeupdate 事件以获取播放进度
+function addTimeUpdateListener() {
+  video.value.addEventListener('timeupdate', () => {
+    const currentTime = video.value.currentTime;
+    const duration = video.value.duration;
+    if (!isNaN(duration)) {
+      progress.value = (currentTime / duration) * 100;
+    }
+  });
+}
+
+// 根据播放进度百分比跳转到视频的特定位置
+function seekTo(percentage) {
+  const duration = video.value.duration;
+  if (!isNaN(duration)) {
+    const time = (percentage / 100) * duration;
+    video.value.currentTime = time;
+  }
+}
 </script>
 
 <template>
@@ -59,7 +88,3 @@ function isFullScreen() {
     </video>
   </div>
 </template>
-
-<style scoped>
-/* 可以在这里添加你的样式 */
-</style>

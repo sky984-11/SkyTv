@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-01 17:52:27
+ * @LastEditTime: 2024-07-23 17:16:45
  * @LastEditors: sky
 -->
 <template>
@@ -31,7 +31,7 @@ const tabbarData = reactive([
     }
   },
   {
-    icon: "gem-o",
+    icon: "list-switch",
     title: "分类",
     to: {
       name: "Group"
