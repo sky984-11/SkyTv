@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-07-23 17:20:19
- * @LastEditTime: 2024-07-23 17:24:13
+ * @LastEditTime: 2024-07-23 17:59:32
  * @LastEditors: sky
  */
 // cache.js
@@ -45,7 +45,7 @@ class LocalCache {
   }
   
 
-  const cache = new LocalCache('SkyTv');
+  const cache = new LocalCache('SkyTv-');
   export default cache;
 
 // 使用示例
