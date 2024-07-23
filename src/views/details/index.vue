@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-21 14:35:04
+ * @LastEditTime: 2024-07-23 14:29:14
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -22,6 +22,7 @@ const activeTab = ref('视频')
 const tabs = ref(['视频', '讨论'])
 const videoTitle = ref(tvDetails.vod_title)
 const videoDesc = ref("")
+const videoTag = ref(tvDetails.vod_tag)
 const videoRating = ref(tvDetails.rating)
 const episodes = ref([])
 const m3u8Link = ref("")  // 播放link
@@ -33,6 +34,7 @@ async function initData() {
   res.sort((a, b) => a.vod_episodes_index - b.vod_episodes_index); 
   m3u8Link.value = res[0].play_urls.play_url
   videoDesc.value =  res[0].vod_content
+  videoTag.value = res[0].vod_tag
   episodes.value = res
   activeEpisode.value = res[0].id;
 
@@ -63,6 +65,7 @@ onMounted(() => {
             <h2 class="text-xl font-semibold truncate" :title="videoTitle">{{ videoTitle }}</h2>
             <span class="ml-4 text-green-500">{{ videoRating }}</span>
           </div>
+          <p class="mt-2 text-blue-500">{{ videoTag }}</p>
           <p class="mt-2 text-gray-500">{{ videoDesc }}</p>
 
           <!-- Play Button Section -->
