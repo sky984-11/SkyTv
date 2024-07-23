@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-06 14:07:33
-LastEditTime: 2024-07-23 09:36:20
+LastEditTime: 2024-07-23 13:54:19
 LastEditors: sky
 '''
 
@@ -33,15 +33,15 @@ def configure_logging(app):
 configure_logging(app)
 
 
-if __name__ == '__main__':
-    from router import b1
-# 加载路由
-    app.register_blueprint(b1)
-    app.run(host="0.0.0.0")
+# if __name__ == '__main__':
+#     from router import b1
+# # 加载路由
+#     app.register_blueprint(b1)
+#     app.run(host="0.0.0.0")
 
 
 #服务器上启用下面
-# from router import b1
-# # 加载路由
-# app.register_blueprint(b1)
-# app.run(host="0.0.0.0")
+from router import b1
+# 加载路由
+app.register_blueprint(b1)
+app.run(host="0.0.0.0")
