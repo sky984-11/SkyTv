@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-06 14:07:33
-LastEditTime: 2024-07-23 13:54:19
+LastEditTime: 2024-07-23 14:07:05
 LastEditors: sky
 '''
 
@@ -17,7 +17,7 @@ app.config.from_object("config.ProductionConfig")
 
 
 def configure_logging(app):
-    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+    handler = RotatingFileHandler('./log/app.log', maxBytes=10000, backupCount=1)
     handler.setLevel(logging.INFO)
 
     formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
