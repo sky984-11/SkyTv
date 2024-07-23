@@ -14,8 +14,10 @@ import router from "./router";
 
 import { Search, Swipe, SwipeItem, Image as VanImage, List, Cell, CellGroup, Tab, Tabs } from 'vant';
 
+import Vue3TouchEvents from "vue3-touch-events"
 
 const app = createApp(App);
+app.use(Vue3TouchEvents);
 app.use(store);
 app.use(router);
 app.use(Search);
