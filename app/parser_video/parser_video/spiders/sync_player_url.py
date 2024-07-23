@@ -1,3 +1,10 @@
+'''
+Description: 
+Author: sky
+Date: 2024-07-22 09:15:51
+LastEditTime: 2024-07-23 10:30:34
+LastEditors: sky
+'''
 import scrapy
 from scrapy.http import Request
 from urllib.parse import urlparse
@@ -20,7 +27,7 @@ class KekeSpider(scrapy.Spider):
     @classmethod
     def from_crawler(cls, crawler, *args, **kwargs):
         spider = super().from_crawler(crawler, *args, **kwargs)
-        spider.base_url = spider.api.get_source(spider.name).get('url')
+        spider.base_url = spider.api.get_source('keke').get('url')
         return spider
 
     def start_requests(self):
@@ -30,12 +37,13 @@ class KekeSpider(scrapy.Spider):
             while True:
                 play_urls = self.api.get_all_play_urls(page)
                 for item in play_urls:
-                    next_url = ''.join([self.base_url,item['play_page']])
-                    yield Request(
-                        url=next_url,
-                        callback=self.parse_player,
-                        meta=item
-                    )
+                    if item['play_page']:
+                        next_url = ''.join([self.base_url,item['play_page']])
+                        yield Request(
+                            url=next_url,
+                            callback=self.parse_player,
+                            meta=item
+                        )
                 page += 1
                 if len(play_urls) < 10:
                     break
@@ -51,6 +59,6 @@ class KekeSpider(scrapy.Spider):
         爬取播放界面
         """
         play_url = self.extract_play_url(response.text)
-        item = {k: v for k, v in response.meta.items() if k in ParserVideoItem.fields}
-        item['play_url'] = play_url
+        item = response.meta
+        item = {"id":response.meta['id'],"play_url":play_url}
         yield item

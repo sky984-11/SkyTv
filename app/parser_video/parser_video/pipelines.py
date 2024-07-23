@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-22 09:14:29
+LastEditTime: 2024-07-23 10:29:12
 LastEditors: sky
 '''
 # Define your item pipelines here
@@ -24,6 +24,5 @@ class ParserVideoPipeline:
         if spider.name == 'keke':
             self.api.sync_video(item_dict)
         elif spider.name == 'sync_player_url':   #同步播放地址
-            # self.api.sync_player_url(item_dict)
-            self.api.sync_video(item_dict)
+            self.api.update_play_url(item_dict['id'],item_dict)
         return item

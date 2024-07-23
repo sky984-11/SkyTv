@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 09:03:33
-LastEditTime: 2024-07-22 13:57:55
+LastEditTime: 2024-07-23 10:28:11
 LastEditors: sky
 '''
 import requests
@@ -43,11 +43,11 @@ class Api:
         """
         return self._request('POST', url, data=data)
 
-    def get_data_from_server(self, url):
+    def get_data_from_server(self, url,params=None):
         """
         从服务器获取数据 (GET).
         """
-        return self._request('GET', url)
+        return self._request('GET', url,params)
 
     def update_data_on_server(self, data, url):
         """
@@ -71,7 +71,14 @@ class Api:
         """
         获取所有播放链接记录
         """
-        return self.get_data_from_server('/play_url/' + page)
+        params = {'page': page}
+        return self.get_data_from_server('/play_url',params=params)
+    
+    def update_play_url(self, play_url_id, data):
+        """
+        更新播放链接记录
+        """
+        return self.update_data_on_server(data, '/play_url/' + str(play_url_id))
         
 
     def sync_video(self,data):

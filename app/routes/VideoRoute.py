@@ -194,6 +194,7 @@ def sync_video():
                 play_from=data['play_from'],
                 play_status=data['play_status'],
                 play_url=data['play_url'],
+                play_page=data['play_page'],
                 vod_detail_id=vod_detail.id
             )
             db.session.add(play_url)
