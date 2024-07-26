@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-06 14:07:50
-LastEditTime: 2024-07-23 13:54:41
+LastEditTime: 2024-07-25 17:18:09
 LastEditors: sky
 '''
 
@@ -24,6 +24,11 @@ class ProductionConfig(BaseConfig):
     SERVER_NAME='113.31.114.236:5115'
     DEBUG=True
 
+class DevConfig(BaseConfig):
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + DATABASE_PATH
+    # 这里填写自己的服务端地址
+    SERVER_NAME='127.0.0.1:5115'
+    DEBUG=True
  
 class DefaultConfig(BaseConfig):
     API_VERSION='v1'

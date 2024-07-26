@@ -2,7 +2,7 @@
 Description: 路由
 Author: sky
 Date: 2024-07-06 14:12:59
-LastEditTime: 2024-07-15 09:02:08
+LastEditTime: 2024-07-25 17:06:06
 LastEditors: sky
 '''
 
@@ -15,6 +15,9 @@ from routes.SourceRoute import create_source,get_all_sources,get_source,update_s
 from routes.VideoRoute import create_video,get_all_videos,get_video,update_video,delete_video,sync_video,search_video,list_hot_video,get_video_with_details
 from routes.VodDetailRoute import create_vod_detail,get_all_vod_details,get_vod_detail,update_vod_detail,delete_vod_detail
 from routes.PlayUrlRoute import create_play_url,get_all_play_urls,get_play_url,update_play_url,delete_play_url
+from routes.ToolsRoute import check_for_updates
+
+
 
 # 创建蓝图
 b1 = Blueprint('b1', __name__)
@@ -85,4 +88,8 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/play_url/<int:play_url_id>', methods
 b1.route(f'/api/{DefaultConfig.API_VERSION}/play_url/<int:play_url_id>', methods=['DELETE'])(delete_play_url)
 ##################################### PlayUrl End  #####################################
 
+##################################### Tools Start #####################################
+# 版本更新检查
+b1.route(f'/api/{DefaultConfig.API_VERSION}/tools/check-for-updates', methods=['GET'])(check_for_updates)
 
+##################################### Tools End  #####################################

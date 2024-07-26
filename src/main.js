@@ -1,3 +1,10 @@
+/*
+ * @Description: 
+ * @Author: sky
+ * @Date: 2024-06-24 09:34:10
+ * @LastEditTime: 2024-07-25 17:56:54
+ * @LastEditors: sky
+ */
 import { createApp } from "vue";
 import { store } from "./store";
 // normalize.css
@@ -12,7 +19,7 @@ import "virtual:svg-icons-register";
 import App from "./App.vue";
 import router from "./router";
 
-import { Search, Swipe, SwipeItem, Image as VanImage, List, Cell, CellGroup, Tab, Tabs } from 'vant';
+import { Search, Swipe, SwipeItem, Image as VanImage, List, Cell, CellGroup, Tab, Tabs,Dialog } from 'vant';
 
 import Vue3TouchEvents from "vue3-touch-events"
 
@@ -29,4 +36,5 @@ app.use(Cell);
 app.use(CellGroup);
 app.use(Tab);
 app.use(Tabs);
+app.use(Dialog);
 app.mount("#app");
