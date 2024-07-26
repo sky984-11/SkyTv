@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-06 14:07:50
-LastEditTime: 2024-07-25 17:18:09
+LastEditTime: 2024-07-26 08:40:02
 LastEditors: sky
 '''
 
@@ -32,4 +32,5 @@ class DevConfig(BaseConfig):
  
 class DefaultConfig(BaseConfig):
     API_VERSION='v1'
+    APP_LOG = os.path.join(basedir, 'log/app.log')
     
