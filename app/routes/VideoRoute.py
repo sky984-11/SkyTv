@@ -153,7 +153,7 @@ def sync_video():
         abort(400, "缺少必要的数据字段")
 
     try:
-        video = Video.query.filter_by(vod_title=data['vod_title'], vod_type=data['vod_type'],vod_total_episodes=data['vod_total_episodes']).first()
+        video = Video.query.filter_by(vod_title=data['vod_title'], vod_type=data['vod_type']).first()
         if not video:
             video = Video(
                 vod_title=data['vod_title'],
