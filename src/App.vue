@@ -2,14 +2,15 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-25 18:07:17
+ * @LastEditTime: 2024-07-26 08:51:09
  * @LastEditors: sky
 -->
 <template>
   <router-view v-touch:swipe.left="SwipeLeft('left')" v-touch:swipe.right="SwipeRight('right')" />
 
-  <van-dialog v-model:show="show" title="更新提示" show-cancel-button>
-  {{ updateMessage }}
+  <van-dialog v-model:show="show" title="更新提示">
+  
+  <div v-html="updateMessage"></div>
 </van-dialog>
 </template>
 
@@ -30,9 +31,9 @@ async function initData() {
       client_version: client_version,
     };
     const res = await checkForUpdates(params);
-    if(res){
+    if(res && res.is_show){
       show.value = true;
-      updateMessage.value = `当前版本为:${res.client_version},请更新到最新版本:${res.latest_version},下载链接:${res.update_url}`;
+      updateMessage.value = `<p>当前版本为: ${res.client_version}，请更新到最新版本: ${res.latest_version}</p><p>下载链接: <a href="${res.update_url}" target="_blank">${res.update_url}</a></p>`;
     }
   } catch (error) {
     console.error('Error fetching updates:', error);
