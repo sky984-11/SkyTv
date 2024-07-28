@@ -1,3 +1,10 @@
+'''
+Description: 
+Author: sky
+Date: 2024-07-18 12:49:42
+LastEditTime: 2024-07-28 16:33:28
+LastEditors: sky
+'''
 
 
 # nohup gunicorn -c gunicorn.py run:app &
@@ -8,9 +15,9 @@ debug = True
 # 访问地址
 bind = "0.0.0.0:5115"
 # 工作进程数
-workers = 2
+workers = 1
 # 工作线程数
-threads = 2
+threads = 1
 # 超时时间
 timeout = 600
 # 输出日志级别

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-25 14:18:22
- * @LastEditTime: 2024-07-23 17:34:40
+ * @LastEditTime: 2024-07-28 16:46:25
  * @LastEditors: sky
 -->
 <script setup name="Player">
@@ -14,6 +14,7 @@ const props = defineProps({
 });
 const video = ref(null);
 const progress = ref(0); // 存储播放进度，实时更新播放记录中的数据
+console.log(progress)
 
 onMounted(() => {
   setupPlayer(props.link);
@@ -68,6 +69,10 @@ function addTimeUpdateListener() {
     const duration = video.value.duration;
     if (!isNaN(duration)) {
       progress.value = (currentTime / duration) * 100;
+      if(progress.value > 5){  // 大于5则开始更新到播放记录
+
+      }
+      console.log(progress.value)
     }
   });
 }

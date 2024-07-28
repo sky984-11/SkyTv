@@ -2,11 +2,11 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-26 08:51:09
+ * @LastEditTime: 2024-07-28 17:00:56
  * @LastEditors: sky
 -->
 <template>
-  <router-view v-touch:swipe.left="SwipeLeft('left')" v-touch:swipe.right="SwipeRight('right')" />
+  <router-view />
 
   <van-dialog v-model:show="show" title="更新提示">
   
@@ -40,12 +40,5 @@ async function initData() {
   }
 }
 
-function SwipeLeft(action) {
-  console.log(action)
-}
-function SwipeRight(action) {
-  console.log(action)
-  router.go(-1);
-}
 initData()
 </script>

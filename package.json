@@ -29,8 +29,7 @@
     "pinia": "^2.1.7",
     "vant": "^4.9.0",
     "vue": "^3.4.27",
-    "vue-router": "^4.3.2",
-    "vue3-touch-events": "^4.1.8"
+    "vue-router": "^4.3.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",

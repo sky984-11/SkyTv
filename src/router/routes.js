@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-23 17:14:24
+ * @LastEditTime: 2024-07-26 17:29:04
  * @LastEditors: sky
  */
 import Layout from "@/layout/index.vue";
@@ -20,7 +20,8 @@ const routes = [
         name: "Home",
         component: Home,
         meta: {
-          title: "主页"
+          title: "主页",
+          noCache: false
         }
       },
       {
@@ -28,7 +29,8 @@ const routes = [
         name: "Group",
         component: () => import("@/views/group/index.vue"),
         meta: {
-          title: "分类"
+          title: "分类",
+          noCache: false
         }
       },
       {
