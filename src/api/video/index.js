@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-26 15:32:37
- * @LastEditTime: 2024-07-15 09:03:28
+ * @LastEditTime: 2024-07-30 14:55:16
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
@@ -40,3 +40,11 @@ export function listEpisodes(video_id) {
   });
 }
 
+
+// 根据id获取iptv m3u8地址
+export function getIptvM3u8(id) {
+  return http.request({
+    url: "/iptv/" + id,
+    method: "get",
+  });
+}

@@ -1,8 +1,17 @@
+<!--
+ * @Description: 
+ * @Author: sky
+ * @Date: 2024-06-24 09:34:10
+ * @LastEditTime: 2024-07-30 15:02:22
+ * @LastEditors: sky
+-->
 <script setup name="Group">
 import { ref, onMounted } from "vue";
 import { listVideo } from "@/api/video";
 import { useRouter } from 'vue-router';
 import { useTvStoreHook } from '@/store/modules/tvStore';
+import imageMap from "@/utils/imageMap.js"
+
 
 const activeType = ref('剧集')  // 默认tab为剧集
 const videoList = ref([])   // 视频列表数据
@@ -10,7 +19,7 @@ const loading = ref(false);  //下拉加载
 const finished = ref(false); //是否加载完成
 const page = ref(1); // 当前页
 const perPage = ref(20); // 每页数量
-const tabList = ref(['剧集', '电影', '动漫'])
+const tabList = ref(['剧集', '电影', '动漫', '频道'])
 const router = useRouter();
 
 async function fetchData() {
@@ -21,13 +30,24 @@ async function fetchData() {
       per_page: perPage.value,
       active_type: activeType.value
     };
-    const res = await listVideo(params);
 
-    if (res.length < perPage.value) {
-      finished.value = true;
+    if (activeType.value != '频道') {
+      var res = await listVideo(params);
+      if (res.length < perPage.value) {
+        finished.value = true;
+      }
+      videoList.value = [...videoList.value, ...res];
+      page.value += 1;
+    } else {
+      videoList.value = Object.keys(imageMap).map(title => ({
+        id: imageMap[title].match(/\/IPTV\/(\w+)\.png/)[1],
+        vod_pic_url: imageMap[title],
+        vod_title: title,
+      }));
     }
-    videoList.value = [...videoList.value, ...res];
-    page.value += 1;
+    console.log(videoList.value )
+
+
   } catch (error) {
     console.log(error)
   } finally {
@@ -54,6 +74,8 @@ function onClickTab() {
 
 function toDetails(tv) {
   // 将详情数据写入store
+  console.log(tv)
+  tv.type = activeType.value
   const tvStore = useTvStoreHook();
   tvStore.setTvDetails(tv);
 

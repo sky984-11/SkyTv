@@ -2,14 +2,14 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-28 19:18:47
+ * @LastEditTime: 2024-07-30 15:13:43
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
 <script setup name="Details">
 import { ref, onMounted } from "vue";
 import { useTvStoreHook } from '@/store/modules/tvStore';
-import { listEpisodes } from "@/api/video";
+import { listEpisodes,getIptvM3u8 } from "@/api/video";
 import Player from "@/views/player/index.vue";
 import cache from "@/utils/cache";
 // 观看超过5%缓存记录
@@ -34,18 +34,24 @@ const history = ref(tvDetails)  // 播放历史缓存
 
 
 async function initData() {
-  const res = await listEpisodes(tvDetails.id);
-  // console.log(res)
-  res.sort((a, b) => a.vod_episodes_index - b.vod_episodes_index); 
-  m3u8Link.value = res[0].play_urls.play_url
-  videoDesc.value =  res[0].vod_content
-  videoTag.value = res[0].vod_tag
-  episodes.value = res
-  history.value.vod_episodes_index = res[0].vod_episodes_index
-  history.value.vod_episodes = res[0].vod_episodes
-  history.value.vod_tag = res[0].vod_tag
-  history.value.play_url_id = res[0].id;
-  activeEpisode.value = res[0].id;
+  if (tvDetails.type == '频道') {
+    const res = await getIptvM3u8(tvDetails.id);
+    m3u8Link.value = res
+
+  } else {
+    const res = await listEpisodes(tvDetails.id);
+    res.sort((a, b) => a.vod_episodes_index - b.vod_episodes_index);
+    m3u8Link.value = res[0].play_urls.play_url
+    videoDesc.value = res[0].vod_content
+    videoTag.value = res[0].vod_tag
+    episodes.value = res
+    history.value.vod_episodes_index = res[0].vod_episodes_index
+    history.value.vod_episodes = res[0].vod_episodes
+    history.value.vod_tag = res[0].vod_tag
+    history.value.play_url_id = res[0].id;
+    activeEpisode.value = res[0].id;
+  }
+
 
 }
 
@@ -66,7 +72,7 @@ onMounted(() => {
     <Player :link="m3u8Link" :history="history" class="flex-grow"></Player>
 
     <!-- 选项卡部分 -->
-    <van-tabs v-model:active="activeTab" class="mt-2">
+    <van-tabs v-model:active="activeTab" class="mt-2" v-if="tvDetails.type != '频道'">
       <van-tab v-for="tab in tabs" :key="tab" :title="tab" :disabled="tab !== '视频'">
         <div v-if="tab === '视频'" class="p-4">
           <!-- 视频详情 -->

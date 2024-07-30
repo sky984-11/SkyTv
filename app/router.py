@@ -2,7 +2,7 @@
 Description: 路由
 Author: sky
 Date: 2024-07-06 14:12:59
-LastEditTime: 2024-07-25 17:06:06
+LastEditTime: 2024-07-30 15:05:30
 LastEditors: sky
 '''
 
@@ -16,6 +16,7 @@ from routes.VideoRoute import create_video,get_all_videos,get_video,update_video
 from routes.VodDetailRoute import create_vod_detail,get_all_vod_details,get_vod_detail,update_vod_detail,delete_vod_detail
 from routes.PlayUrlRoute import create_play_url,get_all_play_urls,get_play_url,update_play_url,delete_play_url
 from routes.ToolsRoute import check_for_updates
+from routes.IPTVRoute import get_url_by_id
 
 
 
@@ -93,3 +94,9 @@ b1.route(f'/api/{DefaultConfig.API_VERSION}/play_url/<int:play_url_id>', methods
 b1.route(f'/api/{DefaultConfig.API_VERSION}/tools/check-for-updates', methods=['GET'])(check_for_updates)
 
 ##################################### Tools End  #####################################
+
+##################################### IPTV Start #####################################
+# 根据id获取m3u8
+b1.route(f'/api/{DefaultConfig.API_VERSION}/iptv/<string:id>', methods=['GET'])(get_url_by_id)
+
+##################################### IPTV End  #####################################
