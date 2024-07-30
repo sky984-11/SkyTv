@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-26 17:41:09
+ * @LastEditTime: 2024-07-28 19:18:47
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -30,6 +30,8 @@ const videoRating = ref(tvDetails.rating)
 const episodes = ref([])
 const m3u8Link = ref("")  // 播放link
 const activeEpisode = ref(null);  // 选择的集数
+const history = ref(tvDetails)  // 播放历史缓存
+
 
 async function initData() {
   const res = await listEpisodes(tvDetails.id);
@@ -39,6 +41,10 @@ async function initData() {
   videoDesc.value =  res[0].vod_content
   videoTag.value = res[0].vod_tag
   episodes.value = res
+  history.value.vod_episodes_index = res[0].vod_episodes_index
+  history.value.vod_episodes = res[0].vod_episodes
+  history.value.vod_tag = res[0].vod_tag
+  history.value.play_url_id = res[0].id;
   activeEpisode.value = res[0].id;
 
 }
@@ -57,7 +63,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col h-full">
     <!-- 视频部分 -->
-    <Player :link="m3u8Link" class="flex-grow"></Player>
+    <Player :link="m3u8Link" :history="history" class="flex-grow"></Player>
 
     <!-- 选项卡部分 -->
     <van-tabs v-model:active="activeTab" class="mt-2">

@@ -2,15 +2,18 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-25 14:18:22
- * @LastEditTime: 2024-07-28 16:46:25
+ * @LastEditTime: 2024-07-28 19:27:11
  * @LastEditors: sky
 -->
 <script setup name="Player">
 import { ref, watch, onMounted } from "vue";
 import Hls from 'hls.js';
+import cache from "@/utils/cache";
+
 
 const props = defineProps({
   link: String,
+  history:Object,
 });
 const video = ref(null);
 const progress = ref(0); // 存储播放进度，实时更新播放记录中的数据
@@ -70,9 +73,11 @@ function addTimeUpdateListener() {
     if (!isNaN(duration)) {
       progress.value = (currentTime / duration) * 100;
       if(progress.value > 5){  // 大于5则开始更新到播放记录
-
+        let historyData = props.history
+        historyData.progress = progress.value
+        cache.setItem(historyData.vod_title,historyData)
       }
-      console.log(progress.value)
+      console.log(cache.getItem(props.history.vod_title))
     }
   });
 }

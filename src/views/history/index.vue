@@ -2,15 +2,15 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 14:32:44
- * @LastEditTime: 2024-07-23 17:17:03
+ * @LastEditTime: 2024-07-29 13:30:06
  * @LastEditors: sky
 -->
 <script setup name="Group">
 import { ref, onMounted} from "vue";
-import { searchVideo } from "@/api/video";
 
 import { useRoute,useRouter } from 'vue-router';
 import { useTvStoreHook } from '@/store/modules/tvStore';
+import cache from "@/utils/cache";
 
 const tvList = ref([])   // 视频列表数据
 const loading = ref(false);  //下拉加载
@@ -23,13 +23,7 @@ const searchQuery = ref('');
 async function fetchData() {
     try {
         loading.value = true;
-        const params = {
-            keyword:searchQuery.value,
-        };
-        console.log(params)
-
-
-        const res = await searchVideo(params);
+        const res = cache.getAllItems()
         console.log(res)
 
         tvList.value = res;
@@ -53,6 +47,7 @@ function toDetails(tv) {
 
 }
 
+initData()
 </script>
 
 <template>

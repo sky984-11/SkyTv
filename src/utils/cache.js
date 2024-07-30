@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-07-23 17:20:19
- * @LastEditTime: 2024-07-23 17:59:32
+ * @LastEditTime: 2024-07-29 13:27:29
  * @LastEditors: sky
  */
 // cache.js
@@ -41,6 +41,18 @@ class LocalCache {
       const keys = Object.keys(localStorage)
                         .filter(k => k.startsWith(this.prefix))
                         .forEach(k => localStorage.removeItem(k));
+    }
+
+    // 获取所有缓存数据
+    getAllItems() {
+          const allItems = [];
+          Object.keys(localStorage).forEach(key => {
+            if (key.startsWith(this.prefix)) {
+              const value = this.getItem(key.replace(this.prefix, ''));
+              allItems.push(value);
+            }
+          });
+          return allItems;
     }
   }
   

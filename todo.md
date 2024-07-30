@@ -8,3 +8,5 @@
 (B) 滚动更新 {cm:2024-07-26}
 (D) 投屏功能
 (D) 增加CCTV播放功能
+(D) 根据页面爬取数据还是无法播放问题处理
+https://github.com/BurningC4/Chinese-IPTV
