@@ -1,16 +1,23 @@
+<!--
+ * @Description: 
+ * @Author: sky
+ * @Date: 2024-06-25 14:18:22
+ * @LastEditTime: 2024-07-30 16:01:05
+ * @LastEditors: sky
+-->
 <script setup name="Player">
-import { ref, watch, onMounted, onBeforeUnmount } from "vue";
+import { ref, watch, onMounted } from "vue";
 import Hls from 'hls.js';
 import cache from "@/utils/cache";
 
+
 const props = defineProps({
   link: String,
-  history: Object,
+  history:Object,
 });
-
 const video = ref(null);
 const progress = ref(0); // 存储播放进度，实时更新播放记录中的数据
-let hls = null;
+console.log(progress)
 
 onMounted(() => {
   setupPlayer(props.link);
@@ -18,25 +25,13 @@ onMounted(() => {
   addTimeUpdateListener();
 });
 
-onBeforeUnmount(() => {
-  removeFullScreenListeners();
-  removeTimeUpdateListener();
-  if (hls) {
-    hls.destroy();
-  }
-});
-
 watch(() => props.link, (newLink) => {
   setupPlayer(newLink);
 });
 
 function setupPlayer(link) {
-  if (hls) {
-    hls.destroy();
-  }
-
   if (Hls.isSupported()) {
-    hls = new Hls();
+    const hls = new Hls();
     hls.loadSource(link);
     hls.attachMedia(video.value);
     hls.on(Hls.Events.MANIFEST_PARSED, () => {
@@ -50,23 +45,17 @@ function setupPlayer(link) {
 }
 
 function addFullScreenListeners() {
+  const handleFullScreenChange = () => {
+    if (isFullScreen()) {
+      screen.orientation.lock('landscape'); // 进入全屏时锁定横屏
+    } else {
+      screen.orientation.unlock(); // 退出全屏时解锁屏幕方向
+    }
+  };
+
   document.addEventListener('fullscreenchange', handleFullScreenChange);
   document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
   document.addEventListener('mozfullscreenchange', handleFullScreenChange);
-}
-
-function removeFullScreenListeners() {
-  document.removeEventListener('fullscreenchange', handleFullScreenChange);
-  document.removeEventListener('webkitfullscreenchange', handleFullScreenChange);
-  document.removeEventListener('mozfullscreenchange', handleFullScreenChange);
-}
-
-function handleFullScreenChange() {
-  if (isFullScreen()) {
-    screen.orientation.lock('landscape'); // 进入全屏时锁定横屏
-  } else {
-    screen.orientation.unlock(); // 退出全屏时解锁屏幕方向
-  }
 }
 
 function isFullScreen() {
@@ -76,26 +65,21 @@ function isFullScreen() {
          false;
 }
 
+// 监听 timeupdate 事件以获取播放进度
 function addTimeUpdateListener() {
-  video.value.addEventListener('timeupdate', handleTimeUpdate);
-}
-
-function removeTimeUpdateListener() {
-  video.value.removeEventListener('timeupdate', handleTimeUpdate);
-}
-
-function handleTimeUpdate() {
-  const currentTime = video.value.currentTime;
-  const duration = video.value.duration;
-  if (!isNaN(duration)) {
-    progress.value = (currentTime / duration) * 100;
-    if (progress.value > 5) {  // 大于5则开始更新到播放记录
-      let historyData = props.history;
-      historyData.progress = progress.value;
-      cache.setItem(historyData.vod_title, historyData);
+  video.value.addEventListener('timeupdate', () => {
+    const currentTime = video.value.currentTime;
+    const duration = video.value.duration;
+    if (!isNaN(duration)) {
+      progress.value = (currentTime / duration) * 100;
+      if(progress.value > 5){  // 大于5则开始更新到播放记录
+        let historyData = props.history
+        historyData.progress = progress.value
+        cache.setItem(historyData.vod_title,historyData)
+      }
+      console.log(cache.getItem(props.history.vod_title))
     }
-    console.log(cache.getItem(props.history.vod_title));
-  }
+  });
 }
 
 // 根据播放进度百分比跳转到视频的特定位置
@@ -114,7 +98,3 @@ function seekTo(percentage) {
     </video>
   </div>
 </template>
-
-<style scoped>
-/* Add any custom styles here */
-</style>
