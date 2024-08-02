@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 14:32:44
- * @LastEditTime: 2024-08-02 10:42:23
+ * @LastEditTime: 2024-08-02 10:50:58
  * @LastEditors: sky
 -->
 <script setup name="Group">
@@ -68,7 +68,7 @@ initData()
         <div
         @click.stop="deleteItem(item)"
         class="absolute top-2 right-2 flex items-center justify-center w-8 h-8 rounded-full bg-red-500 text-white">
-          <van-icon name="cross" /> <!-- 使用Font Awesome图标 -->
+        <van-icon name="close" />
         </div>
       </div>
     </div>
