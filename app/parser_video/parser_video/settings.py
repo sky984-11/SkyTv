@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-08-02 11:16:47
+LastEditTime: 2024-08-02 13:43:53
 LastEditors: sky
 '''
 # Scrapy settings for parser_video project
@@ -48,6 +48,13 @@ DOWNLOAD_DELAY = 1
 #    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 #    "Accept-Language": "en",
 #}
+DEFAULT_REQUEST_HEADERS = {
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+    'Accept-Language': 'en-US,en;q=0.5',
+    'Accept-Encoding': 'gzip, deflate, br',
+    'Connection': 'keep-alive',
+    'Upgrade-Insecure-Requests': '1',
+}
 
 # Enable or disable spider middlewares
 # See https://docs.scrapy.org/en/latest/topics/spider-middleware.html
@@ -93,6 +100,7 @@ ITEM_PIPELINES = {
 #HTTPCACHE_DIR = "httpcache"
 #HTTPCACHE_IGNORE_HTTP_CODES = []
 #HTTPCACHE_STORAGE = "scrapy.extensions.httpcache.FilesystemCacheStorage"
+HTTPERROR_ALLOWED_CODES = [403]#上面报的是403，就把403加入。
 
 # Set settings whose default value is deprecated to a future-proof value
 REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
