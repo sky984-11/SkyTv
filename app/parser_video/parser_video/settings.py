@@ -2,7 +2,7 @@
 Description: 
 Author: sky
 Date: 2024-07-07 08:38:01
-LastEditTime: 2024-07-23 13:54:34
+LastEditTime: 2024-08-02 11:16:47
 LastEditors: sky
 '''
 # Scrapy settings for parser_video project
@@ -32,7 +32,7 @@ CONCURRENT_REQUESTS = 32
 # Configure a delay for requests for the same website (default: 0)
 # See https://docs.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-DOWNLOAD_DELAY = 0.5
+DOWNLOAD_DELAY = 1
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
 #CONCURRENT_REQUESTS_PER_IP = 16
@@ -57,9 +57,9 @@ DOWNLOAD_DELAY = 0.5
 
 # Enable or disable downloader middlewares
 # See https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
+# DOWNLOADER_MIDDLEWARES = {
 #    "parser_video.middlewares.ParserVideoDownloaderMiddleware": 543,
-#}
+# }
 
 # Enable or disable extensions
 # See https://docs.scrapy.org/en/latest/topics/extensions.html
