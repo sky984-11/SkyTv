@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-29 17:22:12
+ * @LastEditTime: 2024-08-02 08:45:26
  * @LastEditors: sky
 -->
 <template>
@@ -18,11 +18,10 @@
 
 import { useRouter } from 'vue-router';
 import { checkForUpdates } from "@/api/tools";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 
 const show = ref(false);
 const updateMessage = ref("");
-const router = useRouter();
 
 async function initData() {
   try {

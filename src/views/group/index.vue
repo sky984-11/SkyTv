@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-30 15:02:22
+ * @LastEditTime: 2024-08-02 08:44:40
  * @LastEditors: sky
 -->
 <script setup name="Group">
@@ -19,7 +19,8 @@ const loading = ref(false);  //下拉加载
 const finished = ref(false); //是否加载完成
 const page = ref(1); // 当前页
 const perPage = ref(20); // 每页数量
-const tabList = ref(['剧集', '电影', '动漫', '频道'])
+const tabList = ref(['剧集', '电影', '动漫'])
+// , '频道'
 const router = useRouter();
 
 async function fetchData() {

@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2024-07-30 16:07:18
+ * @LastEditTime: 2024-07-31 16:29:15
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -69,7 +69,7 @@ onMounted(() => {
 <template>
   <div class="flex flex-col h-full">
     <!-- 视频部分 -->
-    <Player :link="m3u8Link" :history="history" class="flex-grow"></Player>
+    <Player link="https://ldncctvwbcdkshw.v.kcdnvip.com/ldncctvwbcd/cdrmldcctv1_1/index.m3u8?b=200-2100" :history="history" class="flex-grow"></Player>
 
     <!-- 选项卡部分 -->
     <van-tabs v-model:active="activeTab" class="mt-2" v-if="tvDetails.type != '频道'">
