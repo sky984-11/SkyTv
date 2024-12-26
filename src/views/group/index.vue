@@ -10,7 +10,7 @@ const loading = ref(false);  //下拉加载
 const finished = ref(false); //是否加载完成
 const page = ref(1); // 当前页
 const perPage = ref(20); // 每页数量
-const tabList = ref(['电视剧','电影','动漫'])
+const tabList = ref(['电视剧','电影','动漫','频道'])
 const router = useRouter();
 
 async function fetchData() {
@@ -30,6 +30,8 @@ async function fetchData() {
     tvList.value = [...tvList.value, ...res];
     page.value += 1;
   } catch (error) {
+    finished.value = true;
+    loading.value = false;
     console.log(error)
   } finally {
     loading.value = false;

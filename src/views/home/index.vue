@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-03 13:11:52
+ * @LastEditTime: 2024-12-26 09:34:51
  * @LastEditors: sky
 -->
 <script setup name="Home">
@@ -57,19 +57,15 @@ async function fetchData() {
   }
 }
 
-
-
 function initData() {
   fetchData();
 }
-
 
 function toDetails(tv) {
   // 将详情数据写入store
   const tvStore = useTvStoreHook();
   tvStore.setTvDetails(tv);
   router.push({ name: 'Details' });
-
 }
 
 onMounted(() => {
