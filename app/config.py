@@ -1,10 +1,11 @@
-"""
-@ Date: 2024-04-26 15:31:44
-@ LastEditors: sky
-@ LastEditTime: 2024-05-08 10:11:11
-@ FilePath: /SkyTunnel/app/config.py
-@ Desc: 
-"""
+'''
+Description: 
+Author: sky
+Date: 2024-07-06 14:07:50
+LastEditTime: 2024-12-30 09:08:52
+LastEditors: sky
+'''
+
 import os 
 
 
@@ -23,7 +24,13 @@ class ProductionConfig(BaseConfig):
     SERVER_NAME='127.0.0.1:5115'
     DEBUG=True
 
+class DevConfig(BaseConfig):
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + DATABASE_PATH
+    # 这里填写自己的服务端地址
+    SERVER_NAME='127.0.0.1:5115'
+    DEBUG=True
  
 class DefaultConfig(BaseConfig):
     API_VERSION='v1'
+    APP_LOG = os.path.join(basedir, 'log/app.log')
     

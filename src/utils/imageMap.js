@@ -1,0 +1,73 @@
+/*
+ * @Description: 
+ * @Author: sky
+ * @Date: 2024-07-29 17:12:04
+ * @LastEditTime: 2024-07-30 08:54:40
+ * @LastEditors: sky
+ */
+// utils/imageMap.js
+
+const imageMap = {
+    'CCTV-1 综合': '/IPTV/cctv1.png',
+    'CCTV-2 财经': '/IPTV/cctv2.png',
+    'CCTV-3 综艺': '/IPTV/cctv3.png',
+    'CCTV-4 (亚洲)': '/IPTV/cctv4.png',
+    'CCTV-5 体育': '/IPTV/cctv5.png',
+    'CCTV-5+ 体育赛事': '/IPTV/cctv5plus.png',
+    'CCTV-6 电影': '/IPTV/cctv6.png',
+    'CCTV-7 国防军事': '/IPTV/cctv7.png',
+    'CCTV-8 电视剧': '/IPTV/cctv8.png',
+    'CCTV-9 纪录': '/IPTV/cctv9.png',
+    'CCTV-10 科教': '/IPTV/cctv10.png',
+    'CCTV-11 戏曲': '/IPTV/cctv11.png',
+    'CCTV-12 社会与法': '/IPTV/cctv12.png',
+    'CCTV-13 新闻': '/IPTV/cctv13.png',
+    'CCTV-14 少儿': '/IPTV/cctv14.png',
+    'CCTV-15 音乐': '/IPTV/cctv15.png',
+    'CCTV-16 奥林匹克': '/IPTV/cctv16.png',
+    'CCTV-17 农业农村': '/IPTV/cctv17.png',
+    '安徽卫视': '/IPTV/anhui.png',
+    '兵团卫视': '/IPTV/bingtuan.png',
+    '北京卫视': '/IPTV/btv1.png',
+    'BRTV卡酷少儿': '/IPTV/btvchild.png',
+    'BRTV体育休闲': '/IPTV/btvjishi.png',
+    'CETV-1': '/IPTV/cetv1.png',
+    'CETV-2': '/IPTV/cetv2.png',
+    'CETV-3': '/IPTV/cetv3.png',
+    'CETV-4': '/IPTV/cetv4.png',
+    '重庆卫视': '/IPTV/chongqing.png',
+    '东方卫视': '/IPTV/dongfang.png',
+    '东南卫视': '/IPTV/dongnan.png',
+    '甘肃卫视': '/IPTV/gansu.png',
+    '广东卫视': '/IPTV/guangdong.png',
+    '广西卫视': '/IPTV/guangxi.png',
+    '贵州卫视': '/IPTV/guizhou.png',
+    '河北卫视': '/IPTV/hebei.png',
+    '黑龙江卫视': '/IPTV/heilongjiang.png',
+    '河南卫视': '/IPTV/henan.png',
+    '湖北卫视': '/IPTV/hubei.png',
+    '湖南卫视': '/IPTV/hunan.png',
+    '江苏卫视': '/IPTV/jiangsu.png',
+    '江西卫视': '/IPTV/jiangxi.png',
+    '吉林卫视': '/IPTV/jilin.png',
+    '辽宁卫视': '/IPTV/liaoning.png',
+    '内蒙古卫视': '/IPTV/neimenggu.png',
+    '宁夏卫视': '/IPTV/ningxia.png',
+    '青海卫视': '/IPTV/qinghai.png',
+    '山东教育台': '/IPTV/sdetv.png',
+    '山东卫视': '/IPTV/shandong.png',
+    '山西卫视': '/IPTV/shan1xi.png',
+    '陕西卫视': '/IPTV/shan3xi.png',
+    '深圳卫视': '/IPTV/shenzhen.png',
+    '四川卫视': '/IPTV/sichuan.png',
+    '天津卫视': '/IPTV/tianjin.png',
+    '海南卫视': '/IPTV/travel.png',
+    '厦门卫视': '/IPTV/xiamen.png',
+    '新疆卫视': '/IPTV/xinjiang.png',
+    '西藏卫视': '/IPTV/xizang.png',
+    '延边卫视': '/IPTV/yanbian.png',
+    '云南卫视': '/IPTV/yunnan.png',
+    '浙江卫视': '/IPTV/zhejiang.png',
+  };
+  
+  export default imageMap;

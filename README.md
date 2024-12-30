@@ -32,6 +32,8 @@
 
 ## 运行项目
 
+### 前端
+
 注意：本项目为 JS 分支版本，要求 Node 版本 18+，可使用 [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) 进行本地 Node 版本管理，同时建议使用 [pnpm](https://pnpm.io/zh/installation) 包管理器。
 
 ```shell
@@ -44,3 +46,21 @@ pnpm install
 # 启动服务
 pnpm dev
 ```
+
+
+### 后端
+
+```sh
+cd app
+pip3 install -r requirements.txt
+nohup gunicorn -c gunicorn.py run:app &
+```
+
+
+## 影视爬取
+
+```sh
+cd parser/scrapy_tv
+scrapy crawl keke
+```
+

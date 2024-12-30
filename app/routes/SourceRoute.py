@@ -1,173 +1,141 @@
-from flask import request, jsonify
-from run import app
+from flask import request, jsonify, abort
 from db import Source, db
+from utils.tools import with_app_context,paginate
 
-
-
-
-def add_source():
+@with_app_context
+def create_source():
+    """创建一个新的Source。
+    
+    参数:
+    - name (str): Source名称。
+    - url (str): Source的URL。
+    - main (bool, optional): 是否为主要Source，默认为False。
+    - disable (bool, optional): 是否禁用Source，默认为False。
+    
+    返回:
+    - dict: 新创建Source的详情。
+    - int: HTTP状态码，201表示成功创建。
+    
+    异常:
+    - 400: 输入数据缺失或无效。
     """
-        添加来源
-        name:网站名称
-        url:网站首页地址
-    """
-    json_data = request.get_json()
-    name = json_data.get("name")
-    url = json_data.get("url")
-
-    if not name or not url:
-        return jsonify({"code": 400, "msg": "网站名称和地址不能为空"}), 400
-
-    with app.app_context():
-        existing_name = Source.query.filter_by(name=name).first()
-        if existing_name:
-            return jsonify({"code": 401, "msg": "网站名称已存在,请勿重复添加"}), 401
-        new_data = Source(name=name, url=url)
-        db.session.add(new_data)
+    data = request.json
+    if 'name' not in data or 'url' not in data:
+        abort(400, "缺少必要的参数'name'或'url'")
+    if not data['name'] or not data['url']:
+        abort(400, "参数'name'或'url'无效")
+    new_source = Source(name=data['name'], url=data['url'], main=data.get('main', False), disable=data.get('disable', False))
+    try:
+        db.session.add(new_source)
         db.session.commit()
-        app.logger.info(f'{name} {url} 添加成功') 
-        return jsonify({"code": 200, "msg": "添加成功"})
+    except Exception as e:
+        db.session.rollback()
+        abort(500, f"数据库操作失败: {e}")
+    return jsonify(new_source.to_dict()), 201
+
+@with_app_context
+def get_all_sources():
+    """获取所有Source的分页列表，可选择是否包括disable为True的记录。
     
-def del_source_by_id(id):
-    """
-        删除来源(根据id)
-    """
-    with app.app_context():
-        try:
-            source = Source.query.filter_by(id=id).first()
-            db.session.delete(source)
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({"code": 500, "msg": str(e)}), 500
-
-        return jsonify({"code": 200, "msg": f"删除成功"})
+    参数:
+    - page (int): 请求的页码。
+    - include_disabled (bool): 是否包括disable为True的记录，默认为False。
     
-def del_source_by_name(name):
-    """
-        删除来源(根据名称)
-    """
-    with app.app_context():
-        try:
-            source = Source.query.filter_by(name=name).first()
-            db.session.delete(source)
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({"code": 500, "msg": str(e)}), 500
-
-        return jsonify({"code": 200, "msg": f"删除成功"})
+    返回:
+    - list: Source列表。
+    - int: HTTP状态码，200表示成功。
     
-def edit_source_url():
+    异常:
+    - 404: 请求的页码超出范围。
     """
-        修改来源地址
-    """
-    json_data = request.get_json()
-    with app.app_context():
-        try:
+    page = request.args.get('page', 1, type=int)
+    include_disabled = request.args.get('include_disabled', 'false').lower() == 'true'
+    query = Source.query
+    if not include_disabled:
+        query = query.filter_by(disable=False)
+    sources, pages = paginate(query, page)
+    return jsonify([source.to_dict() for source in sources]), 200
 
-            url = json_data.get('url')
-            name = json_data.get('name')
-            id = json_data.get('id')
-
-            if name:
-                source = Source.query.filter_by(name=name).first()
-            else:
-                source = Source.query.filter_by(id=id).first()
-
-            source.url = url
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({"code": 500, "msg": str(e)}), 500
-
-        return jsonify({"code": 200, "msg": '修改成功'})
+@with_app_context
+def get_source(source_name):
+    """根据name获取单个Source。
     
-def edit_source_main():
-    """
-        设置主要来源
-    """
-    json_data = request.get_json()
-    with app.app_context():
-
-        try:
-            main = json_data.get('main')
-            name = json_data.get('name')
-            id = json_data.get('id')
-            
-            # 首先重置所有Source的main为False
-            Source.query.update({'main': False})
-            db.session.commit() 
-
-            if name:
-                source = Source.query.filter_by(name=name).first()
-            else:
-                source = Source.query.filter_by(id=id).first()
-              
-            source.main = main
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({"code": 500, "msg": str(e)}), 500
-
-        return jsonify({"code": 200, "msg": '修改成功'})
+    参数:
+    - source_name (str): Source的名称。
     
-def edit_source_disable():
-    """
-        是否禁用来源
-    """
-    json_data = request.get_json()
-    with app.app_context():
-
-        try:
-            disable = json_data.get('disable')
-            name = json_data.get('name')
-            id = json_data.get('id')
-
-            if name:
-                source = Source.query.filter_by(name=name).first()
-            else:
-                source = Source.query.filter_by(id=id).first()
-              
-            source.disable = disable
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({"code": 500, "msg": str(e)}), 500
-
-        return jsonify({"code": 200, "msg": '修改成功'})
+    返回:
+    - dict: Source的详情。
+    - int: HTTP状态码，200表示成功。
     
-def edit_source_ping():
+    异常:
+    - 404: Source不存在。
     """
-        是否ping通来源
-    """
-    json_data = request.get_json()
-    with app.app_context():
+    source = Source.query.filter_by(name=source_name).first_or_404(description=f"Source '{source_name}' not found")
+    return jsonify(source.to_dict()), 200
 
-        try:
-            ping = json_data.get('ping')
-            name = json_data.get('name')
-            id = json_data.get('id')
-
-            if name:
-                source = Source.query.filter_by(name=name).first()
-            else:
-                source = Source.query.filter_by(id=id).first()
-              
-            source.ping = ping
-            db.session.commit()
-        except Exception as e:
-            db.session.rollback()
-            return jsonify({"code": 500, "msg": str(e)}), 500
-
-        return jsonify({"code": 200, "msg": '修改成功'})
+@with_app_context
+def update_source(source_id):
+    """更新一个Source。
     
-def list_source():
+    参数:
+    - source_id (int): Source的ID。
+    
+    返回:
+    - dict: 更新后的Source详情。
+    - int: HTTP状态码，200表示成功。
+    
+    异常:
+    - 404: Source不存在。
+    - 400: 更新数据缺失或无效。
     """
-        来源列表
-    """
-    with app.app_context():
-        source = db.session.query(Source).all()
+    source = Source.query.get_or_404(source_id)
+    data = request.json
+    for key, value in data.items():
+        if not hasattr(source, key):
+            abort(400, f"无效的更新参数'{key}'")
+        setattr(source, key, value)
+    try:
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        abort(500, f"数据库操作失败: {e}")
+    return jsonify(source.to_dict()), 200
 
-        data = [item.to_dict() for item in source]
-        return jsonify({"code": 200, "msg": data})
+@with_app_context
+def delete_source(source_id):
+    """删除一个Source。
+    
+    参数:
+    - source_id (int): Source的ID。
+    
+    返回:
+    - dict: 消息提示。
+    - int: HTTP状态码，204表示成功删除。
+    
+    异常:
+    - 404: Source不存在。
+    """
+    source = Source.query.get_or_404(source_id)
+    try:
+        db.session.delete(source)
+        db.session.commit()
+    except Exception as e:
+        db.session.rollback()
+        abort(500, f"数据库操作失败: {e}")
+    return jsonify({"message": "Source deleted"}), 204
+
+@with_app_context
+def get_main_sources():
+    """查询所有主要且未禁用的Source。
+    
+    返回:
+    - list of dict: 主要源的信息列表。
+    
+    异常:
+    - 500: 数据库查询或操作失败。
+    """
+    try:
+        main_sources = Source.query.filter_by(main=True, disable=False).all()
+        return jsonify([source.to_dict() for source in main_sources]), 200
+    except Exception as e:
+        abort(500, f"数据库操作失败: {e}")

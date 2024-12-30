@@ -172,3 +172,12 @@ cython_debug/
 #.idea/
 
 node_modules
+
+
+.env.production
+
+
+app/log/*
+
+
+app/SkyTv.db

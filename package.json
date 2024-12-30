@@ -22,14 +22,18 @@
     "lint:prettier": "prettier --write  \"src/**/*.{js,json,jsx,css,less,scss,vue,html,md}\""
   },
   "dependencies": {
+    "@videojs-player/vue": "^1.0.0",
     "axios": "^1.7.2",
     "hls.js": "^1.5.11",
     "normalize.css": "^8.0.1",
     "nprogress": "^0.2.0",
     "pinia": "^2.1.7",
+    "plyr": "^3.7.8",
     "vant": "^4.9.0",
+    "video.js": "^8.21.0",
     "vue": "^3.4.27",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vue3-touch-events": "^4.2.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.3.0",

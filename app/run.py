@@ -1,27 +1,28 @@
-"""
-@ Date: 2024-04-26 15:31:44
-@ LastEditors: sky
-@ LastEditTime: 2024-05-08 10:11:25
-@ FilePath: /SkyTunnel/app/run.py
-@ Desc: 
-"""
+'''
+Description: 
+Author: sky
+Date: 2024-07-06 14:07:33
+LastEditTime: 2024-07-26 08:41:13
+LastEditors: sky
+'''
 
 
 from flask import Flask
 import logging
 from logging.handlers import RotatingFileHandler
-from flasgger import Swagger
-
-
+from config import DefaultConfig
 
 app = Flask(__name__)
-swagger = Swagger(app)
+import platform
+ 
+os_info = platform.uname()
+config_object = "config.ProductionConfig" if os_info.node != 'fedora' else "config.DevConfig"
+app.config.from_object(config_object)
 
-app.config.from_object("config.ProductionConfig")
 
 
 def configure_logging(app):
-    handler = RotatingFileHandler('app.log', maxBytes=10000, backupCount=1)
+    handler = RotatingFileHandler(DefaultConfig.APP_LOG, maxBytes=10000, backupCount=1)
     handler.setLevel(logging.INFO)
 
     formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(pathname)s:%(lineno)d]')
@@ -36,6 +37,13 @@ def configure_logging(app):
 
 configure_logging(app)
 
+
+
+if os_info.node != 'fedora':   #正式环境
+    from router import b1
+    # 加载路由
+    app.register_blueprint(b1)
+    app.run(host="0.0.0.0")
 
 if __name__ == '__main__':
     from router import b1
