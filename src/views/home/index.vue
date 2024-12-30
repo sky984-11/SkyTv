@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-12-30 15:39:38
+ * @LastEditTime: 2024-12-30 15:43:49
  * @LastEditors: sky
 -->
 <script setup name="Home"> 
@@ -13,7 +13,7 @@ import { useTvStoreHook } from '@/store/modules/tvStore';
 
 
 const tvObj = ref({
-    "热播剧集":  [],
+    "热播剧集":  [], 
     "热播电影":  [],
     "热播动漫":  [],
   })
