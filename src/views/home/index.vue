@@ -2,10 +2,10 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-17 14:29:09
+ * @LastEditTime: 2024-12-30 15:39:38
  * @LastEditors: sky
 -->
-<script setup name="Home">
+<script setup name="Home"> 
 import { ref, onMounted ,computed} from "vue";
 import { listHotVideo } from "@/api/video";
 import { useRouter } from 'vue-router';
