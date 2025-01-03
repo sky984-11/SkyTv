@@ -31,7 +31,13 @@
 
 
 ## 运行项目
+
 *项目存在2个分支，一个，main分支，一个jellyfin分支，jellyfin分支数据源从通过jellfin api进行获取，main分支则通过爬虫爬取第三方数据存储*
+
+### jellyfin分支技术架构
+
+生产者 ：AutoBangumi(采集) + qBittorrent(下载) + jellyfin(存储)
+消费者：jellyfin api + vue3 + van ui
 
 
 ### 前端
