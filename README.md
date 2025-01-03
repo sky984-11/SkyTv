@@ -31,10 +31,14 @@
 
 
 ## 运行项目
+*项目存在2个分支，一个，main分支，一个jellyfin分支，jellyfin分支数据源从通过jellfin api进行获取，main分支则通过爬虫爬取第三方数据存储*
+
 
 ### 前端
 
 注意：本项目为 JS 分支版本，要求 Node 版本 18+，可使用 [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) 进行本地 Node 版本管理，同时建议使用 [pnpm](https://pnpm.io/zh/installation) 包管理器。
+
+
 
 ```shell
 # 克隆项目

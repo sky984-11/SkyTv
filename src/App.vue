@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2025-01-03 10:45:40
+ * @LastEditTime: 2025-01-03 11:32:09
  * @LastEditors: sky
 -->
 <template>
@@ -19,14 +19,14 @@
 import { useRouter } from 'vue-router';
 // import { checkForUpdates } from "@/api/tools";
 import { ref } from "vue";
-import { activityLog } from "@/api/jellyfin";
+// import { getAnimes } from "@/api/jellyfin";
 
 const show = ref(false);
 // const updateMessage = ref("");
 
 async function initData() {
-  const res = await activityLog();
-  console.log(res)
+  // const res = await getAnimes();
+  // console.log(res)
 //   try {
 //     const client_version = import.meta.env.VITE_APP_VERSION;
 //     let params = {
