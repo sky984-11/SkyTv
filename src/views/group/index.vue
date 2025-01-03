@@ -2,14 +2,14 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2025-01-03 14:07:17
+ * @LastEditTime: 2025-01-03 14:40:26
  * @LastEditors: sky
 -->
 <script setup name="Group">
 import { ref, onMounted } from "vue";
 // import { listVideo } from "@/api/video";
 import { useRouter } from 'vue-router';
-// import { useTvStoreHook } from '@/store/modules/tvStore';
+import { useTvStoreHook } from '@/store/modules/tvStore';
 import imageMap from "@/utils/imageMap.js"
 import { getAnimes } from "@/api/jellyfin";
 
@@ -85,12 +85,10 @@ function onClickTab() {
 
 function toDetails(tv) {
   // 将详情数据写入store
-  console.log(tv)
-  // tv.type = activeType.value
-  // const tvStore = useTvStoreHook();
-  // tvStore.setTvDetails(tv);
+  const tvStore = useTvStoreHook();
+  tvStore.setTvDetails(tv);
 
-  // router.push({ name: 'Details' });
+  router.push({ name: 'Details', params: { id: tv.Id } });
 
 }
 

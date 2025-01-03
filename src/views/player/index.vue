@@ -1,100 +1,81 @@
 <!--
  * @Description: 
  * @Author: sky
- * @Date: 2024-06-25 14:18:22
- * @LastEditTime: 2024-07-31 16:31:24
+ * @Date: 2024-12-30 09:02:00
+ * @LastEditTime: 2025-01-03 16:52:09
  * @LastEditors: sky
 -->
-<script setup name="Player">
-import { ref, watch, onMounted } from "vue";
-import Hls from 'hls.js';
-import cache from "@/utils/cache";
-
+<script setup>
+import { ref, onMounted, onUnmounted } from "vue";
+import Hls from "hls.js";
 
 const props = defineProps({
-  link: String,
-  history:Object,
+  playbackInfo: Object, // PlaybackInfo 的完整数据
+  serverUrl: String,    // Jellyfin 服务器 URL
 });
-const video = ref(null);
-const progress = ref(0); // 存储播放进度，实时更新播放记录中的数据
-console.log(progress)
+
+const videoRef = ref(null); // 视频 DOM 引用
+let hlsInstance = null;
 
 onMounted(() => {
-  setupPlayer(props.link);
-  addFullScreenListeners(); // 添加全屏事件监听器
-  addTimeUpdateListener();
+  setupPlayer();
 });
 
-watch(() => props.link, (newLink) => {
-  setupPlayer(newLink);
+onUnmounted(() => {
+  if (hlsInstance) {
+    hlsInstance.destroy();
+    hlsInstance = null;
+  }
 });
 
-function setupPlayer(link) {
-  if (Hls.isSupported()) {
-    const hls = new Hls();
-    hls.loadSource(link);
-    hls.attachMedia(video.value);
-    hls.on(Hls.Events.MANIFEST_PARSED, () => {
-      video.value.play();
-    });
-  } else if (video.value.canPlayType('application/vnd.apple.mpegURL')) {
-    video.value.src = link;
-    video.value.load();
-    video.value.play();
+function setupPlayer() {
+  if(!props.playbackInfo){
+    return
   }
-}
+  const mediaSource = props.playbackInfo.MediaSources[0];
 
-function addFullScreenListeners() {
-  const handleFullScreenChange = () => {
-    if (isFullScreen()) {
-      screen.orientation.lock('landscape'); // 进入全屏时锁定横屏
-    } else {
-      screen.orientation.unlock(); // 退出全屏时解锁屏幕方向
-    }
-  };
-
-  document.addEventListener('fullscreenchange', handleFullScreenChange);
-  document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
-  document.addEventListener('mozfullscreenchange', handleFullScreenChange);
-}
-
-function isFullScreen() {
-  return document.fullscreenElement ||
-         document.webkitFullscreenElement ||
-         document.mozFullScreenElement ||
-         false;
-}
-
-// 监听 timeupdate 事件以获取播放进度
-function addTimeUpdateListener() {
-  video.value.addEventListener('timeupdate', () => {
-    const currentTime = video.value.currentTime;
-    const duration = video.value.duration;
-    if (!isNaN(duration)) {
-      progress.value = (currentTime / duration) * 100;
-      if(progress.value > 5){  // 大于5则开始更新到播放记录
-        let historyData = props.history
-        historyData.progress = progress.value
-        cache.setItem(historyData.vod_title,historyData)
-      }
-      console.log(cache.getItem(props.history.vod_title))
-    }
-  });
-}
-
-// 根据播放进度百分比跳转到视频的特定位置
-function seekTo(percentage) {
-  const duration = video.value.duration;
-  if (!isNaN(duration)) {
-    const time = (percentage / 100) * duration;
-    video.value.currentTime = time;
+  if (!mediaSource) {
+    console.error("No media source available.");
+    return;
   }
+
+  const playUrl = generatePlaybackUrl(
+    props.serverUrl,
+    mediaSource.Id,
+    props.playbackInfo.PlaySessionId,
+  );
+
+  if (Hls.isSupported() && mediaSource.Container.includes("m3u8")) {
+    hlsInstance = new Hls();
+    hlsInstance.loadSource(playUrl);
+    hlsInstance.attachMedia(videoRef.value);
+  } else {
+    videoRef.value.src = playUrl;
+  }
+
+  videoRef.value.play();
+}
+
+function generatePlaybackUrl(serverUrl, mediaSourceId, playSessionId) {
+  return import.meta.env.VITE_BASE_API + '/Videos/' + mediaSourceId + '/stream?Static=true&PlaySessionId=' + playSessionId
+
 }
 </script>
 
 <template>
-  <div class="relative">
-    <video ref="video" class="w-full h-full" controls autoplay @dblclick="video.value.requestFullscreen()">
-    </video>
+  <div class="player-container">
+    <video ref="videoRef" class="video-player" controls autoplay></video>
   </div>
 </template>
+
+<style>
+.player-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+.video-player {
+  width: 100%;
+  height: 100%;
+}
+</style>

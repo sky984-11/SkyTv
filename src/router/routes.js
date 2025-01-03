@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-07-26 17:29:04
+ * @LastEditTime: 2025-01-03 14:34:57
  * @LastEditors: sky
  */
 import Layout from "@/layout/index.vue";
@@ -61,7 +61,7 @@ const routes = [
         }
       },
       {
-        path: "details",
+        path: "details/:id",
         name: "Details",
         component: () => import("@/views/details/index.vue"),
         meta: {
