@@ -175,7 +175,7 @@ node_modules
 
 
 .env.production
-
+.env.development
 
 app/log/*
 
