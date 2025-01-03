@@ -40,6 +40,11 @@
 消费者：jellyfin api + vue3 + van ui
 
 
+### main分支技术架构
+
+生产者 scrapy(采集) + sqlite(存储)
+消费者： vue3 + van ui
+
 ### 前端
 
 注意：本项目为 JS 分支版本，要求 Node 版本 18+，可使用 [nvm](https://github.com/nvm-sh/nvm#installing-and-updating) 进行本地 Node 版本管理，同时建议使用 [pnpm](https://pnpm.io/zh/installation) 包管理器。
@@ -58,7 +63,7 @@ pnpm dev
 ```
 
 
-### 后端
+### 后端(如果使用main分支)
 
 ```sh
 cd app
@@ -70,6 +75,7 @@ nohup gunicorn -c gunicorn.py run:app &
 ## 影视爬取
 
 ```sh
+# 实例
 cd parser/scrapy_tv
 scrapy crawl keke
 ```
