@@ -1,9 +1,0 @@
-# 需要剔除其中无法使用的地址
-
-https://raw.githubusercontent.com/Free-TV/IPTV/master/playlist.m3u8
-
-https://github.com/kongkongyo/m3u8/blob/main/ALL.m3u8
-
-
-
-https://github.com/jadehh/TVSpider/releases/tag/v1.0.1

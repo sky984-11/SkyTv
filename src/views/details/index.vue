@@ -2,7 +2,7 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2025-01-03 16:34:10
+ * @LastEditTime: 2025-01-03 17:20:24
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
@@ -27,18 +27,12 @@ const tvDetails = ref({})
 
 const activeTab = ref('视频')
 const tabs = ref(['视频', '讨论'])
-const videoTitle = ref(tvDetails.vod_title)
-const videoDesc = ref("")
-const videoTag = ref(tvDetails.vod_tag)
-const videoRating = ref(tvDetails.rating)
+
 const episodes = ref([])
-const m3u8Link = ref("")  // 播放link
 const activeEpisode = ref(null);  // 选择的集数
 const history = ref(tvDetails)  // 播放历史缓存
 
 const playbackInfo = ref(null)
-
-// /Videos/3d3a7b43-f612-c552-f7e6-0868d24d4b46/3d3a7b43f612c552f7e60868d24d4b46/Subtitles/2/0/Stream.js?api_key=e2582452814a465e8e87e8d68287a024
 
 async function initData() {
   tvDetails.value = await getAnimeDetails(route.params.id)
@@ -63,16 +57,12 @@ async function initData() {
   //   history.value.play_url_id = res[0].id;
   //   activeEpisode.value = res[0].id;
   // }
-
-
 }
 
 const setActiveEpisode = async(episode) => {
-  // console.log(episode)
   activeEpisode.value = episode.Id;
   playbackInfo.value = await playEpisodeInfo(episode.Id)
   
-    // m3u8Link.value = episode.play_urls.play_url;
 };
 
 onMounted(() => {
@@ -92,7 +82,7 @@ onMounted(() => {
         <div v-if="tab === '视频'" class="p-4">
           <!-- 视频详情 -->
           <div class="flex justify-between items-center">
-            <h2 class="text-xl font-semibold truncate" :title="videoTitle">{{ tvDetails.Name }}</h2>
+            <h2 class="text-xl font-semibold truncate" :title="tvDetails.Name">{{ tvDetails.Name }}</h2>
 
             <span class="ml-4">
               <span class=" text-gray-500">{{ tvDetails.ProductionYear }}</span>
