@@ -2,9 +2,12 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2025-01-03 14:40:26
+ * @LastEditTime: 2025-01-07 09:15:04
  * @LastEditors: sky
 -->
+
+<!-- 后续增加分类过滤后去掉注释(根据评分，标签，年代)，增加后端分页 -->
+
 <script setup name="Group">
 import { ref, onMounted } from "vue";
 // import { listVideo } from "@/api/video";
@@ -13,14 +16,13 @@ import { useTvStoreHook } from '@/store/modules/tvStore';
 import imageMap from "@/utils/imageMap.js"
 import { getAnimes } from "@/api/jellyfin";
 
-const activeType = ref('动漫')  // 默认tab为剧集
+// const activeType = ref('动漫')  // 默认tab为剧集
 const videoList = ref([])   // 视频列表数据
 const loading = ref(false);  //下拉加载
 const finished = ref(false); //是否加载完成
 const page = ref(1); // 当前页
 const perPage = ref(20); // 每页数量
-const tabList = ref(['动漫', '电视剧', '电影', '频道'])
-// , '频道'
+// const tabList = ref(['动漫', '电视剧', '电影', '频道'])
 const router = useRouter();
 
 async function fetchData() {
@@ -79,9 +81,9 @@ function onLoadData() {
   }
 }
 
-function onClickTab() {
-  initData()
-}
+// function onClickTab() {
+//   initData()
+// }
 
 function toDetails(tv) {
   // 将详情数据写入store
@@ -98,8 +100,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <van-tabs v-model:active="activeType" @click-tab="onClickTab">
-    <van-tab v-for="item in tabList" :key="item" :title="item" :name="item">
+  <!-- <van-tabs v-model:active="activeType" @click-tab="onClickTab"> -->
+    <!-- <van-tab v-for="item in tabList" :key="item" :title="item" :name="item"> -->
       <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoadData"
         error-text="请求失败，点击重新加载">
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
@@ -112,6 +114,6 @@ onMounted(() => {
           </div>
         </div>
       </van-list>
-    </van-tab>
-  </van-tabs>
+    <!-- </van-tab>
+  </van-tabs> -->
 </template>

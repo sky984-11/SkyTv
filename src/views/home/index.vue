@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2024-12-30 15:43:49
+ * @LastEditTime: 2025-01-07 09:15:35
  * @LastEditors: sky
 -->
 <script setup name="Home"> 
@@ -73,7 +73,7 @@ function toDetails(tv) {
 }
 
 onMounted(() => {
-  initData();
+  // initData();
 });
 
 const groupedTvKeys = computed(() => Object.keys(tvObj.value));
