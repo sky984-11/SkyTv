@@ -2,17 +2,17 @@
  * @Author: liupeng 1269861316@qq.com
  * @Date: 2024-06-27 13:35:22
  * @LastEditors: sky
- * @LastEditTime: 2025-01-03 17:20:24
+ * @LastEditTime: 2025-01-07 08:53:53
  * @FilePath: /vue3-h5-template/src/views/details/index.vue
  * @Description: 详情页
 -->
 <script setup name="Details">
 import { ref, onMounted } from "vue";
 import { useTvStoreHook } from '@/store/modules/tvStore';
-import { listEpisodes, getIptvM3u8 } from "@/api/video";
+import { getIptvM3u8 } from "@/api/video";
 import Player from "@/views/player/index.vue";
 import cache from "@/utils/cache";
-import { getAnimeDetails, getAnimeEpisodes,playEpisodeInfo } from "@/api/jellyfin";
+import { getAnimeDetails, getAnimeEpisodes, playEpisodeInfo } from "@/api/jellyfin";
 import { useRoute } from 'vue-router';
 
 
@@ -23,14 +23,12 @@ const tvStore = useTvStoreHook();
 // 在组件创建时获取 tvDetails
 const tvDetails = ref({})
 
-
-
 const activeTab = ref('视频')
 const tabs = ref(['视频', '讨论'])
 
 const episodes = ref([])
 const activeEpisode = ref(null);  // 选择的集数
-const history = ref(tvDetails)  // 播放历史缓存
+
 
 const playbackInfo = ref(null)
 
@@ -39,30 +37,12 @@ async function initData() {
   const { Items } = await getAnimeEpisodes(route.params.id)
   episodes.value = Items
   console.log(episodes.value)
-
-  // if (tvDetails.type == '频道') {
-  //   const res = await getIptvM3u8(tvDetails.id);
-  //   m3u8Link.value = res
-
-  // } else {
-  //   const res = await listEpisodes(tvDetails.id);
-  //   res.sort((a, b) => a.vod_episodes_index - b.vod_episodes_index);
-  //   m3u8Link.value = res[0].play_urls.play_url
-  //   videoDesc.value = res[0].vod_content
-  //   videoTag.value = res[0].vod_tag
-  //   episodes.value = res
-  //   history.value.vod_episodes_index = res[0].vod_episodes_index
-  //   history.value.vod_episodes = res[0].vod_episodes
-  //   history.value.vod_tag = res[0].vod_tag
-  //   history.value.play_url_id = res[0].id;
-  //   activeEpisode.value = res[0].id;
-  // }
 }
 
-const setActiveEpisode = async(episode) => {
+const setActiveEpisode = async (episode) => {
   activeEpisode.value = episode.Id;
   playbackInfo.value = await playEpisodeInfo(episode.Id)
-  
+
 };
 
 onMounted(() => {
@@ -84,9 +64,12 @@ onMounted(() => {
           <div class="flex justify-between items-center">
             <h2 class="text-xl font-semibold truncate" :title="tvDetails.Name">{{ tvDetails.Name }}</h2>
 
-            <span class="ml-4">
-              <span class=" text-gray-500">{{ tvDetails.ProductionYear }}</span>
-              <span class="text-green-500 ml-4">{{ tvDetails.CommunityRating }}</span>
+            <span class="flex items-center">
+              <span class="text-gray-500">{{ tvDetails.ProductionYear }}</span>
+              <span class="text-green-500 ml-4 flex items-center">
+                {{ tvDetails.CommunityRating }}
+                <svg-icon name="rank" class="ml-1" />
+              </span>
             </span>
 
           </div>

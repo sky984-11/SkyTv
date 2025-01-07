@@ -2,11 +2,11 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-12-30 09:02:00
- * @LastEditTime: 2025-01-03 16:52:09
+ * @LastEditTime: 2025-01-07 09:03:33
  * @LastEditors: sky
 -->
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted,watch } from "vue";
 import Hls from "hls.js";
 
 const props = defineProps({
@@ -21,6 +21,11 @@ onMounted(() => {
   setupPlayer();
 });
 
+// 每当 playbackInfo 更新时重新设置播放器
+watch(() => props.playbackInfo, () => {
+  setupPlayer();
+}, { immediate: true });
+
 onUnmounted(() => {
   if (hlsInstance) {
     hlsInstance.destroy();
@@ -29,9 +34,11 @@ onUnmounted(() => {
 });
 
 function setupPlayer() {
+  console.log(props.playbackInfo)
   if(!props.playbackInfo){
     return
   }
+
   const mediaSource = props.playbackInfo.MediaSources[0];
 
   if (!mediaSource) {
