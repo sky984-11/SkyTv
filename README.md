@@ -1,5 +1,5 @@
 
-<h1 align="center">SkyTv</h1>
+<h1 align="center">SkyAnime</h1>
 
 **🌱 基于 Vue3 全家桶、JavaScript、Vite 构建工具、Flask、sqlite3、scrapy，开箱即用的移动端影视项目**
 
