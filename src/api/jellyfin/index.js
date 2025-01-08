@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2025-01-03 10:37:34
- * @LastEditTime: 2025-01-08 16:28:10
+ * @LastEditTime: 2025-01-08 17:01:50
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
@@ -32,10 +32,11 @@ export function getAnimes(startIndex,limit) {
     });
 }
 
-
+// 暂时去掉startIndex,limit控制
 export function searchAnimes(startIndex,limit,anime) {
+  // console.log(startIndex,limit,anime)
   return http.request({
-    url: `/Items?userId=${userId}&limit=100&recursive=true&searchTerm=${anime}&fields=PrimaryImageAspectRatio&fields=CanDelete&fields=MediaSourceCount&includeItemTypes=Series&imageTypeLimit=1&enableTotalRecordCount=false&StartIndex=${startIndex}&Limit=${limit}`,
+    url: `/Items?userId=${userId}&limit=100&recursive=true&searchTerm=${anime}&fields=PrimaryImageAspectRatio&fields=CanDelete&fields=MediaSourceCount&includeItemTypes=Series&imageTypeLimit=1&enableTotalRecordCount=false`,
     method: "get",
     headers: {
         'X-Emby-Token': token,

@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 14:32:44
- * @LastEditTime: 2025-01-08 15:33:22
+ * @LastEditTime: 2025-01-08 16:55:22
  * @LastEditors: sky
 -->
 
@@ -29,6 +29,7 @@ const route = useRoute();
 watch(() => route.query.keyword, async (newKeyword) => {
   if (newKeyword) {
     console.log('路由变化，更新搜索关键词：', newKeyword);
+    await cardRef.value.reset()
     cardRef.value.initData(newKeyword); // 确保每次关键词变化时都重新加载数据
   }
 });

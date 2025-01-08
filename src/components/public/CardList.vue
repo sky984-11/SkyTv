@@ -29,7 +29,7 @@ const route = useRoute();
 
 const tvStore = useTvStoreHook();
 
-const page = ref(0); // 当前页
+const page = ref(1); // 当前页
 const limit = ref(10); // 每页数量
 
 const loading = ref(false);
@@ -52,6 +52,7 @@ async function initData(newKeyword = '') {
 
         // 调用传入的动态函数获取数据
         const res = await props.fetchFunction(startIndex, limit.value, newKeyword);
+        // console.log(startIndex, limit.value, newKeyword,res)
 
         // 判断是否还有数据
         if (res.Items && res.Items.length > 0) {
@@ -79,18 +80,24 @@ function toDetails(tv) {
     router.push({ name: 'Details', params: { id: tv.Id } });
 }
 
+function reset(){
+    animes.value = []
+    page.value = 1
+}
+
 // 加载更多数据
 function onLoadData() {
     initData();
 }
 
 // 添加初始加载逻辑
-onMounted(() => {
-  initData();
-});
+// onMounted(() => {
+//   initData();
+// });
 
 defineExpose({
     initData,
+    reset
 });
 </script>
 
