@@ -1,6 +1,11 @@
 <template>
-    <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" error-text="请求失败，点击重新加载"
-        @load="onLoadData">
+    <van-list 
+        v-model:loading="loading" 
+        :finished="finished" 
+        finished-text="没有更多了" 
+        error-text="请求失败，点击重新加载"
+        @load="onLoadData"
+    >
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             <div class="relative" v-for="item in animes" :key="item.Id" @click="toDetails(item)">
                 <van-image :src="loadImage(item.Id)" class="w-full h-auto" alt="视频缩略图" />
@@ -14,12 +19,9 @@
 </template>
 
 <script setup>
-import { ref,onMounted} from "vue";
-import { useRouter,useRoute } from 'vue-router';
+import { ref, onMounted } from "vue";
+import { useRouter, useRoute } from 'vue-router';
 import { useTvStoreHook } from '@/store/modules/tvStore';
-
-const emit = defineEmits(['onLoadData']);
-
 
 // 获取 router 和 tvStore 实例
 const router = useRouter();
@@ -27,12 +29,12 @@ const route = useRoute();
 
 const tvStore = useTvStoreHook();
 
-const page = ref(1); // 当前页
-const perPage = ref(10); // 每页数量
+const page = ref(0); // 当前页
+const limit = ref(10); // 每页数量
 
-const loading = ref(false)
-const finished = ref(false)
-const animes= ref([])
+const loading = ref(false);
+const finished = ref(false);
+const animes = ref([]);
 
 // props 接收传递的参数
 const props = defineProps({
@@ -42,20 +44,25 @@ const props = defineProps({
     }
 });
 
-
-
-async function initData(newKeyword) {
+// 获取数据的初始化方法
+async function initData(newKeyword = '') {
     try {
         loading.value = true;
+        const startIndex = (page.value - 1) * limit.value; 
+
         // 调用传入的动态函数获取数据
-        const res = await props.fetchFunction(newKeyword);
+        const res = await props.fetchFunction(startIndex, limit.value, newKeyword);
 
-        animes.value = [...animes.value, ...res.Items];
-        finished.value = true
-
+        // 判断是否还有数据
+        if (res.Items && res.Items.length > 0) {
+            animes.value = [...animes.value, ...res.Items];
+            page.value += 1; // 翻到下一页
+        } else {
+            finished.value = true; // 如果没有更多数据，设置 finished 为 true
+        }
     } catch (error) {
         console.error("Error fetching data:", error);
-        finished.value = true
+        finished.value = true; 
     } finally {
         loading.value = false;
     }
@@ -72,8 +79,9 @@ function toDetails(tv) {
     router.push({ name: 'Details', params: { id: tv.Id } });
 }
 
+// 加载更多数据
 function onLoadData() {
-    emit('onLoadData')
+    initData();
 }
 
 // 添加初始加载逻辑

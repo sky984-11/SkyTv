@@ -2,12 +2,13 @@
  * @Description: 
  * @Author: sky
  * @Date: 2025-01-03 10:37:34
- * @LastEditTime: 2025-01-08 15:28:49
+ * @LastEditTime: 2025-01-08 16:28:10
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
 
-
+const token = '4758069e94594559b01ac47864981680'
+const userId = '8739f7a384ed43388bb7f8b0a542c672'
 
 //  系统活动日志
 export function activityLog() {
@@ -15,30 +16,29 @@ export function activityLog() {
     url: "/System/ActivityLog/Entries",
     method: "get",
     headers: {
-        'X-Emby-Token': '4758069e94594559b01ac47864981680',
+        'X-Emby-Token': token,
       }
   });
 }
 
 
-export function getAnimes() {
+export function getAnimes(startIndex,limit) {
     return http.request({
-      url: "/Users/8739f7a384ed43388bb7f8b0a542c672/Items?SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&Fields=PrimaryImageAspectRatio&ImageTypeLimit=1&EnableImageTypes=Primary%2CBackdrop%2CBanner%2CThumb&StartIndex=0&Limit=100&ParentId=0c41907140d802bb58430fed7e2cd79e",
+      url: `/Users/${userId}/Items?SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&Fields=PrimaryImageAspectRatio&ImageTypeLimit=1&EnableImageTypes=Primary%2CBackdrop%2CBanner%2CThumb&StartIndex=${startIndex}&Limit=${limit}&ParentId=0c41907140d802bb58430fed7e2cd79e`,
       method: "get",
       headers: {
-          'X-Emby-Token': '4758069e94594559b01ac47864981680',
+          'X-Emby-Token': token,
         }
     });
 }
 
 
-export function searchAnimes(anime) {
-  console.log(anime)
+export function searchAnimes(startIndex,limit,anime) {
   return http.request({
-    url: `/Items?userId=8739f7a384ed43388bb7f8b0a542c672&limit=100&recursive=true&searchTerm=${anime}&fields=PrimaryImageAspectRatio&fields=CanDelete&fields=MediaSourceCount&includeItemTypes=Series&imageTypeLimit=1&enableTotalRecordCount=false`,
+    url: `/Items?userId=${userId}&limit=100&recursive=true&searchTerm=${anime}&fields=PrimaryImageAspectRatio&fields=CanDelete&fields=MediaSourceCount&includeItemTypes=Series&imageTypeLimit=1&enableTotalRecordCount=false&StartIndex=${startIndex}&Limit=${limit}`,
     method: "get",
     headers: {
-        'X-Emby-Token': '4758069e94594559b01ac47864981680',
+        'X-Emby-Token': token,
       }
   });
 }
@@ -48,20 +48,20 @@ export function searchAnimes(anime) {
 
 export function getAnimeDetails(itemId) {
     return http.request({
-      url: "/Items/" + itemId + '?userId=8739f7a384ed43388bb7f8b0a542c672',
+      url: "/Items/" + itemId + `?userId=${userId}`,
       method: "get",
       headers: {
-          'X-Emby-Token': '4758069e94594559b01ac47864981680',
+          'X-Emby-Token': token,
         }
     });
 }
 
 export function getAnimeEpisodes(itemId) {
     return http.request({
-      url: "/Shows/" + itemId + '/Episodes?IsVirtualUnaired=false&IsMissing=false&UserId=8739f7a384ed43388bb7f8b0a542c672&Fields=Chapters%2CTrickplay',
+      url: "/Shows/" + itemId + `/Episodes?IsVirtualUnaired=false&IsMissing=false&UserId=${userId}&Fields=Chapters%2CTrickplay`,
       method: "get",
       headers: {
-          'X-Emby-Token': '4758069e94594559b01ac47864981680',
+          'X-Emby-Token': token,
         }
     });
 }
@@ -72,7 +72,7 @@ export function playEpisodeInfo(episodeId) {
       url: "/Items/" + episodeId + '/PlaybackInfo',
       method: "get",
       headers: {
-          'X-Emby-Token': '4758069e94594559b01ac47864981680',
+          'X-Emby-Token': token,
         }
     });
 }

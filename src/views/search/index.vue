@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 14:32:44
- * @LastEditTime: 2025-01-08 15:30:47
+ * @LastEditTime: 2025-01-08 15:33:22
  * @LastEditors: sky
 -->
 
@@ -24,7 +24,6 @@ import { useTvStoreHook } from '@/store/modules/tvStore';
 const loading = ref(false);  //下拉加载
 const cardRef = ref(null);
 const route = useRoute();
-const searchQuery = ref('');
 
 // 监听路由变化，以便更新搜索关键词
 watch(() => route.query.keyword, async (newKeyword) => {
