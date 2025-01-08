@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2025-01-07 09:15:35
+ * @LastEditTime: 2025-01-08 15:22:50
  * @LastEditors: sky
 -->
 <script setup name="Home"> 
@@ -10,7 +10,7 @@ import { ref, onMounted ,computed} from "vue";
 import { listHotVideo } from "@/api/video";
 import { useRouter } from 'vue-router';
 import { useTvStoreHook } from '@/store/modules/tvStore';
-
+import CardList from "@/components/public/CardList.vue"
 
 const tvObj = ref({
     "热播剧集":  [], 
@@ -64,13 +64,6 @@ function initData() {
 }
 
 
-function toDetails(tv) {
-  // 将详情数据写入store
-  const tvStore = useTvStoreHook();
-  tvStore.setTvDetails(tv);
-  router.push({ name: 'Details' });
-
-}
 
 onMounted(() => {
   // initData();
@@ -86,7 +79,7 @@ const groupedTvKeys = computed(() => Object.keys(tvObj.value));
       <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px', fontSize: '35px' }">
         {{ label }}
       </van-divider>
-      <van-list>
+      <!-- <van-list>
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
           <div class="relative" v-for="item in tvObj[label]" :key="item.id" @click="toDetails(item)">
             <van-image :src="item.vod_pic_url" class="w-full h-auto" alt="视频缩略图" />
@@ -96,7 +89,9 @@ const groupedTvKeys = computed(() => Object.keys(tvObj.value));
             </div>
           </div>
         </div>
-      </van-list>
+      </van-list> -->
+
+      <!-- <card-list :animes="tvObj[label]" :loading="loading"></card-list> -->
     </div>
   </div>
 </template>

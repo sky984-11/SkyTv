@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2025-01-03 10:37:34
- * @LastEditTime: 2025-01-08 09:02:42
+ * @LastEditTime: 2025-01-08 15:28:49
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
@@ -33,6 +33,7 @@ export function getAnimes() {
 
 
 export function searchAnimes(anime) {
+  console.log(anime)
   return http.request({
     url: `/Items?userId=8739f7a384ed43388bb7f8b0a542c672&limit=100&recursive=true&searchTerm=${anime}&fields=PrimaryImageAspectRatio&fields=CanDelete&fields=MediaSourceCount&includeItemTypes=Series&imageTypeLimit=1&enableTotalRecordCount=false`,
     method: "get",
