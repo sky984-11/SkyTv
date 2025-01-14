@@ -1,3 +1,10 @@
+<!--
+ * @Description: 
+ * @Author: sky
+ * @Date: 2024-12-30 09:02:00
+ * @LastEditTime: 2025-01-14 17:46:55
+ * @LastEditors: sky
+-->
 <script setup>
 import tabbar from "@/components/Tabbar/index.vue";
 import NavBar from "@/components/NavBar/index.vue";
@@ -19,7 +26,7 @@ const cachedViews = computed(() => {
           <component :is="Component" />
         </keep-alive>
       </router-view>
-      <tabbar />
+      <tabbar v-show="!$route.meta.hideTabbar" />  
     </van-config-provider>
   </div>
 </template>

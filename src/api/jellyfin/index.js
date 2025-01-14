@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2025-01-03 10:37:34
- * @LastEditTime: 2025-01-08 17:01:50
+ * @LastEditTime: 2025-01-14 13:56:06
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
@@ -33,6 +33,7 @@ export function getAnimes(startIndex,limit) {
 }
 
 // 暂时去掉startIndex,limit控制
+// 获取动漫列表
 export function searchAnimes(startIndex,limit,anime) {
   // console.log(startIndex,limit,anime)
   return http.request({
@@ -46,7 +47,7 @@ export function searchAnimes(startIndex,limit,anime) {
 
 
 
-
+// 获取动漫详情
 export function getAnimeDetails(itemId) {
     return http.request({
       url: "/Items/" + itemId + `?userId=${userId}`,
@@ -55,6 +56,17 @@ export function getAnimeDetails(itemId) {
           'X-Emby-Token': token,
         }
     });
+}
+
+// 获取动漫历史记录
+export function getAnimeHistory() {
+  return http.request({
+    url: `Users/${userId}/Items/` + `?IncludeItemTypes=Episode&SortBy=DatePlayed&SortOrder=Descending`,
+    method: "get",
+    headers: {
+        'X-Emby-Token': token,
+      }
+  });
 }
 
 export function getAnimeEpisodes(itemId) {

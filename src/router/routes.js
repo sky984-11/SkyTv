@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2025-01-03 14:34:57
+ * @LastEditTime: 2025-01-14 17:45:57
  * @LastEditors: sky
  */
 import Layout from "@/layout/index.vue";
@@ -21,7 +21,8 @@ const routes = [
         component: Home,
         meta: {
           title: "主页",
-          noCache: false
+          noCache: false,
+          hideTabbar:false
         }
       },
       {
@@ -30,7 +31,8 @@ const routes = [
         component: () => import("@/views/group/index.vue"),
         meta: {
           title: "分类",
-          noCache: false
+          noCache: false,
+          hideTabbar:false
         }
       },
       {
@@ -39,7 +41,8 @@ const routes = [
         component: () => import("@/views/about/index.vue"),
         meta: {
           title: "关于",
-          noCache: true
+          noCache: true,
+          hideTabbar:false
         }
       },
       {
@@ -48,7 +51,8 @@ const routes = [
         component: () => import("@/views/search/index.vue"),
         meta: {
           title: "搜索",
-          noCache: true
+          noCache: true,
+          hideTabbar:false
         }
       },
       {
@@ -57,7 +61,8 @@ const routes = [
         component: () => import("@/views/history/index.vue"),
         meta: {
           title: "播放历史",
-          noCache: true
+          noCache: true,
+          hideTabbar:false
         }
       },
       {
@@ -66,9 +71,20 @@ const routes = [
         component: () => import("@/views/details/index.vue"),
         meta: {
           title: "详情",
-          noCache: true
+          noCache: true,
+          hideTabbar:false
         }
       },
+      {
+        path: '/login',
+        name: 'login',
+        component: () => import('@/views/auth/Login.vue'),
+        meta: {
+          title: "登陆",
+          noCache: true,
+          hideTabbar:true
+        }
+    },
     ]
   }
 ];

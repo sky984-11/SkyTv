@@ -2,21 +2,25 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-06-24 09:34:10
- * @LastEditTime: 2025-01-08 15:36:28
+ * @LastEditTime: 2025-01-14 13:35:50
  * @LastEditors: sky
 -->
-<script setup name="Home"> 
-import { ref, onMounted ,computed} from "vue";
+<script setup name="Home">
+import { ref, onMounted, computed } from "vue";
 import { listHotVideo } from "@/api/video";
 import { useRouter } from 'vue-router';
 import { useTvStoreHook } from '@/store/modules/tvStore';
 import CardList from "@/components/public/CardList.vue"
 
 const tvObj = ref({
-    "热播剧集":  [], 
-    "热播电影":  [],
-    "热播动漫":  [],
-  })
+  "热播动漫": [],
+})
+
+
+const images = ref([
+      'https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
+      'https://fastly.jsdelivr.net/npm/@vant/assets/apple-2.jpeg',
+    ]);
 
 const loading = ref(false);  //下拉加载
 
@@ -46,8 +50,6 @@ async function fetchData() {
       throw new Error("API返回的类型数组长度不足");
     }
     // 更新数据对象
-    tvObj.value["热播剧集"] = groupedByType['剧集']
-    tvObj.value["热播电影"] = groupedByType['电影']
     tvObj.value["热播动漫"] = groupedByType['动漫']
   } catch (error) {
     console.error("数据获取失败:", error);
@@ -75,6 +77,11 @@ const groupedTvKeys = computed(() => Object.keys(tvObj.value));
 
 <template>
   <div>
+    <van-swipe :autoplay="3000" lazy-render>
+      <van-swipe-item v-for="image in images" :key="image">
+        <img :src="image" />
+      </van-swipe-item>
+    </van-swipe>
     <div v-for="label in groupedTvKeys" :key="label">
       <van-divider :style="{ color: '#1989fa', borderColor: '#1989fa', padding: '0 16px', fontSize: '35px' }">
         {{ label }}
