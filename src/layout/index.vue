@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2024-12-30 09:02:00
- * @LastEditTime: 2025-01-14 17:46:55
+ * @LastEditTime: 2025-01-15 13:48:33
  * @LastEditors: sky
 -->
 <script setup>
@@ -20,7 +20,7 @@ const cachedViews = computed(() => {
 <template>
   <div class="app-wrapper">
     <van-config-provider :theme="useDarkMode() ? 'dark' : 'light'">
-      <nav-bar />
+      <nav-bar v-show="!$route.meta.hideTabbar" />
       <router-view v-slot="{ Component }">
         <keep-alive :include="cachedViews">
           <component :is="Component" />

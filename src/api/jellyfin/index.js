@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2025-01-03 10:37:34
- * @LastEditTime: 2025-01-14 13:56:06
+ * @LastEditTime: 2025-01-15 15:47:57
  * @LastEditors: sky
  */
 import { http } from "@/utils/http";
@@ -21,7 +21,19 @@ export function activityLog() {
   });
 }
 
+// 用户登陆并返回token
+export function login(data) {
+  return http.request({
+    url: "/Users/AuthenticateByName",
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+      },
+      data
+  });
+}
 
+// 获取动漫列表
 export function getAnimes(startIndex,limit) {
     return http.request({
       url: `/Users/${userId}/Items?SortBy=SortName&SortOrder=Ascending&IncludeItemTypes=Series&Recursive=true&Fields=PrimaryImageAspectRatio&ImageTypeLimit=1&EnableImageTypes=Primary%2CBackdrop%2CBanner%2CThumb&StartIndex=${startIndex}&Limit=${limit}&ParentId=0c41907140d802bb58430fed7e2cd79e`,
@@ -33,7 +45,7 @@ export function getAnimes(startIndex,limit) {
 }
 
 // 暂时去掉startIndex,limit控制
-// 获取动漫列表
+// 动漫搜索
 export function searchAnimes(startIndex,limit,anime) {
   // console.log(startIndex,limit,anime)
   return http.request({

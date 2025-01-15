@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2025-01-14 16:07:01
- * @LastEditTime: 2025-01-14 16:08:05
+ * @LastEditTime: 2025-01-15 14:09:11
  * @LastEditors: sky
  */
 // auth.js
@@ -23,7 +23,22 @@ export function getToken() {
   
     return token;
   }
-  
+
+  /**
+ * 设置用户 token 到本地存储和 Cookie
+ * @param {string} token 用户的 token
+ * @param {number} [expiresInDays=7] token 的有效期（天），默认 7 天
+ */
+export function setToken(token, expiresInDays = 7) {
+  // 设置到 localStorage
+  localStorage.setItem("token", token);
+
+  // 设置到 Cookie
+  const expires = new Date();
+  expires.setDate(expires.getDate() + expiresInDays);
+  document.cookie = `token=${encodeURIComponent(token)}; expires=${expires.toUTCString()}; path=/`;
+}
+
   /**
    * 从 Cookie 中获取指定键的值
    * @param {string} key Cookie 的键名

@@ -9,17 +9,19 @@ const configDefault = {
     "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
   },
   timeout: 0,
-  baseURL: import.meta.env.VITE_BASE_API,
   data: {}
 };
 
 class Http {
-  constructor(config) {
-    Http.axiosConfigDefault = config;
-    Http.axiosInstance = Axios.create(config);
+  constructor(config = {}) {
+    // 合并传入的配置与默认配置，baseURL由外部传入
+    this.config = { ...configDefault, ...config };
+    this.config.baseURL = config.baseURL || import.meta.env.VITE_BASE_API;  // 默认baseURL如果没有传递
+    Http.axiosInstance = Axios.create(this.config);
     this.httpInterceptorsRequest();
     this.httpInterceptorsResponse();
   }
+
   // 当前实例
   static axiosInstance;
   // 请求配置
@@ -48,22 +50,7 @@ class Http {
     Http.axiosInstance.interceptors.response.use(
       response => {
         NProgress.done();
-
-        return response.data
-        // // 与后端协定的返回字段
-        // const { code, msg, result } = response.data;
-        // // 判断请求是否成功 （code 200 请求成功）
-        // const isSuccess =
-        //   result && Reflect.has(response.data, "code") && code === 200;
-
-        // if (isSuccess) {
-        //   return result;
-        // } else {
-        //   // 处理请求错误
-        //   // showFailToast(msg);
-        //   console.log(msg);
-        //   return Promise.reject(response.data);
-        // }
+        return response.data;
       },
       error => {
         NProgress.done();
@@ -117,7 +104,7 @@ class Http {
 
   // 通用请求函数
   request(paramConfig) {
-    const config = { ...Http.axiosConfigDefault, ...paramConfig };
+    const config = { ...this.config, ...paramConfig };  // 使用构造时的 config 合并请求配置
     return new Promise((resolve, reject) => {
       Http.axiosInstance
         .request(config)
@@ -131,4 +118,5 @@ class Http {
   }
 }
 
-export const http = new Http(configDefault);
+export const http = new Http(); // 默认使用默认 baseURL
+

@@ -1,14 +1,27 @@
+<!--
+ * @Description: 
+ * @Author: sky
+ * @Date: 2025-01-14 14:10:32
+ * @LastEditTime: 2025-01-15 14:06:57
+ * @LastEditors: sky
+-->
 <script setup>
 import { ref } from 'vue';
+import { login } from "@/api/jellyfin";
+
 
 const username = ref('');
 const password = ref('');
 const checked = ref(false);
 
-const handleSubmit = () => {
-    console.log('Email:', email.value);
-    console.log('Password:', password.value);
-    console.log('Remember me:', checked.value);
+const handleSubmit = async() => {
+    const params = {
+        Username: username.value,
+        Pw: password.value,
+    };
+
+   const token = await login(params)
+   console.log(token)
 };
 </script>
 
