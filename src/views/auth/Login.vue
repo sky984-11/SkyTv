@@ -2,7 +2,7 @@
  * @Description: 
  * @Author: sky
  * @Date: 2025-01-14 14:10:32
- * @LastEditTime: 2025-01-15 14:06:57
+ * @LastEditTime: 2025-01-16 08:29:41
  * @LastEditors: sky
 -->
 <script setup>
@@ -32,8 +32,6 @@ const handleSubmit = async() => {
                 style="border-radius: 56px; padding: 0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%)">
                 <div class="w-full bg-surface-0 dark:bg-surface-900 py-20 px-8 sm:px-20" style="border-radius: 53px">
                     <div class="text-center mb-8">
-                        <!-- 替换为独立组件 -->
-                        <!-- <LogoIcon class="mb-8 w-16 mx-auto" /> -->
                         <van-image width="100" height="100" src="/favicon.ico" />
                         <h1 class="text-xl font-bold">SkyAnime</h1>
                     </div>
