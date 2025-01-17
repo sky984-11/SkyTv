@@ -5,7 +5,11 @@
  * @LastEditTime: 2025-01-15 15:47:57
  * @LastEditors: sky
  */
-import { http } from "@/utils/http";
+
+import { Http } from "@/utils/http";
+
+// 实例
+const http = new Http({ baseURL: "http://100.66.130.120:8096" });
 
 const token = '4758069e94594559b01ac47864981680'
 const userId = '8739f7a384ed43388bb7f8b0a542c672'
@@ -21,17 +25,7 @@ export function activityLog() {
   });
 }
 
-// 用户登陆并返回token
-export function login(data) {
-  return http.request({
-    url: "/Users/AuthenticateByName",
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-      },
-      data
-  });
-}
+
 
 // 获取动漫列表
 export function getAnimes(startIndex,limit) {

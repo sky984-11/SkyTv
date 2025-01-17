@@ -5,7 +5,16 @@
  * @LastEditTime: 2025-01-15 15:50:36
  * @LastEditors: sky
  */
-import { http } from "@/utils/http";
+import { Http } from "@/utils/http";
 
 // 实例
-const userHttp = new Http({ baseURL: 'http://custom-api-url.com' });
+const userHttp = new Http({ baseURL: 'http://127.0.0.1:5000' });
+
+
+export function login(data) {
+    return userHttp.request({
+      url: "/api/v1/user/login",
+      method: "post",
+        data
+    });
+  }

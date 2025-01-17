@@ -12,7 +12,7 @@ const configDefault = {
   data: {}
 };
 
-class Http {
+export class Http {
   constructor(config = {}) {
     // 合并传入的配置与默认配置，baseURL由外部传入
     this.config = { ...configDefault, ...config };

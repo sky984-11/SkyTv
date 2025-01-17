@@ -7,21 +7,29 @@
 -->
 <script setup>
 import { ref } from 'vue';
-import { login } from "@/api/jellyfin";
-
+import { login } from "@/api/user";
+import { setToken } from "@/utils/auth";
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 const username = ref('');
 const password = ref('');
 const checked = ref(false);
 
-const handleSubmit = async() => {
+const handleSubmit = async () => {
     const params = {
-        Username: username.value,
-        Pw: password.value,
+        username: username.value,
+        password: password.value,
     };
+    const formData = new FormData();
+    formData.append('username', params.username);
+    formData.append('password', params.password);
 
-   const token = await login(params)
-   console.log(token)
+    const data = await login(formData)
+    if(data.code === 200){
+        setToken(data.data.token)
+        router.push({ name: 'Home' });
+    }
 };
 </script>
 

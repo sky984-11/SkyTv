@@ -1,0 +1,6 @@
+*.log
+*.db
+__pycache__
+nohup.out
+venv
+instance

@@ -15,6 +15,7 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
 
   const token = getToken(); // 获取用户的 token
+
   const requiresAuth = to.meta.requiresAuth !== false; // 判断路由是否需要认证
 
   if (requiresAuth && !token) {
